@@ -1,7 +1,6 @@
 package recsys;
 
 import java.io.File;
-import java.util.Date;
 import java.util.List;
 
 import org.apache.mahout.cf.taste.impl.model.file.FileDataModel;
@@ -15,17 +14,13 @@ import org.apache.mahout.cf.taste.recommender.RecommendedItem;
 import org.apache.mahout.cf.taste.recommender.Recommender;
 import org.apache.mahout.cf.taste.similarity.UserSimilarity;
 
-public class TestUserBasedRecommender {
+public class UserBasedRecommender extends RS{
 
-	private long startTime;
-	private long endTime;
-
-	private void run() throws Exception {
-		startTime = new Date().getTime();
-
-		 File dataFile = new File("src/main/resources/datasets/movielens/ml-1m/ratings.dat");
-//		File dataFile = new File("src/main/resources/datasets/movielens/ml-10M100K/ratings.dat");
+	public void execute() throws Exception {
+		String path = prop.getProperty("movielens-1m-ratings.dat");
+		File dataFile = new File(path);
 		DataModel model = new FileDataModel(dataFile, "::");
+		
 		UserSimilarity userSimilarity = new PearsonCorrelationSimilarity(model);
 		UserNeighborhood neighborhood = new NearestNUserNeighborhood(3, userSimilarity, model);
 		Recommender recommender = new GenericUserBasedRecommender(model, neighborhood, userSimilarity);
@@ -36,11 +31,9 @@ public class TestUserBasedRecommender {
 			System.out.println(recommendedItem.getItemID() + ": " + recommendedItem.getValue());
 		}
 
-		endTime = new Date().getTime();
-		System.out.println("cas behu: " + (endTime - startTime) / 1000 + "s");
 	}
 
 	public static void main(String[] args) throws Exception {
-		new TestUserBasedRecommender().run();
+		new UserBasedRecommender().run();
 	}
 }
