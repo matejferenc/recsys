@@ -1,4 +1,5 @@
 src/main/resources/datasets/
+/src/main/resources/config.properties
 target/
 .settings
 .classpath
