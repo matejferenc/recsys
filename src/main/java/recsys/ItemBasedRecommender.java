@@ -15,15 +15,19 @@ import org.apache.mahout.cf.taste.similarity.ItemSimilarity;
 public class ItemBasedRecommender extends RS {
 
 	public void execute() throws Exception {
-		String path = prop.getProperty("movielens-1m-ratings.dat");
+//		String path = prop.getProperty("movielens-1m-ratings.dat");
+		String path = prop.getProperty("movielens-10m-ratings.dat");
 		File dataFile = new File(path);
 		DataModel model = new FileDataModel(dataFile, "::");
 		
 		ItemSimilarity itemSimilarity = new PearsonCorrelationSimilarity(model);
 		Recommender recommender = new GenericItemBasedRecommender(model, itemSimilarity);
 		Recommender cachingRecommender = new CachingRecommender(recommender);
+		
+		System.out.println("minimum possible preference: " + model.getMinPreference());
+		System.out.println("maximum possible preference: " + model.getMaxPreference());
 
-		List<RecommendedItem> recommendations = cachingRecommender.recommend(18, 10);
+		List<RecommendedItem> recommendations = cachingRecommender.recommend(1234, 10);
 		for (RecommendedItem recommendedItem : recommendations) {
 			System.out.println(recommendedItem.getItemID() + ": " + recommendedItem.getValue());
 		}

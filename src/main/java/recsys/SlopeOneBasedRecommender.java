@@ -13,12 +13,16 @@ import org.apache.mahout.cf.taste.recommender.Recommender;
 public class SlopeOneBasedRecommender extends RS{
 
 	public void execute() throws Exception {
-		String path = prop.getProperty("movielens-1m-ratings.dat");
+//		String path = prop.getProperty("movielens-1m-ratings.dat");
+		String path = prop.getProperty("movielens-10m-ratings.dat");
 		File dataFile = new File(path);
 		DataModel model = new FileDataModel(dataFile, "::");
 		
 		Recommender recommender = new SlopeOneRecommender(model);
         Recommender cachingRecommender = new CachingRecommender(recommender);
+        
+        System.out.println("minimum possible preference: " + model.getMinPreference());
+		System.out.println("maximum possible preference: " + model.getMaxPreference());
 
 		List<RecommendedItem> recommendations = cachingRecommender.recommend(1234, 10);
 		for (RecommendedItem recommendedItem : recommendations) {
