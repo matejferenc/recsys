@@ -1,4 +1,4 @@
-package recsys;
+package recsys.itemBased;
 
 import java.io.File;
 import java.util.Properties;
@@ -8,21 +8,23 @@ import org.apache.mahout.cf.taste.impl.eval.AverageAbsoluteDifferenceRecommender
 import org.apache.mahout.cf.taste.impl.model.file.FileDataModel;
 import org.apache.mahout.cf.taste.model.DataModel;
 
-public class UserBasedEvaluator {
+public class ItemBasedEvaluator {
 
 	public static void main(String[] args) throws Exception {
-		UserBasedEvaluator e = new UserBasedEvaluator();
+		ItemBasedEvaluator e = new ItemBasedEvaluator();
 		e.execute();
 	}
 
 	private void execute() throws Exception {
 		Properties prop = new Properties();
 		prop.load(getClass().getClassLoader().getResourceAsStream("config.properties"));
-		String path = prop.getProperty("movielens-10m-ratings.dat");
+//		String path = prop.getProperty("movielens-10m-ratings.dat");
+//		String path = prop.getProperty("movielens-1m-ratings.dat");
+		String path = prop.getProperty("movielens-100k-ratings.data");
 		File dataFile = new File(path);
-		DataModel dataModel = new FileDataModel(dataFile, "::");
+		DataModel dataModel = new FileDataModel(dataFile, "\t");
 
-		UserBasedRecommenderBuilder recommenderBuilder = new UserBasedRecommenderBuilder();
+		ItemBasedRecommenderBuilder recommenderBuilder = new ItemBasedRecommenderBuilder();
 
 		System.out.println("minimum possible preference: " + dataModel.getMinPreference());
 		System.out.println("maximum possible preference: " + dataModel.getMaxPreference());

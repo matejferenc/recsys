@@ -26,16 +26,35 @@
 
 
 	<dependencies>
+		<!-- <dependency> -->
+		<!-- <groupId>org.apache.mahout</groupId> -->
+		<!-- <artifactId>mahout-core</artifactId> -->
+		<!-- <version>${mahout.version}</version> -->
+		<!-- </dependency> -->
+		<!-- <dependency> -->
+		<!-- <groupId>org.slf4j</groupId> -->
+		<!-- <artifactId>slf4j-simple</artifactId> -->
+		<!-- <version>1.7.5</version> -->
+		<!-- </dependency> -->
+
 		<dependency>
-			<groupId>org.apache.mahout</groupId>
-			<artifactId>mahout-core</artifactId>
-			<version>${mahout.version}</version>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>14.0.1</version>
 		</dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-simple</artifactId>
-			<version>1.7.5</version>
-		</dependency>
+
+		<!-- <dependency> -->
+		<!-- <groupId>org.apache.mahout</groupId> -->
+		<!-- <artifactId>mahout-examples</artifactId> -->
+		<!-- <version>0.6</version> -->
+		<!-- </dependency> -->
+
+		<exclusions>
+			<exclusion>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-log4j12</artifactId>
+			</exclusion>
+		</exclusions>
 
 	</dependencies>
 </project>
