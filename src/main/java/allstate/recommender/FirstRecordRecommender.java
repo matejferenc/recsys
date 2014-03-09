@@ -9,7 +9,7 @@ import java.util.Map.Entry;
 import allstate.model.AllstateDataModel;
 import allstate.model.Record;
 
-public class LastRecordRecommender implements AllstateRecommender {
+public class FirstRecordRecommender implements AllstateRecommender {
 
 	@Override
 	public Map<Long, List<Integer>> recommend(AllstateDataModel model) {
@@ -22,21 +22,17 @@ public class LastRecordRecommender implements AllstateRecommender {
 
 	private List<Integer> recommend(List<Record> records) {
 		List<Integer> results = new ArrayList<>();
-		results.add(getLastValue(records, 16));
-		results.add(getLastValue(records, 17));
-		results.add(getLastValue(records, 18));
-		results.add(getLastValue(records, 19));
-		results.add(getLastValue(records, 20));
-		results.add(getLastValue(records, 21));
-		results.add(getLastValue(records, 22));
+		results.add(getFirstValue(records, 16));
+		results.add(getFirstValue(records, 17));
+		results.add(getFirstValue(records, 18));
+		results.add(getFirstValue(records, 19));
+		results.add(getFirstValue(records, 20));
+		results.add(getFirstValue(records, 21));
+		results.add(getFirstValue(records, 22));
 		return results;
 	}
 
-	private Integer getLastValue(List<Record> records, int i) {
-		Integer lastValue = null;
-		for (Record record : records) {
-			lastValue = Integer.parseInt((String) record.get(i));
-		}
-		return lastValue;
+	private Integer getFirstValue(List<Record> records, int i) {
+		return Integer.parseInt(records.get(0).get(i));
 	}
 }

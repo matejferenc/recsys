@@ -1,6 +1,10 @@
 package datasets;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.TreeMap;
+
+import allstate.datasets.IntraclassHistogram;
 
 public class AllstateStatsParams {
 
@@ -26,17 +30,27 @@ public class AllstateStatsParams {
 	public TreeMap<String, Integer> gSoldHistogram;
 
 	public TreeMap<Integer, Float> changeHistogram;
+	
+	public TreeMap<Integer, Float> lastDifferentHistogram;
+	
 	public TreeMap<Integer, Double> transactionLengthHistogram;
-	public TreeMap<Integer, Double> transactionLengthSimHistogram;
+	
+	public List<List<IntraclassHistogram>> interclassHistograms = new ArrayList<>();
+
+	
+	
+	public List<List<IntraclassHistogram>> getInterclassHistograms() {
+		return interclassHistograms;
+	}
+
+	public TreeMap<Integer, Float> getLastDifferentHistogram() {
+		return lastDifferentHistogram;
+	}
 
 	public TreeMap<Integer, Double> getTransactionLengthHistogram() {
 		return transactionLengthHistogram;
 	}
 	
-	public TreeMap<Integer, Double> getTransactionLengthSimHistogram() {
-		return transactionLengthSimHistogram;
-	}
-
 	public TreeMap<Integer, Float> getChangeHistogram() {
 		return changeHistogram;
 	}

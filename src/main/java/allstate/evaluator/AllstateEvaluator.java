@@ -6,30 +6,31 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.TreeMap;
 
+import allstate.datasets.Allstate;
+import allstate.model.AllstateDataModel;
+import allstate.model.Record;
 import allstate.recommender.AllstateRecommender;
-import dataModel.AllstateDataModel;
-import dataModel.Record;
-import datasets.Allstate;
 
 public class AllstateEvaluator {
 
 	private AllstateRecommender recommender;
 	private AllstateDataModel model;
-	
+
 	public AllstateEvaluator(AllstateRecommender recommender, AllstateDataModel model) {
 		this.recommender = recommender;
 		this.model = model;
 	}
 
-	public double evaluate(double testSetSizeRatio) {
+	public double evaluate(double testSetSizeRatio, TreeMap<Long, Integer> notGuessedCount) {
 		Map<Long, Record> testResults = new HashMap<>();
 		AllstateDataModel testSet = createRandomTestSet(model, testSetSizeRatio, testResults);
 		Map<Long, List<Integer>> recommended = recommender.recommend(testSet);
-		return countSuccess(recommended, testResults) / (double) recommended.size();
+		return countSuccess(recommended, testResults, notGuessedCount) / (double) recommended.size();
 	}
 
-	private float countSuccess(Map<Long, List<Integer>> recommended, Map<Long, Record> testResults) {
+	private float countSuccess(Map<Long, List<Integer>> recommended, Map<Long, Record> testResults, TreeMap<Long, Integer> notGuessedCount) {
 		assert recommended.size() == testResults.size();
 		int successCount = 0;
 		for (Entry<Long, List<Integer>> entry : recommended.entrySet()) {
@@ -37,20 +38,23 @@ public class AllstateEvaluator {
 			Record record = testResults.get(userID);
 			List<Integer> predicted = entry.getValue();
 			List<Integer> actual = transformResult(record);
-			if (parametersEqual(predicted, actual)) {
+			int diffCount = 0;
+			if ((diffCount = differenceCount(predicted, actual)) == 0) {
 				successCount++;
 			}
+			notGuessedCount.put(userID, diffCount);
 		}
 		return successCount;
 	}
 
-	private boolean parametersEqual(List<Integer> predicted, List<Integer> actual) {
+	private int differenceCount(List<Integer> predicted, List<Integer> actual) {
 		assert predicted.size() == actual.size();
+		int differenceCount = 0;
 		for (int i = 0; i < predicted.size(); i++) {
 			if (!predicted.get(i).equals(actual.get(i)))
-				return false;
+				differenceCount++;
 		}
-		return true;
+		return differenceCount;
 	}
 
 	private List<Integer> transformResult(Record record) {
@@ -99,7 +103,7 @@ public class AllstateEvaluator {
 			// vylosujem nahodne cislo a hladam slot kam spadnem
 			double random = Math.random();
 			double accSlotsRatio = 0;
-			for (int slot = 1; slot < transactionLength; slot++) {
+			for (int slot = 2; slot < transactionLength; slot++) {
 				Double ratioToMoveToSlot = Allstate.getRatioToMoveToSlot(transactionLength, slot);
 				accSlotsRatio += ratioToMoveToSlot;
 				// prvy slot, kam spadnem
@@ -132,7 +136,7 @@ public class AllstateEvaluator {
 			int lastIndex = records.size() - 1;
 			testResults.put(entry.getKey(), records.get(lastIndex));
 			records.remove(lastIndex);
-			if(records.size() == 0) {
+			if (records.size() == 0) {
 				System.out.print("no records left: " + entry.getKey());
 			}
 		}

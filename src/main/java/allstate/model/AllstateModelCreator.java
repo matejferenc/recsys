@@ -1,9 +1,7 @@
-package allstate;
+package allstate.model;
 
 import java.io.File;
 import java.util.Properties;
-
-import dataModel.AllstateDataModel;
 
 public class AllstateModelCreator {
 

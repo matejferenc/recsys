@@ -3,7 +3,7 @@ package allstate.recommender;
 import java.util.List;
 import java.util.Map;
 
-import dataModel.AllstateDataModel;
+import allstate.model.AllstateDataModel;
 
 public interface AllstateRecommender {
 

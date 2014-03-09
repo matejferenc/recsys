@@ -1,4 +1,4 @@
-package dataModel;
+package allstate.model;
 
 import java.util.ArrayList;
 

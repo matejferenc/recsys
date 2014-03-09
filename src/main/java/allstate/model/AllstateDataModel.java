@@ -1,4 +1,4 @@
-package dataModel;
+package allstate.model;
 
 import java.io.File;
 import java.io.FileNotFoundException;
