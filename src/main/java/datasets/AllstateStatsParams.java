@@ -2,6 +2,7 @@ package datasets;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.TreeMap;
 
 import allstate.datasets.IntraclassHistogram;
@@ -21,14 +22,6 @@ public class AllstateStatsParams {
 	public TreeMap<String, Integer> fHistogram;
 	public TreeMap<String, Integer> gHistogram;
 
-	public TreeMap<String, Integer> aSoldHistogram;
-	public TreeMap<String, Integer> bSoldHistogram;
-	public TreeMap<String, Integer> cSoldHistogram;
-	public TreeMap<String, Integer> dSoldHistogram;
-	public TreeMap<String, Integer> eSoldHistogram;
-	public TreeMap<String, Integer> fSoldHistogram;
-	public TreeMap<String, Integer> gSoldHistogram;
-
 	public TreeMap<Integer, Float> changeHistogram;
 	
 	public TreeMap<Integer, Float> lastDifferentHistogram;
@@ -36,6 +29,8 @@ public class AllstateStatsParams {
 	public TreeMap<Integer, Double> transactionLengthHistogram;
 	
 	public List<List<IntraclassHistogram>> interclassHistograms = new ArrayList<>();
+	
+	public Map<String, Integer> parameterStringHistogram;
 
 	
 	
@@ -83,34 +78,6 @@ public class AllstateStatsParams {
 		return gHistogram;
 	}
 
-	public TreeMap<String, Integer> getaSoldHistogram() {
-		return aSoldHistogram;
-	}
-
-	public TreeMap<String, Integer> getbSoldHistogram() {
-		return bSoldHistogram;
-	}
-
-	public TreeMap<String, Integer> getcSoldHistogram() {
-		return cSoldHistogram;
-	}
-
-	public TreeMap<String, Integer> getdSoldHistogram() {
-		return dSoldHistogram;
-	}
-
-	public TreeMap<String, Integer> geteSoldHistogram() {
-		return eSoldHistogram;
-	}
-
-	public TreeMap<String, Integer> getfSoldHistogram() {
-		return fSoldHistogram;
-	}
-
-	public TreeMap<String, Integer> getgSoldHistogram() {
-		return gSoldHistogram;
-	}
-
 	public String getTitle() {
 		return title;
 	}
@@ -125,6 +92,14 @@ public class AllstateStatsParams {
 
 	public int getSeconds() {
 		return seconds;
+	}
+
+	public Map<String, Integer> getParameterStringHistogram() {
+		return parameterStringHistogram;
+	}
+
+	public void setParameterStringHistogram(Map<String, Integer> parameterStringHistogram) {
+		this.parameterStringHistogram = parameterStringHistogram;
 	}
 
 }

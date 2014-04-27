@@ -1,9 +1,7 @@
 package allstate.datasets;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.TreeMap;
 
 import allstate.model.AllstateDataModel;
@@ -23,7 +21,7 @@ public class Train extends Allstate {
 	}
 
 	public AllstateStatsParams execute() throws Exception {
-		String path = prop.getProperty("allstate-train-csv");
+		String path = prop.getProperty("allstate-train-csv-unix");
 		File dataFile = new File(path);
 		AllstateDataModel model = new AllstateDataModel(dataFile, ",", "NA");
 
@@ -48,61 +46,32 @@ public class Train extends Allstate {
 		params.fHistogram = createHistogramForColumn(model, 21, histograms);
 		params.gHistogram = createHistogramForColumn(model, 22, histograms);
 
-		params.aSoldHistogram = createSoldHistogramForColumn(model, 16);
-		params.bSoldHistogram = createSoldHistogramForColumn(model, 17);
-		params.cSoldHistogram = createSoldHistogramForColumn(model, 18);
-		params.dSoldHistogram = createSoldHistogramForColumn(model, 19);
-		params.eSoldHistogram = createSoldHistogramForColumn(model, 20);
-		params.fSoldHistogram = createSoldHistogramForColumn(model, 21);
-		params.gSoldHistogram = createSoldHistogramForColumn(model, 22);
-
 		params.changeHistogram = createChangeHistogramForColumns(model, 16, 17, 18, 19, 20, 21, 22);
 
 		params.lastDifferentHistogram = createLastDifferentHistogramForColumns(model, 16, 17, 18, 19, 20, 21, 22);
 
 		params.transactionLengthHistogram = createTransactionLengthHistogram(model);
 
-		// histogramy group size (6) vzhladom ku vsetkym parametrom
-		List<IntraclassHistogram> row = null;
-		row = new ArrayList<>();
-		row.addAll(createIntraclassHistograms(model, 6, histograms, 16, 17, 18, 19, 20, 21, 22));
-		params.interclassHistograms.add(row);
+		addTwoParametersDependencyBubbleGraph(model, params, histograms, 6);
+		addTwoParametersDependencyBubbleGraph(model, params, histograms, 7);
+		addTwoParametersDependencyBubbleGraph(model, params, histograms, 8);
+		addTwoParametersDependencyBubbleGraph(model, params, histograms, 10);
+		addTwoParametersDependencyBubbleGraph(model, params, histograms, 11);
+		addTwoParametersDependencyBubbleGraph(model, params, histograms, 12);
+		addTwoParametersDependencyBubbleGraph(model, params, histograms, 13);
+		addTwoParametersDependencyBubbleGraph(model, params, histograms, 14);
+		addTwoParametersDependencyBubbleGraph(model, params, histograms, 15);
+		addTwoParametersDependencyBubbleGraph(model, params, histograms, 16);
+		addTwoParametersDependencyBubbleGraph(model, params, histograms, 17);
+		addTwoParametersDependencyBubbleGraph(model, params, histograms, 18);
+		addTwoParametersDependencyBubbleGraph(model, params, histograms, 19);
+		addTwoParametersDependencyBubbleGraph(model, params, histograms, 20);
+		addTwoParametersDependencyBubbleGraph(model, params, histograms, 21);
+		addTwoParametersDependencyBubbleGraph(model, params, histograms, 22);
 
-		// histogramy homeowner (7) vzhladom ku vsetkym parametrom
-		row = new ArrayList<>();
-		row.addAll(createIntraclassHistograms(model, 7, histograms, 16, 17, 18, 19, 20, 21, 22));
-		params.interclassHistograms.add(row);
-
-		// histogramy car age (8) vzhladom ku vsetkym parametrom
-		row = new ArrayList<>();
-		row.addAll(createIntraclassHistograms(model, 8, histograms, 16, 17, 18, 19, 20, 21, 22));
-		params.interclassHistograms.add(row);
-
-		// histogramy age oldest (11) vzhladom ku vsetkym parametrom
-		row = new ArrayList<>();
-		row.addAll(createIntraclassHistograms(model, 10, histograms, 16, 17, 18, 19, 20, 21, 22));
-		params.interclassHistograms.add(row);
-
-		// histogramy age oldest (12) vzhladom ku vsetkym parametrom
-		row = new ArrayList<>();
-		row.addAll(createIntraclassHistograms(model, 12, histograms, 16, 17, 18, 19, 20, 21, 22));
-		params.interclassHistograms.add(row);
-
-		// histogramy age oldest (13) vzhladom ku vsetkym parametrom
-		row = new ArrayList<>();
-		row.addAll(createIntraclassHistograms(model, 13, histograms, 16, 17, 18, 19, 20, 21, 22));
-		params.interclassHistograms.add(row);
-
-		// histogramy age oldest (14) vzhladom ku vsetkym parametrom
-		row = new ArrayList<>();
-		row.addAll(createIntraclassHistograms(model, 14, histograms, 16, 17, 18, 19, 20, 21, 22));
-		params.interclassHistograms.add(row);
-
-		// histogramy age oldest (15) vzhladom ku vsetkym parametrom
-		row = new ArrayList<>();
-		row.addAll(createIntraclassHistograms(model, 15, histograms, 16, 17, 18, 19, 20, 21, 22));
-		params.interclassHistograms.add(row);
+		params.parameterStringHistogram = createParameterStringHistogram(model);
 
 		return params;
 	}
+
 }

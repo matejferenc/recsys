@@ -3,18 +3,31 @@ package recsys.itemBased;
 import org.apache.mahout.cf.taste.common.TasteException;
 import org.apache.mahout.cf.taste.eval.RecommenderBuilder;
 import org.apache.mahout.cf.taste.impl.recommender.GenericItemBasedRecommender;
-import org.apache.mahout.cf.taste.impl.similarity.PearsonCorrelationSimilarity;
 import org.apache.mahout.cf.taste.model.DataModel;
 import org.apache.mahout.cf.taste.recommender.Recommender;
 import org.apache.mahout.cf.taste.similarity.ItemSimilarity;
 
+import recsys.evaluator.ItemSimilarityBuilder;
+
 public class ItemBasedRecommenderBuilder implements RecommenderBuilder {
 
+	
+	private ItemSimilarityBuilder itemSimilarityBuilder;
+	private ItemSimilarity itemSimilarity;
+
+	public ItemBasedRecommenderBuilder(ItemSimilarityBuilder itemSimilarityBuilder) {
+		this.itemSimilarityBuilder = itemSimilarityBuilder;
+	}
+	
 	@Override
 	public Recommender buildRecommender(DataModel dataModel) throws TasteException {
-		ItemSimilarity itemSimilarity = new PearsonCorrelationSimilarity(dataModel);
+		itemSimilarity = itemSimilarityBuilder.build(dataModel);
 		Recommender recommender = new GenericItemBasedRecommender(dataModel, itemSimilarity);
 		return recommender;
 	}
 
+	@Override
+	public String getName() {
+		return "Item based recommender builder" + " with item similarity: " + itemSimilarity.getName();
+	}
 }

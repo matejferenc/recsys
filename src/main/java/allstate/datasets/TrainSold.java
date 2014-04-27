@@ -1,13 +1,20 @@
 package allstate.datasets;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.TreeMap;
+import java.util.Map.Entry;
 
+import allstate.evaluator.AllstateEvaluator;
 import allstate.model.AllstateDataModel;
+import allstate.model.Record;
 import datasets.AllstateStatsParams;
 
-public class Test extends Allstate {
+public class TrainSold extends Allstate {
 
 	@Override
 	public AllstateStatsParams run() throws Exception {
@@ -21,11 +28,26 @@ public class Test extends Allstate {
 	}
 
 	public AllstateStatsParams execute() throws Exception {
-		String path = prop.getProperty("allstate-test-csv-unix");
+		String path = prop.getProperty("allstate-train-csv-unix");
 		File dataFile = new File(path);
 		AllstateDataModel model = new AllstateDataModel(dataFile, ",", "NA");
 
-		AllstateStatsParams params = execute(model);
+		// simulacia vytvorenia testovacej sady
+		Map<Long, Record> testResults = new HashMap<>();
+
+		AllstateEvaluator.filterOutSoldRecords(model, testResults);
+
+		// preformatovanie mapy tak, aby obsahovala List<Record>
+		Map<Long, List<Record>> testResultsFixed = new HashMap<Long, List<Record>>();
+		for (Entry<Long, Record> entry : testResults.entrySet()) {
+			Record record = entry.getValue();
+			List<Record> records = new ArrayList<>();
+			records.add(record);
+			testResultsFixed.put(entry.getKey(), records);
+		}
+		
+		AllstateDataModel testModel = new AllstateDataModel(testResultsFixed);
+		AllstateStatsParams params = execute(testModel);
 		params.title = "Allstate";
 		return params;
 	}
@@ -68,7 +90,7 @@ public class Test extends Allstate {
 		addTwoParametersDependencyBubbleGraph(model, params, histograms, 20);
 		addTwoParametersDependencyBubbleGraph(model, params, histograms, 21);
 		addTwoParametersDependencyBubbleGraph(model, params, histograms, 22);
-
+		
 		params.parameterStringHistogram = createParameterStringHistogram(model);
 		
 		return params;

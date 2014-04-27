@@ -3,7 +3,12 @@ package allstate.datasets;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -76,7 +81,7 @@ public abstract class Allstate {
 		return histogram;
 	}
 
-	public static Double getRatioToMoveToSlot(int transactionLength, int slot) {
+	public static Double getProbabilityToMoveToSlot(int transactionLength, int slot) {
 		Double q = 1 / ((double) 0.7 * transactionLength);
 		Double p = (double) transactionLength;
 		Double a = 2 * q / (1 - p);
@@ -186,7 +191,8 @@ public abstract class Allstate {
 	 * @param model
 	 * @param a_gHistograms
 	 * @param i
-	 * @param j jeden z cielovych parametrov - cislo od 16 do 22
+	 * @param j
+	 *            jeden z cielovych parametrov - cislo od 16 do 22
 	 * @return
 	 */
 	protected IntraclassHistogram createIntraclassHistogram(AllstateDataModel model, TreeMap<Integer, TreeMap<String, Integer>> a_gHistograms, int i, int j) {
@@ -211,12 +217,12 @@ public abstract class Allstate {
 			}
 		}
 		for (Entry<Pair<Integer, Integer>, Integer> entry : histogram.entrySet()) {
-			Pair<Integer,Integer> key = entry.getKey();
+			Pair<Integer, Integer> key = entry.getKey();
 			TreeMap<String, Integer> jHistogram = a_gHistograms.get(j);
 			Integer totalCountForClass = jHistogram.get(key.getSecond() + "");
 			entry.setValue(entry.getValue() * 100 / totalCountForClass);
 		}
-		
+
 		histogram.setFirstParameterNumber(i);
 		histogram.setSecondParameterNumber(j);
 		return histogram;
@@ -228,6 +234,51 @@ public abstract class Allstate {
 			intraclassHistograms.add(createIntraclassHistogram(model, a_gHistograms, property, columns[i]));
 		}
 		return intraclassHistograms;
+	}
+
+	protected void addTwoParametersDependencyBubbleGraph(AllstateDataModel model, AllstateStatsParams params, TreeMap<Integer, TreeMap<String, Integer>> histograms, int parameterNumber) {
+		List<IntraclassHistogram> row = null;
+		row = new ArrayList<>();
+		row.addAll(createIntraclassHistograms(model, parameterNumber, histograms, 16, 17, 18, 19, 20, 21, 22));
+		params.interclassHistograms.add(row);
+	}
+
+	protected Map<String, Integer> createParameterStringHistogram(AllstateDataModel model) {
+		Map<String, Integer> histogram = new HashMap<String, Integer>();
+		for (Entry<Long, List<Record>> entry : model.dataset.entrySet()) {
+			List<Record> records = entry.getValue();
+			for (Record record : records) {
+				String parameterString = createParameterString(record);
+				if (histogram.containsKey(parameterString)) {
+					Integer actualCount = histogram.get(parameterString);
+					histogram.put(parameterString, actualCount + 1);
+				} else {
+					histogram.put(parameterString, 1);
+				}
+			}
+		}
+
+		return sortByValue(histogram);
+	}
+
+	private String createParameterString(Record record) {
+		return record.get(16) + record.get(17) + record.get(18) + record.get(19) + record.get(20) + record.get(21) + record.get(22);
+	}
+
+	private <T,V> Map<T,V> sortByValue(Map<T,V> map) {
+		List<Entry<T,V>> list = new LinkedList(map.entrySet());
+		Collections.sort(list, new Comparator<Entry<T,V>>() {
+			public int compare(Entry<T,V> o1, Entry<T,V> o2) {
+				return -((Comparable<V>) ((Entry<T,V>) (o1)).getValue()).compareTo(((Entry<T,V>) (o2)).getValue());
+			}
+		});
+
+		Map<T,V> result = new LinkedHashMap<T,V>();
+		for (Iterator<Entry<T,V>> it = list.iterator(); it.hasNext();) {
+			Entry<T,V> entry = (Entry<T,V>) it.next();
+			result.put(entry.getKey(), entry.getValue());
+		}
+		return result;
 	}
 
 }

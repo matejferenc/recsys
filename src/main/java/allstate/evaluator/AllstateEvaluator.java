@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Random;
 import java.util.TreeMap;
 
 import allstate.datasets.Allstate;
@@ -23,14 +24,15 @@ public class AllstateEvaluator {
 		this.model = model;
 	}
 
-	public double evaluate(double testSetSizeRatio, TreeMap<Long, Integer> notGuessedCount) {
+	public double evaluate(double testSetSizeRatio, TreeMap<Long, Integer> notGuessedCounts, TreeMap<Integer, Double> parametersNotGuessedHistogram) {
 		Map<Long, Record> testResults = new HashMap<>();
 		AllstateDataModel testSet = createRandomTestSet(model, testSetSizeRatio, testResults);
 		Map<Long, List<Integer>> recommended = recommender.recommend(testSet);
-		return countSuccess(recommended, testResults, notGuessedCount) / (double) recommended.size();
+		return countSuccess(recommended, testResults, notGuessedCounts, parametersNotGuessedHistogram) / (double) recommended.size();
 	}
 
-	private float countSuccess(Map<Long, List<Integer>> recommended, Map<Long, Record> testResults, TreeMap<Long, Integer> notGuessedCount) {
+	private float countSuccess(Map<Long, List<Integer>> recommended, Map<Long, Record> testResults, TreeMap<Long, Integer> notGuessedCounts,
+			TreeMap<Integer, Double> parametersNotGuessedHistogram) {
 		assert recommended.size() == testResults.size();
 		int successCount = 0;
 		for (Entry<Long, List<Integer>> entry : recommended.entrySet()) {
@@ -39,20 +41,23 @@ public class AllstateEvaluator {
 			List<Integer> predicted = entry.getValue();
 			List<Integer> actual = transformResult(record);
 			int diffCount = 0;
-			if ((diffCount = differenceCount(predicted, actual)) == 0) {
+			if ((diffCount = differenceCount(predicted, actual, parametersNotGuessedHistogram)) == 0) {
 				successCount++;
 			}
-			notGuessedCount.put(userID, diffCount);
+			notGuessedCounts.put(userID, diffCount);
 		}
 		return successCount;
 	}
 
-	private int differenceCount(List<Integer> predicted, List<Integer> actual) {
-		assert predicted.size() == actual.size();
+	private int differenceCount(List<Integer> predicted, List<Integer> actual, TreeMap<Integer, Double> parametersNotGuessedHistogram) {
+		assert predicted.size() == actual.size() && actual.size() == 7;
 		int differenceCount = 0;
 		for (int i = 0; i < predicted.size(); i++) {
-			if (!predicted.get(i).equals(actual.get(i)))
+			if (!predicted.get(i).equals(actual.get(i))) {
 				differenceCount++;
+				int parameterNumber = 16 + i;
+				parametersNotGuessedHistogram.put(parameterNumber, parametersNotGuessedHistogram.get(parameterNumber) + 1);
+			}
 		}
 		return differenceCount;
 	}
@@ -70,8 +75,9 @@ public class AllstateEvaluator {
 	}
 
 	/**
-	 * Returns test set. Alters given set to be a train set. Test set and train set contain all users when combined. Test set contains shortened history of
-	 * records.
+	 * Returns test set. Alters given set to be a train set. Test set and train
+	 * set contain all users when combined. Test set contains shortened history
+	 * of records.
 	 * 
 	 * @param model
 	 * @param ratio
@@ -104,7 +110,7 @@ public class AllstateEvaluator {
 			double random = Math.random();
 			double accSlotsRatio = 0;
 			for (int slot = 2; slot < transactionLength; slot++) {
-				Double ratioToMoveToSlot = Allstate.getRatioToMoveToSlot(transactionLength, slot);
+				Double ratioToMoveToSlot = Allstate.getProbabilityToMoveToSlot(transactionLength, slot);
 				accSlotsRatio += ratioToMoveToSlot;
 				// prvy slot, kam spadnem
 				if (random < accSlotsRatio) {
@@ -112,6 +118,16 @@ public class AllstateEvaluator {
 					break;
 				}
 			}
+		}
+		return model;
+	}
+
+	public static AllstateDataModel extractFirstRecordOnly(AllstateDataModel model) {
+		for (Entry<Long, List<Record>> entry : model.dataset.entrySet()) {
+			List<Record> records = entry.getValue();
+			int transactionLength = records.size();
+			// odstranim vsetky okrem prveho zaznamu
+			removeRecords(records, transactionLength - 1);
 		}
 		return model;
 	}
@@ -129,12 +145,12 @@ public class AllstateEvaluator {
 		}
 	}
 
-	public static AllstateDataModel filterOutSoldRecords(AllstateDataModel model, Map<Long, Record> testResults) {
+	public static AllstateDataModel filterOutSoldRecords(AllstateDataModel model, Map<Long, Record> soldRecords) {
 		for (Entry<Long, List<Record>> entry : model.dataset.entrySet()) {
 			List<Record> records = entry.getValue();
 			// odstranime posledny prvok - predany
 			int lastIndex = records.size() - 1;
-			testResults.put(entry.getKey(), records.get(lastIndex));
+			soldRecords.put(entry.getKey(), records.get(lastIndex));
 			records.remove(lastIndex);
 			if (records.size() == 0) {
 				System.out.print("no records left: " + entry.getKey());
@@ -142,4 +158,18 @@ public class AllstateEvaluator {
 		}
 		return model;
 	}
+
+	public static List<Long> getRandomTrainUserIds(AllstateDataModel model, double ratio, Random r, List<Long> testUserIds) {
+		List<Long> ids = new ArrayList<>();
+		for (Entry<Long, List<Record>> entry : model.dataset.entrySet()) {
+			Long id = entry.getKey();
+			if (r.nextDouble() < ratio) {
+				ids.add(id);
+			} else {
+				testUserIds.add(id);
+			}
+		}
+		return ids;
+	}
+
 }
