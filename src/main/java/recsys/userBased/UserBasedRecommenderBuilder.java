@@ -15,10 +15,11 @@ public class UserBasedRecommenderBuilder implements RecommenderBuilder {
 
 	private UserSimilarityBuilder userSimilarityBuilder;
 	private UserNeighborhoodBuilder neighborhoodBuilder;
-	
+
 	UserNeighborhood neighborhood;
 	UserSimilarity userSimilarity;
-	
+	private String name;
+
 	public UserBasedRecommenderBuilder(UserSimilarityBuilder userSimilarityBuilder, UserNeighborhoodBuilder neighborhoodBuilder) {
 		this.userSimilarityBuilder = userSimilarityBuilder;
 		this.neighborhoodBuilder = neighborhoodBuilder;
@@ -26,23 +27,23 @@ public class UserBasedRecommenderBuilder implements RecommenderBuilder {
 
 	@Override
 	public Recommender buildRecommender(DataModel dataModel) throws TasteException {
-//		UserSimilarity userSimilarity = new PearsonCorrelationSimilarity(dataModel);
-//		UserNeighborhood neighborhood = new NearestNUserNeighborhood(10, userSimilarity, dataModel);//0.994
-//		UserNeighborhood neighborhood = new NearestNUserNeighborhood(100, userSimilarity, dataModel);//1.007
-//		UserNeighborhood neighborhood = new NearestNUserNeighborhood(5, userSimilarity, dataModel);//1.046
-//		UserNeighborhood neighborhood = new NearestNUserNeighborhood(20, userSimilarity, dataModel);//0.993
-		 
-//		 UserSimilarity userSimilarity = new UncenteredCosineSimilarity(dataModel); 
-		
+
+		// UserSimilarity userSimilarity = new UncenteredCosineSimilarity(dataModel);
+
 		userSimilarity = userSimilarityBuilder.build(dataModel);
 		neighborhood = neighborhoodBuilder.build(userSimilarity, dataModel);
+
+		name = "User based recommender builder" + " with user similarity: " + userSimilarity.getName() + " with neighborhood: " + neighborhood.getName();
+		
 		Recommender recommender = new GenericUserBasedRecommender(dataModel, neighborhood, userSimilarity);
+		neighborhood = null;
+		userSimilarity = null;
 		return recommender;
 	}
 
 	@Override
 	public String getName() {
-		return "User based recommender builder" + " with user similarity: " + userSimilarity.getName() + " with neighborhood: " + neighborhood.getName();
+		return name;
 	}
 
 }

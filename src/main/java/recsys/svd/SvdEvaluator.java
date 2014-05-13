@@ -7,6 +7,8 @@ import org.apache.mahout.cf.taste.eval.RecommenderEvaluator;
 import org.apache.mahout.cf.taste.impl.eval.AverageAbsoluteDifferenceRecommenderEvaluator;
 import org.apache.mahout.cf.taste.impl.eval.RMSRecommenderEvaluator;
 import org.apache.mahout.cf.taste.impl.model.file.FileDataModel;
+import org.apache.mahout.cf.taste.impl.recommender.svd.Factorizer;
+import org.apache.mahout.cf.taste.impl.recommender.svd.SVDPlusPlusFactorizer;
 import org.apache.mahout.cf.taste.model.DataModel;
 
 public class SvdEvaluator {
@@ -27,7 +29,8 @@ public class SvdEvaluator {
 //		DataModel dataModel = new FileDataModel(dataFile, "\t");
 		DataModel dataModel = new FileDataModel(dataFile, "::");
 
-		SvdRecommenderBuilder recommenderBuilder = new SvdRecommenderBuilder();
+		Factorizer factorizer = new SVDPlusPlusFactorizer(dataModel, 5, 100);
+		SvdRecommenderBuilder recommenderBuilder = new SvdRecommenderBuilder(factorizer);
 
 		System.out.println("minimum possible preference: " + dataModel.getMinPreference());
 		System.out.println("maximum possible preference: " + dataModel.getMaxPreference());

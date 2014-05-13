@@ -11,9 +11,9 @@ import org.apache.mahout.cf.taste.recommender.Recommender;
 
 public class HetrecContentBasedRecommenderBuilder implements RecommenderBuilder {
 
-	private GenresDataModel genresModel;
+	private ImdbGenresDataModel genresModel;
 
-	public HetrecContentBasedRecommenderBuilder(GenresDataModel genresModel) {
+	public HetrecContentBasedRecommenderBuilder(ImdbGenresDataModel genresModel) {
 		this.genresModel = genresModel;
 	}
 
