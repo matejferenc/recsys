@@ -17,4 +17,16 @@ public class ItemUserAverageRecommenderBuilder implements RecommenderBuilder {
 		return recommender;
 	}
 
+	@Override
+	public String getName() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void freeReferences() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

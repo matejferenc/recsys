@@ -2,12 +2,13 @@ package recsys.movieLensHetrecContentBased;
 
 import org.apache.mahout.cf.taste.common.TasteException;
 import org.apache.mahout.cf.taste.eval.RecommenderBuilder;
-import org.apache.mahout.cf.taste.impl.recommender.hetrecMovielens.ContentBasedMovieGenreRecommender;
-import org.apache.mahout.cf.taste.impl.recommender.hetrecMovielens.GenresDataModel;
-import org.apache.mahout.cf.taste.impl.recommender.movielens.OneSetSimilarity;
-import org.apache.mahout.cf.taste.impl.recommender.movielens.SetSimilarity;
 import org.apache.mahout.cf.taste.model.DataModel;
 import org.apache.mahout.cf.taste.recommender.Recommender;
+
+import recsys.recommender.hetrecMovielens.ContentBasedMovieGenreRecommender;
+import recsys.recommender.movielens.OneSetSimilarity;
+import recsys.recommender.movielens.SetSimilarity;
+import recsys.recommender.movielens.model.imdb.ImdbGenresDataModel;
 
 public class HetrecContentBasedRecommenderBuilder implements RecommenderBuilder {
 
@@ -22,8 +23,9 @@ public class HetrecContentBasedRecommenderBuilder implements RecommenderBuilder 
 //		SetSimilarity setSimilarity = new SimpleSetSimilarity();
 //		SetSimilarity setSimilarity = new SquareRootSetSimilarity();
 		SetSimilarity setSimilarity = new OneSetSimilarity();
-		Recommender recommender = new ContentBasedMovieGenreRecommender(dataModel, genresModel, setSimilarity);
-		return recommender;
+//		Recommender recommender = new ContentBasedMovieGenreRecommender(dataModel, genresModel, setSimilarity);
+//		return recommender;
+		return null;
 	}
 
 	@Override

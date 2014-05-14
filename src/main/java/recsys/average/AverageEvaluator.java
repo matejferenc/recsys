@@ -4,10 +4,8 @@ import java.io.File;
 import java.util.Properties;
 
 import org.apache.mahout.cf.taste.eval.RecommenderEvaluator;
-import org.apache.mahout.cf.taste.impl.eval.AverageAbsoluteDifferenceRecommenderEvaluator;
 import org.apache.mahout.cf.taste.impl.eval.RMSRecommenderEvaluator;
 import org.apache.mahout.cf.taste.impl.model.file.FileDataModel;
-import org.apache.mahout.cf.taste.impl.recommender.movielens.GenresDataModel;
 import org.apache.mahout.cf.taste.model.DataModel;
 
 public class AverageEvaluator {

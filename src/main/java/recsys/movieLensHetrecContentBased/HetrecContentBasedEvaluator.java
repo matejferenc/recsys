@@ -6,8 +6,9 @@ import java.util.Properties;
 import org.apache.mahout.cf.taste.eval.RecommenderEvaluator;
 import org.apache.mahout.cf.taste.impl.eval.RMSRecommenderEvaluator;
 import org.apache.mahout.cf.taste.impl.model.file.FileDataModel;
-import org.apache.mahout.cf.taste.impl.recommender.hetrecMovielens.GenresDataModel;
 import org.apache.mahout.cf.taste.model.DataModel;
+
+import recsys.recommender.movielens.model.imdb.ImdbGenresDataModel;
 
 public class HetrecContentBasedEvaluator {
 
