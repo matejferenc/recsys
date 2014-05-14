@@ -139,7 +139,7 @@ public class Evaluator {
 		for (RecommenderBuilder builder : builders) {
 			Date start = new Date();
 
-			int repeats = 1;
+			int repeats = 3;
 			int totalEstimated = 0;
 			int totalNotEstimated = 0;
 			double totalEvaluationResult = 0;
@@ -167,6 +167,8 @@ public class Evaluator {
 			sb.append("Time: " + (end.getTime() - start.getTime()) / 1000 + " seconds");
 			sb.append("\n");
 			sb.append("-------------------------\n");
+			
+			builder.freeReferences();
 		}
 
 		System.out.println(sb.toString());

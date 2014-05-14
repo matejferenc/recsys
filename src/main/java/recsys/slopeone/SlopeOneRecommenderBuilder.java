@@ -24,4 +24,10 @@ public class SlopeOneRecommenderBuilder implements RecommenderBuilder {
 		return "Slope One Recommender Builder";
 	}
 
+	@Override
+	public void freeReferences() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

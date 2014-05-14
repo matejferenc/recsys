@@ -32,4 +32,10 @@ public class ContentBasedRecommenderBuilder implements RecommenderBuilder {
 		return "Content based recommender builder";
 	}
 
+	@Override
+	public void freeReferences() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

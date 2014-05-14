@@ -19,4 +19,10 @@ public class UserAverageRecommenderBuilder implements RecommenderBuilder {
 		return "User average recommender builder";
 	}
 
+	@Override
+	public void freeReferences() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

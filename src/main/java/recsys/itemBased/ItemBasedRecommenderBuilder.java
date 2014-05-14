@@ -30,4 +30,10 @@ public class ItemBasedRecommenderBuilder implements RecommenderBuilder {
 	public String getName() {
 		return "Item based recommender builder" + " with item similarity: " + itemSimilarity.getName();
 	}
+
+	@Override
+	public void freeReferences() {
+		// TODO Auto-generated method stub
+		
+	}
 }

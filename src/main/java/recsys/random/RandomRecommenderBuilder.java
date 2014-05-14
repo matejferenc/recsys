@@ -20,4 +20,10 @@ public class RandomRecommenderBuilder implements RecommenderBuilder {
 		return null;
 	}
 
+	@Override
+	public void freeReferences() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

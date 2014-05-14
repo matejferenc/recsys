@@ -26,4 +26,10 @@ public class SvdRecommenderBuilder implements RecommenderBuilder {
 		return "SVD Recommender Builder with (" + factorizer.getName() + ")";
 	}
 
+	@Override
+	public void freeReferences() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
