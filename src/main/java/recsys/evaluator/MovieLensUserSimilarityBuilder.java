@@ -11,15 +11,15 @@ import recsys.recommender.movielens.model.shared.MovieLensEnrichedModel;
 
 public class MovieLensUserSimilarityBuilder implements UserSimilarityBuilder {
 	
-	private MovieLensEnrichedModel movieLensMovieModel;
+	private MovieLensEnrichedModel movieLensEnrichedModel;
 
 	public MovieLensUserSimilarityBuilder(MovieLensEnrichedModel movieLensEnrichedModel) {
-		this.movieLensMovieModel = movieLensEnrichedModel;
+		this.movieLensEnrichedModel = movieLensEnrichedModel;
 	}
 
 	@Override
 	public UserSimilarity build(DataModel dataModel) throws TasteException {
-		UserModelBuilder userModelBuilder = new UserModelBuilder(dataModel, movieLensMovieModel);
+		UserModelBuilder userModelBuilder = new UserModelBuilder(dataModel, movieLensEnrichedModel);
 		UserModel userModel = userModelBuilder.build();
 		return new MovieLensUserSimilarity(userModel);
 	}

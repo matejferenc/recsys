@@ -10,15 +10,11 @@ import org.apache.mahout.cf.taste.eval.RecommenderBuilder;
 import org.apache.mahout.cf.taste.impl.eval.AbstractDifferenceRecommenderEvaluator;
 import org.apache.mahout.cf.taste.impl.eval.RMSRecommenderEvaluator;
 import org.apache.mahout.cf.taste.impl.model.file.FileDataModel;
-import org.apache.mahout.cf.taste.impl.recommender.svd.ALSWRFactorizer;
-import org.apache.mahout.cf.taste.impl.recommender.svd.RatingSGDFactorizer;
 import org.apache.mahout.cf.taste.model.DataModel;
 
 import recsys.recommender.movielens.GenresDataModel;
 import recsys.recommender.movielens.model.movielens.MovieLensEnrichedDataModelLoader;
 import recsys.recommender.movielens.model.shared.MovieLensEnrichedModel;
-import recsys.recommender.movielens.uniter.MovieLensMovieModel;
-import recsys.svd.SvdRecommenderBuilder;
 import recsys.userBased.UserBasedRecommenderBuilder;
 
 public class Evaluator {
@@ -39,9 +35,9 @@ public class Evaluator {
 		// DataModel dataModel = new FileDataModel(dataFile, "\t");
 		DataModel dataModel = new FileDataModel(dataFile, "::");
 
-		String genresPath = prop.getProperty("movielens-1m-movies.dat");
+//		String genresPath = prop.getProperty("movielens-1m-movies.dat");
 		// String genresPath = prop.getProperty("movielens-10m-movies.dat");
-		GenresDataModel genresModel = new GenresDataModel(new File(genresPath));
+//		GenresDataModel genresModel = new GenresDataModel(new File(genresPath));
 		
 		String enrichedPath = prop.getProperty("movielens-1m-enriched-movies.dat");
 		MovieLensEnrichedDataModelLoader movieLensEnrichedDataModelLoader = new MovieLensEnrichedDataModelLoader(new File(enrichedPath));
@@ -51,15 +47,15 @@ public class Evaluator {
 		
 		UserSimilarityBuilder movieLensUserSimilarityBuilder = new MovieLensUserSimilarityBuilder(movieLensEnrichedModel);
 		builders.add(new UserBasedRecommenderBuilder(movieLensUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(5)));
-		builders.add(new UserBasedRecommenderBuilder(movieLensUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(10)));
-		builders.add(new UserBasedRecommenderBuilder(movieLensUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(15)));
-		builders.add(new UserBasedRecommenderBuilder(movieLensUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(20)));
-		builders.add(new UserBasedRecommenderBuilder(movieLensUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(25)));
-		builders.add(new UserBasedRecommenderBuilder(movieLensUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(30)));
-		builders.add(new UserBasedRecommenderBuilder(movieLensUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(35)));
-		builders.add(new UserBasedRecommenderBuilder(movieLensUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(40)));
-		builders.add(new UserBasedRecommenderBuilder(movieLensUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(45)));
-		builders.add(new UserBasedRecommenderBuilder(movieLensUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(50)));
+//		builders.add(new UserBasedRecommenderBuilder(movieLensUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(10)));
+//		builders.add(new UserBasedRecommenderBuilder(movieLensUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(15)));
+//		builders.add(new UserBasedRecommenderBuilder(movieLensUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(20)));
+//		builders.add(new UserBasedRecommenderBuilder(movieLensUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(25)));
+//		builders.add(new UserBasedRecommenderBuilder(movieLensUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(30)));
+//		builders.add(new UserBasedRecommenderBuilder(movieLensUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(35)));
+//		builders.add(new UserBasedRecommenderBuilder(movieLensUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(40)));
+//		builders.add(new UserBasedRecommenderBuilder(movieLensUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(45)));
+//		builders.add(new UserBasedRecommenderBuilder(movieLensUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(50)));
 
 //		EuclideanDistanceUserSimilarityBuilder euclideanDistanceUserSimilarityBuilder = new EuclideanDistanceUserSimilarityBuilder();
 //

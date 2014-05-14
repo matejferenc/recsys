@@ -16,8 +16,9 @@ public class UserBasedRecommenderBuilder implements RecommenderBuilder {
 	private UserSimilarityBuilder userSimilarityBuilder;
 	private UserNeighborhoodBuilder neighborhoodBuilder;
 
-	UserNeighborhood neighborhood;
-	UserSimilarity userSimilarity;
+	
+	String neighborhoodName;
+	String userSimilarityName;
 
 	public UserBasedRecommenderBuilder(UserSimilarityBuilder userSimilarityBuilder, UserNeighborhoodBuilder neighborhoodBuilder) {
 		this.userSimilarityBuilder = userSimilarityBuilder;
@@ -29,8 +30,11 @@ public class UserBasedRecommenderBuilder implements RecommenderBuilder {
 
 		// UserSimilarity userSimilarity = new UncenteredCosineSimilarity(dataModel);
 
-		userSimilarity = userSimilarityBuilder.build(dataModel);
-		neighborhood = neighborhoodBuilder.build(userSimilarity, dataModel);
+		UserSimilarity userSimilarity = userSimilarityBuilder.build(dataModel);
+		UserNeighborhood neighborhood = neighborhoodBuilder.build(userSimilarity, dataModel);
+		
+		neighborhoodName = neighborhood.getName();
+		userSimilarityName = userSimilarity.getName();
 
 		Recommender recommender = new GenericUserBasedRecommender(dataModel, neighborhood, userSimilarity);
 		return recommender;
@@ -38,15 +42,11 @@ public class UserBasedRecommenderBuilder implements RecommenderBuilder {
 
 	@Override
 	public String getName() {
-		return "User based recommender builder" + " with user similarity: " + userSimilarity.getName() + " with neighborhood: " + neighborhood.getName();
+		return "User based recommender builder" + " with user similarity: " + userSimilarityName + " with neighborhood: " + neighborhoodName;
 	}
 
 	@Override
 	public void freeReferences() {
-		// TODO Auto-generated method stub
-
-		neighborhood = null;
-		userSimilarity = null;
 	}
 
 }
