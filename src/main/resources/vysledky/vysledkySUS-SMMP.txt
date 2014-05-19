@@ -1,0 +1,124 @@
+minimum possible preference: 0.0
+maximum possible preference: 4.0
+Training percentage: 0.7
+Evaluation percentage: 0.3
+Using builder: User based recommender builder with user similarity: MovieLens User Similarity with neighborhood: Nearest N User Neighborhood for N=5 with user similarity: MovieLens User Similarity
+Estimated in: 44786 cases
+Not estimated in: 0 cases
+Score: 1.2082968235002722
+Time: 17 seconds
+-------------------------
+Using builder: User based recommender builder with user similarity: MovieLens User Similarity with neighborhood: Nearest N User Neighborhood for N=10 with user similarity: MovieLens User Similarity
+Estimated in: 44849 cases
+Not estimated in: 0 cases
+Score: 1.1763316215607929
+Time: 16 seconds
+-------------------------
+Using builder: User based recommender builder with user similarity: MovieLens User Similarity with neighborhood: Nearest N User Neighborhood for N=15 with user similarity: MovieLens User Similarity
+Estimated in: 45107 cases
+Not estimated in: 0 cases
+Score: 1.1529790740022892
+Time: 16 seconds
+-------------------------
+Using builder: User based recommender builder with user similarity: MovieLens User Similarity with neighborhood: Nearest N User Neighborhood for N=20 with user similarity: MovieLens User Similarity
+Estimated in: 44686 cases
+Not estimated in: 0 cases
+Score: 1.1619030871033789
+Time: 15 seconds
+-------------------------
+Using builder: User based recommender builder with user similarity: MovieLens User Similarity with neighborhood: Nearest N User Neighborhood for N=25 with user similarity: MovieLens User Similarity
+Estimated in: 44535 cases
+Not estimated in: 0 cases
+Score: 1.1431891421051912
+Time: 15 seconds
+-------------------------
+Using builder: User based recommender builder with user similarity: MovieLens User Similarity with neighborhood: Nearest N User Neighborhood for N=30 with user similarity: MovieLens User Similarity
+Estimated in: 45010 cases
+Not estimated in: 0 cases
+Score: 1.1477391814417341
+Time: 16 seconds
+-------------------------
+Using builder: User based recommender builder with user similarity: MovieLens User Similarity with neighborhood: Nearest N User Neighborhood for N=35 with user similarity: MovieLens User Similarity
+Estimated in: 44853 cases
+Not estimated in: 0 cases
+Score: 1.14409346286506
+Time: 16 seconds
+-------------------------
+Using builder: User based recommender builder with user similarity: MovieLens User Similarity with neighborhood: Nearest N User Neighborhood for N=40 with user similarity: MovieLens User Similarity
+Estimated in: 45429 cases
+Not estimated in: 0 cases
+Score: 1.146960098990356
+Time: 16 seconds
+-------------------------
+Using builder: User based recommender builder with user similarity: MovieLens User Similarity with neighborhood: Nearest N User Neighborhood for N=45 with user similarity: MovieLens User Similarity
+Estimated in: 44687 cases
+Not estimated in: 0 cases
+Score: 1.142904301992693
+Time: 16 seconds
+-------------------------
+Using builder: User based recommender builder with user similarity: MovieLens User Similarity with neighborhood: Nearest N User Neighborhood for N=50 with user similarity: MovieLens User Similarity
+Estimated in: 45323 cases
+Not estimated in: 0 cases
+Score: 1.1359920672378234
+Time: 16 seconds
+-------------------------
+Using builder: User based recommender builder with user similarity: Euclidian Distance Similarity with neighborhood: Nearest N User Neighborhood for N=5 with user similarity: Euclidian Distance Similarity
+Estimated in: 45247 cases
+Not estimated in: 13 cases
+Score: 1.2726282673248537
+Time: 0 seconds
+-------------------------
+Using builder: User based recommender builder with user similarity: Euclidian Distance Similarity with neighborhood: Nearest N User Neighborhood for N=10 with user similarity: Euclidian Distance Similarity
+Estimated in: 44750 cases
+Not estimated in: 21 cases
+Score: 1.2194587337252707
+Time: 0 seconds
+-------------------------
+Using builder: User based recommender builder with user similarity: Euclidian Distance Similarity with neighborhood: Nearest N User Neighborhood for N=15 with user similarity: Euclidian Distance Similarity
+Estimated in: 44306 cases
+Not estimated in: 11 cases
+Score: 1.1957036476831504
+Time: 0 seconds
+-------------------------
+Using builder: User based recommender builder with user similarity: Euclidian Distance Similarity with neighborhood: Nearest N User Neighborhood for N=20 with user similarity: Euclidian Distance Similarity
+Estimated in: 44538 cases
+Not estimated in: 10 cases
+Score: 1.1876557147483833
+Time: 0 seconds
+-------------------------
+Using builder: User based recommender builder with user similarity: Euclidian Distance Similarity with neighborhood: Nearest N User Neighborhood for N=25 with user similarity: Euclidian Distance Similarity
+Estimated in: 45442 cases
+Not estimated in: 12 cases
+Score: 1.1889999586270914
+Time: 0 seconds
+-------------------------
+Using builder: User based recommender builder with user similarity: Euclidian Distance Similarity with neighborhood: Nearest N User Neighborhood for N=30 with user similarity: Euclidian Distance Similarity
+Estimated in: 45145 cases
+Not estimated in: 16 cases
+Score: 1.1848163699806205
+Time: 0 seconds
+-------------------------
+Using builder: User based recommender builder with user similarity: Euclidian Distance Similarity with neighborhood: Nearest N User Neighborhood for N=35 with user similarity: Euclidian Distance Similarity
+Estimated in: 45099 cases
+Not estimated in: 17 cases
+Score: 1.1807164445535412
+Time: 0 seconds
+-------------------------
+Using builder: User based recommender builder with user similarity: Euclidian Distance Similarity with neighborhood: Nearest N User Neighborhood for N=40 with user similarity: Euclidian Distance Similarity
+Estimated in: 44804 cases
+Not estimated in: 13 cases
+Score: 1.1863160448784553
+Time: 0 seconds
+-------------------------
+Using builder: User based recommender builder with user similarity: Euclidian Distance Similarity with neighborhood: Nearest N User Neighborhood for N=45 with user similarity: Euclidian Distance Similarity
+Estimated in: 44536 cases
+Not estimated in: 11 cases
+Score: 1.185887437329553
+Time: 0 seconds
+-------------------------
+Using builder: User based recommender builder with user similarity: Euclidian Distance Similarity with neighborhood: Nearest N User Neighborhood for N=50 with user similarity: Euclidian Distance Similarity
+Estimated in: 45229 cases
+Not estimated in: 12 cases
+Score: 1.1767693957365506
+Time: 0 seconds
+-------------------------

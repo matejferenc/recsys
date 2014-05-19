@@ -11,7 +11,6 @@ import org.apache.mahout.cf.taste.model.DataModel;
 
 import recsys.dataset.SushiDataModelDataset;
 import recsys.dataset.SushiDataset;
-import recsys.evaluator.builder.EuclideanDistanceUserSimilarityBuilder;
 import recsys.evaluator.builder.NearestNUserNeighborhoodBuilder;
 import recsys.evaluator.builder.UserSimilarityBuilder;
 import recsys.recommender.sushi.model.SushiDataModel;
@@ -44,21 +43,23 @@ public class Evaluator {
 		builders.add(new UserBasedRecommenderBuilder(sushiUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(40)));
 		builders.add(new UserBasedRecommenderBuilder(sushiUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(45)));
 		builders.add(new UserBasedRecommenderBuilder(sushiUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(50)));
+		builders.add(new UserBasedRecommenderBuilder(sushiUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(75)));
+		builders.add(new UserBasedRecommenderBuilder(sushiUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(100)));
 		
 		
 		
-		EuclideanDistanceUserSimilarityBuilder euclideanDistanceUserSimilarityBuilder = new EuclideanDistanceUserSimilarityBuilder();
+//		EuclideanDistanceUserSimilarityBuilder euclideanDistanceUserSimilarityBuilder = new EuclideanDistanceUserSimilarityBuilder();
 //
-		builders.add(new UserBasedRecommenderBuilder(euclideanDistanceUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(5)));
-		builders.add(new UserBasedRecommenderBuilder(euclideanDistanceUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(10)));
-		builders.add(new UserBasedRecommenderBuilder(euclideanDistanceUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(15)));
-		builders.add(new UserBasedRecommenderBuilder(euclideanDistanceUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(20)));
-		builders.add(new UserBasedRecommenderBuilder(euclideanDistanceUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(25)));
-		builders.add(new UserBasedRecommenderBuilder(euclideanDistanceUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(30)));
-		builders.add(new UserBasedRecommenderBuilder(euclideanDistanceUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(35)));
-		builders.add(new UserBasedRecommenderBuilder(euclideanDistanceUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(40)));
-		builders.add(new UserBasedRecommenderBuilder(euclideanDistanceUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(45)));
-		builders.add(new UserBasedRecommenderBuilder(euclideanDistanceUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(50)));
+//		builders.add(new UserBasedRecommenderBuilder(euclideanDistanceUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(5)));
+//		builders.add(new UserBasedRecommenderBuilder(euclideanDistanceUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(10)));
+//		builders.add(new UserBasedRecommenderBuilder(euclideanDistanceUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(15)));
+//		builders.add(new UserBasedRecommenderBuilder(euclideanDistanceUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(20)));
+//		builders.add(new UserBasedRecommenderBuilder(euclideanDistanceUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(25)));
+//		builders.add(new UserBasedRecommenderBuilder(euclideanDistanceUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(30)));
+//		builders.add(new UserBasedRecommenderBuilder(euclideanDistanceUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(35)));
+//		builders.add(new UserBasedRecommenderBuilder(euclideanDistanceUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(40)));
+//		builders.add(new UserBasedRecommenderBuilder(euclideanDistanceUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(45)));
+//		builders.add(new UserBasedRecommenderBuilder(euclideanDistanceUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(50)));
 //		builders.add(new UserBasedRecommenderBuilder(euclideanDistanceUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(60)));
 //		builders.add(new UserBasedRecommenderBuilder(euclideanDistanceUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(70)));
 //		builders.add(new UserBasedRecommenderBuilder(euclideanDistanceUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(80)));
@@ -82,7 +83,28 @@ public class Evaluator {
 //		builders.add(new UserBasedRecommenderBuilder(pearsonCorrelationUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(80)));
 //		builders.add(new UserBasedRecommenderBuilder(pearsonCorrelationUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(90)));
 //		builders.add(new UserBasedRecommenderBuilder(pearsonCorrelationUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(100)));
-
+		
+//		UserSimilarityBuilder uncenteredCosineUserSimilarityBuilder = new UncenteredCosineUserSimilarityBuilder();
+//		builders.add(new UserBasedRecommenderBuilder(uncenteredCosineUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(5)));
+//		builders.add(new UserBasedRecommenderBuilder(uncenteredCosineUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(10)));
+//		builders.add(new UserBasedRecommenderBuilder(uncenteredCosineUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(15)));
+//		builders.add(new UserBasedRecommenderBuilder(uncenteredCosineUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(20)));
+//		builders.add(new UserBasedRecommenderBuilder(uncenteredCosineUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(25)));
+//		builders.add(new UserBasedRecommenderBuilder(uncenteredCosineUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(30)));
+//		builders.add(new UserBasedRecommenderBuilder(uncenteredCosineUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(35)));
+//		builders.add(new UserBasedRecommenderBuilder(uncenteredCosineUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(40)));
+//		builders.add(new UserBasedRecommenderBuilder(uncenteredCosineUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(45)));
+//		builders.add(new UserBasedRecommenderBuilder(uncenteredCosineUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(50)));
+//		builders.add(new UserBasedRecommenderBuilder(uncenteredCosineUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(60)));
+//		builders.add(new UserBasedRecommenderBuilder(uncenteredCosineUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(70)));
+//		builders.add(new UserBasedRecommenderBuilder(uncenteredCosineUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(80)));
+//		builders.add(new UserBasedRecommenderBuilder(uncenteredCosineUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(90)));
+//		builders.add(new UserBasedRecommenderBuilder(uncenteredCosineUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(100)));
+//
+//		
+//		builders.add(new SushiContentBasedRecommenderBuilder(sushiDataModel));
+		
+		
 //		EuclideanDistanceItemSimilarityBuilder euclideanDistanceItemSimilarityBuilder = new EuclideanDistanceItemSimilarityBuilder();
 //		builders.add(new ItemBasedRecommenderBuilder(euclideanDistanceItemSimilarityBuilder));
 //		builders.add(new UserAverageRecommenderBuilder());
@@ -114,6 +136,7 @@ public class Evaluator {
 //		builders.add(new SvdRecommenderBuilder(new ALSWRFactorizer(dataModel, 10, 0.001, 10)));
 		
 //		builders.add(new SvdRecommenderBuilder(new ALSWRFactorizer(dataModel, 10, 0.001, 100)));
+//		builders.add(new SvdRecommenderBuilder(new ALSWRFactorizer(dataModel, 10, 0.001, 1000)));
 //		builders.add(new SvdRecommenderBuilder(new ALSWRFactorizer(dataModel, 100, 0.001, 10)));
 		
 		
@@ -126,7 +149,7 @@ public class Evaluator {
 		sb.append("maximum possible preference: " + dataModel.getMaxPreference());
 		sb.append("\n");
 
-		double trainingPercentage = 0.7;
+		double trainingPercentage = 0.5;
 		double evaluationPercentage = 0.3;
 		sb.append("Training percentage: " + trainingPercentage);
 		sb.append("\n");
