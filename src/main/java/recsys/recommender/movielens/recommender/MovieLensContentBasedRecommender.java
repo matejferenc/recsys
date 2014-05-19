@@ -14,8 +14,8 @@ import org.apache.mahout.cf.taste.recommender.Recommender;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import recsys.recommender.model.SetPreference;
 import recsys.recommender.movielens.model.movielens.MovieLensEnrichedModel;
-import recsys.recommender.movielens.model.movielens.SetPreference;
 import recsys.recommender.movielens.model.movielens.User;
 import recsys.recommender.movielens.model.movielens.UserModel;
 

@@ -10,6 +10,8 @@ import org.apache.mahout.common.iterator.FileLineIterator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import recsys.recommender.sushi.model.SushiDataModel;
+
 import com.google.common.base.Preconditions;
 import com.google.common.base.Splitter;
 
@@ -19,7 +21,7 @@ public class SushiDataModelLoader {
 
 	private static final char COMMENT_CHAR = '#';
 
-	private SushiDataModel sushiDataModel;
+	private final SushiDataModel sushiDataModel;
 
 	private Splitter delimiterPattern = Splitter.on("\t");
 
@@ -95,6 +97,10 @@ public class SushiDataModelLoader {
 		} catch (Exception e) {
 			throw new IllegalStateException("something wrong on this line: " + line, e);
 		}
+	}
+
+	public SushiDataModel getSushiDataModel() {
+		return sushiDataModel;
 	}
 
 }

@@ -1,5 +1,7 @@
 package recsys.recommender.movielens.model.movielens;
 
+import recsys.recommender.model.SetPreference;
+
 public class User {
 
 	private SetPreference genrePreferences;

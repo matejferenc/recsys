@@ -1,4 +1,4 @@
-package recsys.recommender.movielens.model.movielens;
+package recsys.recommender.model;
 
 import java.util.HashMap;
 import java.util.Map;
