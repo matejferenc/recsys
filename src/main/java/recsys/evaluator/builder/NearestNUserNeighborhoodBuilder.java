@@ -1,4 +1,4 @@
-package recsys.evaluator;
+package recsys.evaluator.builder;
 
 import org.apache.mahout.cf.taste.common.TasteException;
 import org.apache.mahout.cf.taste.impl.neighborhood.NearestNUserNeighborhood;

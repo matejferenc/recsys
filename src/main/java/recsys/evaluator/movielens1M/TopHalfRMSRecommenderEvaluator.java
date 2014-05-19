@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package recsys.evaluator;
+package recsys.evaluator.movielens1M;
 
 import org.apache.mahout.cf.taste.impl.common.FullRunningAverage;
 import org.apache.mahout.cf.taste.impl.common.RunningAverage;

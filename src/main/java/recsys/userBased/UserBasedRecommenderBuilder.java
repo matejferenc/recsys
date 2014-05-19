@@ -8,8 +8,8 @@ import org.apache.mahout.cf.taste.neighborhood.UserNeighborhood;
 import org.apache.mahout.cf.taste.recommender.Recommender;
 import org.apache.mahout.cf.taste.similarity.UserSimilarity;
 
-import recsys.evaluator.UserNeighborhoodBuilder;
-import recsys.evaluator.UserSimilarityBuilder;
+import recsys.evaluator.builder.UserNeighborhoodBuilder;
+import recsys.evaluator.builder.UserSimilarityBuilder;
 
 public class UserBasedRecommenderBuilder implements RecommenderBuilder {
 

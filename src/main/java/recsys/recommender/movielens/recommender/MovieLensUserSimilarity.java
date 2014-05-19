@@ -1,4 +1,4 @@
-package recsys.recommender.movielens.model.movielens;
+package recsys.recommender.movielens.recommender;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -14,10 +14,14 @@ import org.apache.mahout.cf.taste.similarity.PreferenceInferrer;
 import org.apache.mahout.cf.taste.similarity.UserSimilarity;
 import org.apache.mahout.common.Pair;
 
+import recsys.recommender.movielens.model.movielens.SetPreference;
+import recsys.recommender.movielens.model.movielens.User;
+import recsys.recommender.movielens.model.movielens.UserModel;
+
 public class MovieLensUserSimilarity implements UserSimilarity {
 
 	private static final int MAX_DIFFERENCE = 4;
-	private UserModel userModel;
+	private final UserModel userModel;
 
 	private Map<Pair<Long, Long>, Double> cache;
 
@@ -49,9 +53,13 @@ public class MovieLensUserSimilarity implements UserSimilarity {
 		User user2 = userModel.get(userID2);
 		double genresSimilarity = calculateGenresSimilarity(user1, user2);
 		double directoresSimilarity = calculateDirectorsSimilarity(user1, user2);
-		double actorsSimilarity = calculateActorsSimilarity(user1, user2);
-		double actressesSimilarity = calculateActressesSimilarity(user1, user2);
-		double userSimilarity = (genresSimilarity + directoresSimilarity + actorsSimilarity + actressesSimilarity) / 4;
+//		double actorsSimilarity = calculateActorsSimilarity(user1, user2);
+//		double actressesSimilarity = calculateActressesSimilarity(user1, user2);
+		// every partial similarity has the same weight: 1
+		// we need to divide by 4 (total weight)
+//		double userSimilarity = (genresSimilarity + directoresSimilarity + actorsSimilarity + actressesSimilarity) / 4;
+//		double userSimilarity = (genresSimilarity);
+		double userSimilarity = (genresSimilarity + directoresSimilarity) / 2;
 		// correction for Taste framework (interface says the return value should be between -1 and +1,
 		// yet the computed similarity is between 0 and +1)
 		double transformedUserSimilarity = userSimilarity * 2 - 1;

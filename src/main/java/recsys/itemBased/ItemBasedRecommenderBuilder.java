@@ -7,7 +7,7 @@ import org.apache.mahout.cf.taste.model.DataModel;
 import org.apache.mahout.cf.taste.recommender.Recommender;
 import org.apache.mahout.cf.taste.similarity.ItemSimilarity;
 
-import recsys.evaluator.ItemSimilarityBuilder;
+import recsys.evaluator.builder.ItemSimilarityBuilder;
 
 public class ItemBasedRecommenderBuilder implements RecommenderBuilder {
 

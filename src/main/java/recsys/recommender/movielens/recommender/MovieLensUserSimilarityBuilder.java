@@ -1,13 +1,12 @@
-package recsys.evaluator;
+package recsys.recommender.movielens.recommender;
 
 import org.apache.mahout.cf.taste.common.TasteException;
 import org.apache.mahout.cf.taste.model.DataModel;
 import org.apache.mahout.cf.taste.similarity.UserSimilarity;
 
-import recsys.recommender.movielens.model.movielens.MovieLensUserSimilarity;
+import recsys.evaluator.builder.UserSimilarityBuilder;
+import recsys.recommender.movielens.model.movielens.MovieLensEnrichedModel;
 import recsys.recommender.movielens.model.movielens.UserModel;
-import recsys.recommender.movielens.model.movielens.UserModelBuilder;
-import recsys.recommender.movielens.model.shared.MovieLensEnrichedModel;
 
 public class MovieLensUserSimilarityBuilder implements UserSimilarityBuilder {
 	

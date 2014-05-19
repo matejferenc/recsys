@@ -10,11 +10,11 @@ import recsys.recommender.movielens.GenresDataModel;
 import recsys.recommender.movielens.OneSetSimilarity;
 import recsys.recommender.movielens.SetSimilarity;
 
-public class ContentBasedRecommenderBuilder implements RecommenderBuilder {
+public class MovieLensGenreBasedRecommenderBuilder implements RecommenderBuilder {
 
 	private GenresDataModel genresModel;
 
-	public ContentBasedRecommenderBuilder(GenresDataModel genresModel) {
+	public MovieLensGenreBasedRecommenderBuilder(GenresDataModel genresModel) {
 		this.genresModel = genresModel;
 	}
 

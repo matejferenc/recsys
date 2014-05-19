@@ -10,10 +10,10 @@ import org.apache.mahout.cf.taste.model.DataModel;
 
 import recsys.recommender.movielens.GenresDataModel;
 
-public class ContentBasedEvaluator {
+public class MovieLensGenreBasedEvaluator {
 
 	public static void main(String[] args) throws Exception {
-		ContentBasedEvaluator e = new ContentBasedEvaluator();
+		MovieLensGenreBasedEvaluator e = new MovieLensGenreBasedEvaluator();
 		e.execute();
 	}
 
@@ -29,7 +29,7 @@ public class ContentBasedEvaluator {
 		String genresPath = prop.getProperty("movielens-1m-movies.dat");
 //		String genresPath = prop.getProperty("movielens-10m-movies.dat");
 		GenresDataModel genresModel = new GenresDataModel(new File(genresPath));
-		ContentBasedRecommenderBuilder recommenderBuilder = new ContentBasedRecommenderBuilder(genresModel);
+		MovieLensGenreBasedRecommenderBuilder recommenderBuilder = new MovieLensGenreBasedRecommenderBuilder(genresModel);
 
 		System.out.println("minimum possible preference: " + dataModel.getMinPreference());
 		System.out.println("maximum possible preference: " + dataModel.getMaxPreference());

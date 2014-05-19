@@ -14,7 +14,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import recsys.recommender.movielens.model.shared.Movie;
-import recsys.recommender.movielens.model.shared.MovieLensEnrichedModel;
 import recsys.recommender.movielens.uniter.MovieLensMovieModel;
 
 import com.google.common.base.Preconditions;

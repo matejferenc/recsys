@@ -1,21 +1,18 @@
-package recsys.evaluator;
+package recsys.evaluator.sushi;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Properties;
 
 import org.apache.mahout.cf.taste.eval.RecommenderBuilder;
 import org.apache.mahout.cf.taste.impl.eval.AbstractDifferenceRecommenderEvaluator;
 import org.apache.mahout.cf.taste.impl.eval.RMSRecommenderEvaluator;
-import org.apache.mahout.cf.taste.impl.model.file.FileDataModel;
+import org.apache.mahout.cf.taste.impl.recommender.svd.ALSWRFactorizer;
+import org.apache.mahout.cf.taste.impl.recommender.svd.SVDPlusPlusFactorizer;
 import org.apache.mahout.cf.taste.model.DataModel;
 
-import recsys.recommender.movielens.GenresDataModel;
-import recsys.recommender.movielens.model.movielens.MovieLensEnrichedDataModelLoader;
-import recsys.recommender.movielens.model.shared.MovieLensEnrichedModel;
-import recsys.userBased.UserBasedRecommenderBuilder;
+import recsys.dataset.SushiDataset;
+import recsys.svd.SvdRecommenderBuilder;
 
 public class Evaluator {
 
@@ -25,38 +22,10 @@ public class Evaluator {
 	}
 
 	private void execute() throws Exception {
-		Properties prop = new Properties();
-		prop.load(getClass().getClassLoader().getResourceAsStream("config.properties"));
-		// String path = prop.getProperty("movielens-10m-ratings.dat");
-		String path = prop.getProperty("movielens-1m-ratings.dat");
-		// String path = prop.getProperty("movielens-100k-ratings.data");
-		// String path = prop.getProperty("user_ratedmovies-timestamps.dat");
-		File dataFile = new File(path);
-		// DataModel dataModel = new FileDataModel(dataFile, "\t");
-		DataModel dataModel = new FileDataModel(dataFile, "::");
-
-//		String genresPath = prop.getProperty("movielens-1m-movies.dat");
-		// String genresPath = prop.getProperty("movielens-10m-movies.dat");
-//		GenresDataModel genresModel = new GenresDataModel(new File(genresPath));
+		DataModel dataModel = new SushiDataset().build();
 		
-		String enrichedPath = prop.getProperty("movielens-1m-enriched-movies.dat");
-		MovieLensEnrichedDataModelLoader movieLensEnrichedDataModelLoader = new MovieLensEnrichedDataModelLoader(new File(enrichedPath));
-		MovieLensEnrichedModel movieLensEnrichedModel = movieLensEnrichedDataModelLoader.getMovieLensEnrichedModel();
-
 		List<RecommenderBuilder> builders = new ArrayList<>();
 		
-		UserSimilarityBuilder movieLensUserSimilarityBuilder = new MovieLensUserSimilarityBuilder(movieLensEnrichedModel);
-		builders.add(new UserBasedRecommenderBuilder(movieLensUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(5)));
-//		builders.add(new UserBasedRecommenderBuilder(movieLensUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(10)));
-//		builders.add(new UserBasedRecommenderBuilder(movieLensUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(15)));
-//		builders.add(new UserBasedRecommenderBuilder(movieLensUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(20)));
-//		builders.add(new UserBasedRecommenderBuilder(movieLensUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(25)));
-//		builders.add(new UserBasedRecommenderBuilder(movieLensUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(30)));
-//		builders.add(new UserBasedRecommenderBuilder(movieLensUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(35)));
-//		builders.add(new UserBasedRecommenderBuilder(movieLensUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(40)));
-//		builders.add(new UserBasedRecommenderBuilder(movieLensUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(45)));
-//		builders.add(new UserBasedRecommenderBuilder(movieLensUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(50)));
-
 //		EuclideanDistanceUserSimilarityBuilder euclideanDistanceUserSimilarityBuilder = new EuclideanDistanceUserSimilarityBuilder();
 //
 //		builders.add(new UserBasedRecommenderBuilder(euclideanDistanceUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(5)));
@@ -69,6 +38,11 @@ public class Evaluator {
 //		builders.add(new UserBasedRecommenderBuilder(euclideanDistanceUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(40)));
 //		builders.add(new UserBasedRecommenderBuilder(euclideanDistanceUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(45)));
 //		builders.add(new UserBasedRecommenderBuilder(euclideanDistanceUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(50)));
+//		builders.add(new UserBasedRecommenderBuilder(euclideanDistanceUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(60)));
+//		builders.add(new UserBasedRecommenderBuilder(euclideanDistanceUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(70)));
+//		builders.add(new UserBasedRecommenderBuilder(euclideanDistanceUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(80)));
+//		builders.add(new UserBasedRecommenderBuilder(euclideanDistanceUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(90)));
+//		builders.add(new UserBasedRecommenderBuilder(euclideanDistanceUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(100)));
 //
 //		PearsonCorrelationUserSimilarityBuilder pearsonCorrelationUserSimilarityBuilder = new PearsonCorrelationUserSimilarityBuilder();
 //
@@ -82,18 +56,30 @@ public class Evaluator {
 //		builders.add(new UserBasedRecommenderBuilder(pearsonCorrelationUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(40)));
 //		builders.add(new UserBasedRecommenderBuilder(pearsonCorrelationUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(45)));
 //		builders.add(new UserBasedRecommenderBuilder(pearsonCorrelationUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(50)));
-//
+//		builders.add(new UserBasedRecommenderBuilder(pearsonCorrelationUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(60)));
+//		builders.add(new UserBasedRecommenderBuilder(pearsonCorrelationUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(70)));
+//		builders.add(new UserBasedRecommenderBuilder(pearsonCorrelationUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(80)));
+//		builders.add(new UserBasedRecommenderBuilder(pearsonCorrelationUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(90)));
+//		builders.add(new UserBasedRecommenderBuilder(pearsonCorrelationUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(100)));
+
 //		EuclideanDistanceItemSimilarityBuilder euclideanDistanceItemSimilarityBuilder = new EuclideanDistanceItemSimilarityBuilder();
 //		builders.add(new ItemBasedRecommenderBuilder(euclideanDistanceItemSimilarityBuilder));
 //		builders.add(new UserAverageRecommenderBuilder());
 //		builders.add(new ItemAverageRecommenderBuilder());
-//		builders.add(new ContentBasedRecommenderBuilder(genresModel));
 		
 //		builders.add(new SvdRecommenderBuilder(new SVDPlusPlusFactorizer(dataModel, 1, 10)));
 //		builders.add(new SvdRecommenderBuilder(new SVDPlusPlusFactorizer(dataModel, 2, 10)));
 //		builders.add(new SvdRecommenderBuilder(new SVDPlusPlusFactorizer(dataModel, 3, 10)));
 //		builders.add(new SvdRecommenderBuilder(new SVDPlusPlusFactorizer(dataModel, 4, 10)));
 //		builders.add(new SvdRecommenderBuilder(new SVDPlusPlusFactorizer(dataModel, 5, 10)));
+//		builders.add(new SvdRecommenderBuilder(new SVDPlusPlusFactorizer(dataModel, 6, 10)));
+//		builders.add(new SvdRecommenderBuilder(new SVDPlusPlusFactorizer(dataModel, 7, 10)));
+//		builders.add(new SvdRecommenderBuilder(new SVDPlusPlusFactorizer(dataModel, 8, 10)));
+//		builders.add(new SvdRecommenderBuilder(new SVDPlusPlusFactorizer(dataModel, 9, 10)));
+//		builders.add(new SvdRecommenderBuilder(new SVDPlusPlusFactorizer(dataModel, 10, 10)));
+		
+//		builders.add(new SvdRecommenderBuilder(new SVDPlusPlusFactorizer(dataModel, 10, 100)));
+//		builders.add(new SvdRecommenderBuilder(new SVDPlusPlusFactorizer(dataModel, 100, 100)));
 		
 //		builders.add(new SvdRecommenderBuilder(new ALSWRFactorizer(dataModel, 1, 0.001, 10)));
 //		builders.add(new SvdRecommenderBuilder(new ALSWRFactorizer(dataModel, 2, 0.001, 10)));
@@ -105,15 +91,9 @@ public class Evaluator {
 //		builders.add(new SvdRecommenderBuilder(new ALSWRFactorizer(dataModel, 8, 0.001, 10)));
 //		builders.add(new SvdRecommenderBuilder(new ALSWRFactorizer(dataModel, 9, 0.001, 10)));
 //		builders.add(new SvdRecommenderBuilder(new ALSWRFactorizer(dataModel, 10, 0.001, 10)));
-//		builders.add(new SvdRecommenderBuilder(new ALSWRFactorizer(dataModel, 20, 0.001, 10)));
-//		builders.add(new SvdRecommenderBuilder(new ALSWRFactorizer(dataModel, 30, 0.001, 10)));
-//		builders.add(new SvdRecommenderBuilder(new ALSWRFactorizer(dataModel, 40, 0.001, 10)));
-//		builders.add(new SvdRecommenderBuilder(new ALSWRFactorizer(dataModel, 50, 0.001, 10)));
-//		builders.add(new SvdRecommenderBuilder(new ALSWRFactorizer(dataModel, 60, 0.001, 10)));
-//		builders.add(new SvdRecommenderBuilder(new ALSWRFactorizer(dataModel, 70, 0.001, 10)));
-//		builders.add(new SvdRecommenderBuilder(new ALSWRFactorizer(dataModel, 80, 0.001, 10)));
-//		builders.add(new SvdRecommenderBuilder(new ALSWRFactorizer(dataModel, 90, 0.001, 10)));
-//		builders.add(new SvdRecommenderBuilder(new ALSWRFactorizer(dataModel, 100, 0.001, 10)));
+		
+//		builders.add(new SvdRecommenderBuilder(new ALSWRFactorizer(dataModel, 10, 0.001, 100)));
+		builders.add(new SvdRecommenderBuilder(new ALSWRFactorizer(dataModel, 100, 0.001, 10)));
 		
 		
 //		builders.add(new SlopeOneRecommenderBuilder());
@@ -135,7 +115,7 @@ public class Evaluator {
 		for (RecommenderBuilder builder : builders) {
 			Date start = new Date();
 
-			int repeats = 3;
+			int repeats = 10;
 			int totalEstimated = 0;
 			int totalNotEstimated = 0;
 			double totalEvaluationResult = 0;

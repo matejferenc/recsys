@@ -1,4 +1,4 @@
-package recsys.recommender.movielens.model.movielens;
+package recsys.recommender.movielens.recommender;
 
 import java.util.Set;
 
@@ -8,13 +8,15 @@ import org.apache.mahout.cf.taste.model.DataModel;
 import org.apache.mahout.cf.taste.model.Preference;
 import org.apache.mahout.cf.taste.model.PreferenceArray;
 
-import recsys.recommender.movielens.model.shared.MovieLensEnrichedModel;
+import recsys.recommender.movielens.model.movielens.MovieLensEnrichedModel;
+import recsys.recommender.movielens.model.movielens.User;
+import recsys.recommender.movielens.model.movielens.UserModel;
 
 public class UserModelBuilder {
 
-	private DataModel ratingsDataModel;
+	private final DataModel ratingsDataModel;
 
-	private MovieLensEnrichedModel movieLensMovieModel;
+	private final MovieLensEnrichedModel movieLensMovieModel;
 
 	public UserModelBuilder(DataModel ratingsDataModel, MovieLensEnrichedModel movieLensEnrichedModel) throws TasteException {
 		this.ratingsDataModel = ratingsDataModel;

@@ -1,11 +1,11 @@
-package recsys.recommender.movielens.model.shared;
+package recsys.recommender.movielens.model.movielens;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import recsys.recommender.movielens.model.movielens.MovielensDataModel;
+import recsys.recommender.movielens.model.shared.Movie;
 
 public class MovieLensEnrichedModel {
 
