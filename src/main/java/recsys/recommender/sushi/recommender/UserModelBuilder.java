@@ -6,7 +6,6 @@ import org.apache.mahout.cf.taste.model.DataModel;
 import org.apache.mahout.cf.taste.model.Preference;
 import org.apache.mahout.cf.taste.model.PreferenceArray;
 
-import recsys.recommender.sushi.SushiPiece;
 import recsys.recommender.sushi.model.SushiDataModel;
 import recsys.recommender.sushi.model.User;
 import recsys.recommender.sushi.model.UserModel;
@@ -17,13 +16,15 @@ public class UserModelBuilder {
 
 	private final SushiDataModel sushiDataModel;
 
-	public UserModelBuilder(DataModel ratingsDataModel, SushiDataModel sushiDataModel) throws TasteException {
+	private final UserModel userModel;
+
+	public UserModelBuilder(DataModel ratingsDataModel, SushiDataModel sushiDataModel, UserModel userModel) throws TasteException {
 		this.ratingsDataModel = ratingsDataModel;
 		this.sushiDataModel = sushiDataModel;
+		this.userModel = userModel;
 	}
 
 	public UserModel build() throws TasteException {
-		UserModel userModel = new UserModel();
 		LongPrimitiveIterator userIDs = ratingsDataModel.getUserIDs();
 		// cycle all users
 		while (userIDs.hasNext()) {
@@ -47,8 +48,7 @@ public class UserModelBuilder {
 	}
 
 	private void buildStylePreferences(User user, int itemID, double p) {
-		SushiPiece sushiPiece = sushiDataModel.getSushiPiece(itemID);
-		int style = sushiPiece.getStyle();
+		int style = sushiDataModel.getSushiPiece(itemID).getStyle();
 		user.getStylePreferences().addPropertyPreference(style, p);
 	}
 	

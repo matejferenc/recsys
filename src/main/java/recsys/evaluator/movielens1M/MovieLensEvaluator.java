@@ -24,10 +24,10 @@ import recsys.recommender.movielens.recommender.MovieLensContentBasedRecommender
 import recsys.recommender.movielens.recommender.MovieLensUserSimilarityBuilder;
 import recsys.userBased.UserBasedRecommenderBuilder;
 
-public class Evaluator {
+public class MovieLensEvaluator {
 
 	public static void main(String[] args) throws Exception {
-		Evaluator e = new Evaluator();
+		MovieLensEvaluator e = new MovieLensEvaluator();
 		e.execute();
 	}
 

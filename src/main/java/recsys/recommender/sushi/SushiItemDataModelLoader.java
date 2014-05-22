@@ -15,7 +15,7 @@ import recsys.recommender.sushi.model.SushiDataModel;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Splitter;
 
-public class SushiDataModelLoader {
+public class SushiItemDataModelLoader {
 
 	private static final Logger log = LoggerFactory.getLogger(FileDataModel.class);
 
@@ -25,11 +25,11 @@ public class SushiDataModelLoader {
 
 	private Splitter delimiterPattern = Splitter.on("\t");
 
-	private SushiDataModelLoader() {
+	private SushiItemDataModelLoader() {
 		sushiDataModel = new SushiDataModel();
 	}
 
-	public SushiDataModelLoader(File dataFile) throws Exception {
+	public SushiItemDataModelLoader(File dataFile) throws Exception {
 		this();
 		Date start = new Date();
 		Preconditions.checkNotNull(dataFile.getAbsoluteFile());
