@@ -11,16 +11,14 @@ import recsys.recommender.sushi.model.UserModel;
 public class SushiContentBasedRecommenderBuilder implements RecommenderBuilder {
 
 	private final SushiDataModel sushiDataModel;
-	private final UserModel userModel;
 
-	public SushiContentBasedRecommenderBuilder(SushiDataModel sushiDataModel, UserModel userModel) {
+	public SushiContentBasedRecommenderBuilder(SushiDataModel sushiDataModel) {
 		this.sushiDataModel = sushiDataModel;
-		this.userModel = userModel;
 	}
 
 	@Override
 	public Recommender buildRecommender(DataModel dataModel) throws TasteException {
-		UserModelBuilder userModelBuilder = new UserModelBuilder(dataModel, sushiDataModel, userModel);
+		UserModelBuilder userModelBuilder = new UserModelBuilder(dataModel, sushiDataModel);
 		UserModel userModel = userModelBuilder.build();
 		return new SushiContentBasedRecommender(dataModel, userModel, sushiDataModel);
 	}

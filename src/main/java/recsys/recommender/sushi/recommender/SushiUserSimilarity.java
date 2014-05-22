@@ -71,17 +71,19 @@ public class SushiUserSimilarity implements UserSimilarity {
 		double eastWest15Similarity = calculateEastWest15Similarity(user1, user2);
 		double eastWestCurrentSimilarity = calculateEastWestCurrentSimilarity(user1, user2);
 
-		// double userSimilarity = (genderSimilarity + ageSimilarity + region15Similarity + regionCurrentSimilarity + prefecture15Similarity + prefectureCurrentSimilarity + eastWest15Similarity +
-		// eastWestCurrentSimilarity
-		// + styleSimilarity + majorGroupSimilarity + minorGroupSimilarity + oilinessSimilarity + priceSimilarity) / 13;
+		 double userSimilarity = (genderSimilarity + ageSimilarity + region15Similarity + regionCurrentSimilarity + prefecture15Similarity + prefectureCurrentSimilarity + eastWest15Similarity +
+		 eastWestCurrentSimilarity
+		 + styleSimilarity + majorGroupSimilarity + minorGroupSimilarity + oilinessSimilarity + priceSimilarity) / 13;
 
-		double userSimilarity = minorGroupSimilarity;
+//		double userSimilarity = minorGroupSimilarity;
+		
+//		double userSimilarity = (styleSimilarity + majorGroupSimilarity + minorGroupSimilarity)/3;
 		
 //		double userSimilarity = (genderSimilarity + ageSimilarity + region15Similarity + regionCurrentSimilarity + prefecture15Similarity + prefectureCurrentSimilarity + eastWest15Similarity + eastWestCurrentSimilarity) / 8;
 
 		// every partial similarity has the same weight: 1
 		// we need to divide by total weight
-//		 double userSimilarity = (styleSimilarity + majorGroupSimilarity + minorGroupSimilarity + oilinessSimilarity + priceSimilarity) / 5;
+//		 double userSimilarity = (styleSimilarity + majorGroupSimilarity + minorGroupSimilarity + priceSimilarity) / 4;
 
 		// double userSimilarity = (styleSimilarity + majorGroupSimilarity + minorGroupSimilarity) / 3;
 

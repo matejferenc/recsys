@@ -11,16 +11,14 @@ import recsys.recommender.sushi.model.UserModel;
 public class SushiUserSimilarityBuilder implements UserSimilarityBuilder {
 
 	private final SushiDataModel sushiDataModel;
-	private final UserModel userModel;
 	
-	public SushiUserSimilarityBuilder(SushiDataModel sushiDataModel, UserModel userModel) {
+	public SushiUserSimilarityBuilder(SushiDataModel sushiDataModel) {
 		this.sushiDataModel = sushiDataModel;
-		this.userModel = userModel;
 	}
 
 	@Override
 	public UserSimilarity build(DataModel dataModel) throws TasteException {
-		UserModelBuilder userModelBuilder = new UserModelBuilder(dataModel, sushiDataModel, userModel);
+		UserModelBuilder userModelBuilder = new UserModelBuilder(dataModel, sushiDataModel);
 		UserModel userModel = userModelBuilder.build();
 		return new SushiUserSimilarity(userModel);
 	}

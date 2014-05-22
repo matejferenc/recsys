@@ -11,13 +11,9 @@ import org.apache.mahout.cf.taste.model.DataModel;
 
 import recsys.dataset.SushiDataset;
 import recsys.dataset.SushiItemDataModelDataset;
-import recsys.dataset.SushiUserDataModelDataset;
 import recsys.evaluator.builder.NearestNUserNeighborhoodBuilder;
 import recsys.evaluator.builder.UserSimilarityBuilder;
-import recsys.itemBased.ItemBasedRecommenderBuilder;
 import recsys.recommender.sushi.model.SushiDataModel;
-import recsys.recommender.sushi.model.UserModel;
-import recsys.recommender.sushi.recommender.SushiItemSimilarityBuilder;
 import recsys.recommender.sushi.recommender.SushiUserSimilarityBuilder;
 import recsys.userBased.UserBasedRecommenderBuilder;
 
@@ -34,21 +30,19 @@ public class SushiEvaluator {
 		List<RecommenderBuilder> builders = new ArrayList<>();
 
 		SushiDataModel sushiDataModel = new SushiItemDataModelDataset().build();
-		UserModel userModel = new SushiUserDataModelDataset().build();
-
-//		 UserSimilarityBuilder sushiUserSimilarityBuilder = new SushiUserSimilarityBuilder(sushiDataModel, userModel);
-//		 builders.add(new UserBasedRecommenderBuilder(sushiUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(5)));
-//		 builders.add(new UserBasedRecommenderBuilder(sushiUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(10)));
-//		 builders.add(new UserBasedRecommenderBuilder(sushiUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(15)));
-//		 builders.add(new UserBasedRecommenderBuilder(sushiUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(20)));
-//		 builders.add(new UserBasedRecommenderBuilder(sushiUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(25)));
-//		 builders.add(new UserBasedRecommenderBuilder(sushiUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(30)));
-//		 builders.add(new UserBasedRecommenderBuilder(sushiUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(35)));
-//		 builders.add(new UserBasedRecommenderBuilder(sushiUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(40)));
-//		 builders.add(new UserBasedRecommenderBuilder(sushiUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(45)));
-//		 builders.add(new UserBasedRecommenderBuilder(sushiUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(50)));
-//		 builders.add(new UserBasedRecommenderBuilder(sushiUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(75)));
-//		 builders.add(new UserBasedRecommenderBuilder(sushiUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(100)));
+		 UserSimilarityBuilder sushiUserSimilarityBuilder = new SushiUserSimilarityBuilder(sushiDataModel);
+		 builders.add(new UserBasedRecommenderBuilder(sushiUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(5)));
+		 builders.add(new UserBasedRecommenderBuilder(sushiUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(10)));
+		 builders.add(new UserBasedRecommenderBuilder(sushiUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(15)));
+		 builders.add(new UserBasedRecommenderBuilder(sushiUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(20)));
+		 builders.add(new UserBasedRecommenderBuilder(sushiUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(25)));
+		 builders.add(new UserBasedRecommenderBuilder(sushiUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(30)));
+		 builders.add(new UserBasedRecommenderBuilder(sushiUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(35)));
+		 builders.add(new UserBasedRecommenderBuilder(sushiUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(40)));
+		 builders.add(new UserBasedRecommenderBuilder(sushiUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(45)));
+		 builders.add(new UserBasedRecommenderBuilder(sushiUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(50)));
+		 builders.add(new UserBasedRecommenderBuilder(sushiUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(75)));
+		 builders.add(new UserBasedRecommenderBuilder(sushiUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(100)));
 
 //		 EuclideanDistanceUserSimilarityBuilder euclideanDistanceUserSimilarityBuilder = new EuclideanDistanceUserSimilarityBuilder();
 //		TrueEuclideanDistanceUserSimilarityBuilder euclideanDistanceUserSimilarityBuilder = new TrueEuclideanDistanceUserSimilarityBuilder();
@@ -110,8 +104,8 @@ public class SushiEvaluator {
 //		EuclideanDistanceItemSimilarityBuilder euclideanDistanceItemSimilarityBuilder = new EuclideanDistanceItemSimilarityBuilder();
 //		builders.add(new ItemBasedRecommenderBuilder(euclideanDistanceItemSimilarityBuilder));
 //
-		SushiItemSimilarityBuilder sushiItemSimilarityBuilder = new SushiItemSimilarityBuilder(sushiDataModel);
-		builders.add(new ItemBasedRecommenderBuilder(sushiItemSimilarityBuilder));
+//		SushiItemSimilarityBuilder sushiItemSimilarityBuilder = new SushiItemSimilarityBuilder(sushiDataModel);
+//		builders.add(new ItemBasedRecommenderBuilder(sushiItemSimilarityBuilder));
 
 		// builders.add(new UserAverageRecommenderBuilder());
 		// builders.add(new ItemAverageRecommenderBuilder());
@@ -164,7 +158,7 @@ public class SushiEvaluator {
 		for (RecommenderBuilder builder : builders) {
 			Date start = new Date();
 
-			int repeats = 100;
+			int repeats = 10;
 			int totalEstimated = 0;
 			int totalNotEstimated = 0;
 			double totalEvaluationResult = 0;

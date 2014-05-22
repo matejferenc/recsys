@@ -2,123 +2,75 @@ minimum possible preference: 0.0
 maximum possible preference: 4.0
 Training percentage: 0.7
 Evaluation percentage: 0.3
-Using builder: User based recommender builder with user similarity: MovieLens User Similarity with neighborhood: Nearest N User Neighborhood for N=5 with user similarity: MovieLens User Similarity
-Estimated in: 45489 cases
+Using builder: User based recommender builder with user similarity: Sushi User Similarity with neighborhood: Nearest N User Neighborhood for N=5 with user similarity: Sushi User Similarity
+Estimated in: 45003 cases
 Not estimated in: 0 cases
-Score: 1.2524645681227746
+Score: 1.253066302536125
+Time: 19 seconds
+-------------------------
+Using builder: User based recommender builder with user similarity: Sushi User Similarity with neighborhood: Nearest N User Neighborhood for N=10 with user similarity: Sushi User Similarity
+Estimated in: 45112 cases
+Not estimated in: 0 cases
+Score: 1.214491936713517
 Time: 17 seconds
 -------------------------
-Using builder: User based recommender builder with user similarity: MovieLens User Similarity with neighborhood: Nearest N User Neighborhood for N=10 with user similarity: MovieLens User Similarity
-Estimated in: 45432 cases
+Using builder: User based recommender builder with user similarity: Sushi User Similarity with neighborhood: Nearest N User Neighborhood for N=15 with user similarity: Sushi User Similarity
+Estimated in: 44659 cases
 Not estimated in: 0 cases
-Score: 1.20420540602388
+Score: 1.1882242961234943
 Time: 16 seconds
 -------------------------
-Using builder: User based recommender builder with user similarity: MovieLens User Similarity with neighborhood: Nearest N User Neighborhood for N=15 with user similarity: MovieLens User Similarity
-Estimated in: 45479 cases
+Using builder: User based recommender builder with user similarity: Sushi User Similarity with neighborhood: Nearest N User Neighborhood for N=20 with user similarity: Sushi User Similarity
+Estimated in: 44837 cases
 Not estimated in: 0 cases
-Score: 1.1858881287940377
+Score: 1.1762811246230374
 Time: 16 seconds
 -------------------------
-Using builder: User based recommender builder with user similarity: MovieLens User Similarity with neighborhood: Nearest N User Neighborhood for N=20 with user similarity: MovieLens User Similarity
-Estimated in: 44840 cases
+Using builder: User based recommender builder with user similarity: Sushi User Similarity with neighborhood: Nearest N User Neighborhood for N=25 with user similarity: Sushi User Similarity
+Estimated in: 45009 cases
 Not estimated in: 0 cases
-Score: 1.17870865419293
+Score: 1.1748645501681314
 Time: 16 seconds
 -------------------------
-Using builder: User based recommender builder with user similarity: MovieLens User Similarity with neighborhood: Nearest N User Neighborhood for N=25 with user similarity: MovieLens User Similarity
-Estimated in: 44909 cases
+Using builder: User based recommender builder with user similarity: Sushi User Similarity with neighborhood: Nearest N User Neighborhood for N=30 with user similarity: Sushi User Similarity
+Estimated in: 45175 cases
 Not estimated in: 0 cases
-Score: 1.1687209839052968
+Score: 1.1644676558650322
 Time: 16 seconds
 -------------------------
-Using builder: User based recommender builder with user similarity: MovieLens User Similarity with neighborhood: Nearest N User Neighborhood for N=30 with user similarity: MovieLens User Similarity
-Estimated in: 44687 cases
+Using builder: User based recommender builder with user similarity: Sushi User Similarity with neighborhood: Nearest N User Neighborhood for N=35 with user similarity: Sushi User Similarity
+Estimated in: 44961 cases
 Not estimated in: 0 cases
-Score: 1.1635213625582217
-Time: 16 seconds
--------------------------
-Using builder: User based recommender builder with user similarity: MovieLens User Similarity with neighborhood: Nearest N User Neighborhood for N=35 with user similarity: MovieLens User Similarity
-Estimated in: 45831 cases
-Not estimated in: 0 cases
-Score: 1.161847786973209
+Score: 1.1634235376184547
 Time: 17 seconds
 -------------------------
-Using builder: User based recommender builder with user similarity: MovieLens User Similarity with neighborhood: Nearest N User Neighborhood for N=40 with user similarity: MovieLens User Similarity
-Estimated in: 44544 cases
+Using builder: User based recommender builder with user similarity: Sushi User Similarity with neighborhood: Nearest N User Neighborhood for N=40 with user similarity: Sushi User Similarity
+Estimated in: 45695 cases
 Not estimated in: 0 cases
-Score: 1.156187698467439
+Score: 1.1607584802587132
 Time: 17 seconds
 -------------------------
-Using builder: User based recommender builder with user similarity: MovieLens User Similarity with neighborhood: Nearest N User Neighborhood for N=45 with user similarity: MovieLens User Similarity
-Estimated in: 44951 cases
+Using builder: User based recommender builder with user similarity: Sushi User Similarity with neighborhood: Nearest N User Neighborhood for N=45 with user similarity: Sushi User Similarity
+Estimated in: 45374 cases
 Not estimated in: 0 cases
-Score: 1.1585066485154834
+Score: 1.1630286175057012
 Time: 17 seconds
 -------------------------
-Using builder: User based recommender builder with user similarity: MovieLens User Similarity with neighborhood: Nearest N User Neighborhood for N=50 with user similarity: MovieLens User Similarity
-Estimated in: 45417 cases
+Using builder: User based recommender builder with user similarity: Sushi User Similarity with neighborhood: Nearest N User Neighborhood for N=50 with user similarity: Sushi User Similarity
+Estimated in: 44392 cases
 Not estimated in: 0 cases
-Score: 1.1514114626662673
+Score: 1.1631262196878018
+Time: 16 seconds
+-------------------------
+Using builder: User based recommender builder with user similarity: Sushi User Similarity with neighborhood: Nearest N User Neighborhood for N=75 with user similarity: Sushi User Similarity
+Estimated in: 45345 cases
+Not estimated in: 0 cases
+Score: 1.1569220321192093
 Time: 17 seconds
 -------------------------
-Using builder: User based recommender builder with user similarity: Euclidian Distance Similarity with neighborhood: Nearest N User Neighborhood for N=5 with user similarity: Euclidian Distance Similarity
-Estimated in: 44239 cases
-Not estimated in: 9 cases
-Score: 1.268438290119445
-Time: 0 seconds
--------------------------
-Using builder: User based recommender builder with user similarity: Euclidian Distance Similarity with neighborhood: Nearest N User Neighborhood for N=10 with user similarity: Euclidian Distance Similarity
-Estimated in: 45078 cases
-Not estimated in: 11 cases
-Score: 1.2159637891918724
-Time: 0 seconds
--------------------------
-Using builder: User based recommender builder with user similarity: Euclidian Distance Similarity with neighborhood: Nearest N User Neighborhood for N=15 with user similarity: Euclidian Distance Similarity
-Estimated in: 44197 cases
-Not estimated in: 10 cases
-Score: 1.1965302224889274
-Time: 0 seconds
--------------------------
-Using builder: User based recommender builder with user similarity: Euclidian Distance Similarity with neighborhood: Nearest N User Neighborhood for N=20 with user similarity: Euclidian Distance Similarity
-Estimated in: 44933 cases
-Not estimated in: 13 cases
-Score: 1.1920588087868764
-Time: 0 seconds
--------------------------
-Using builder: User based recommender builder with user similarity: Euclidian Distance Similarity with neighborhood: Nearest N User Neighborhood for N=25 with user similarity: Euclidian Distance Similarity
-Estimated in: 44581 cases
-Not estimated in: 16 cases
-Score: 1.1912594092898932
-Time: 0 seconds
--------------------------
-Using builder: User based recommender builder with user similarity: Euclidian Distance Similarity with neighborhood: Nearest N User Neighborhood for N=30 with user similarity: Euclidian Distance Similarity
-Estimated in: 44519 cases
-Not estimated in: 15 cases
-Score: 1.182471238727438
-Time: 0 seconds
--------------------------
-Using builder: User based recommender builder with user similarity: Euclidian Distance Similarity with neighborhood: Nearest N User Neighborhood for N=35 with user similarity: Euclidian Distance Similarity
-Estimated in: 44594 cases
-Not estimated in: 14 cases
-Score: 1.1832313598885396
-Time: 0 seconds
--------------------------
-Using builder: User based recommender builder with user similarity: Euclidian Distance Similarity with neighborhood: Nearest N User Neighborhood for N=40 with user similarity: Euclidian Distance Similarity
-Estimated in: 45231 cases
-Not estimated in: 9 cases
-Score: 1.1736152052123747
-Time: 0 seconds
--------------------------
-Using builder: User based recommender builder with user similarity: Euclidian Distance Similarity with neighborhood: Nearest N User Neighborhood for N=45 with user similarity: Euclidian Distance Similarity
-Estimated in: 45284 cases
-Not estimated in: 10 cases
-Score: 1.179240420321864
-Time: 0 seconds
--------------------------
-Using builder: User based recommender builder with user similarity: Euclidian Distance Similarity with neighborhood: Nearest N User Neighborhood for N=50 with user similarity: Euclidian Distance Similarity
-Estimated in: 45047 cases
-Not estimated in: 13 cases
-Score: 1.1856973789145218
-Time: 0 seconds
+Using builder: User based recommender builder with user similarity: Sushi User Similarity with neighborhood: Nearest N User Neighborhood for N=100 with user similarity: Sushi User Similarity
+Estimated in: 45031 cases
+Not estimated in: 0 cases
+Score: 1.1592775397632609
+Time: 18 seconds
 -------------------------
