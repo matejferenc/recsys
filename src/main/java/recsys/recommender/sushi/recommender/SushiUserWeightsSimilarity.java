@@ -69,9 +69,9 @@ public class SushiUserWeightsSimilarity implements UserSimilarity {
 		// we need to divide by total weight
 		// double userSimilarity = (styleSimilarity + majorGroupSimilarity + minorGroupSimilarity + priceSimilarity) / 4;
 
-		double userSimilarity = (styleSimilarity + majorGroupSimilarity + minorGroupSimilarity + priceSimilarity + oilinessSimilarity) / 5;
+//		double userSimilarity = (styleSimilarity + majorGroupSimilarity + minorGroupSimilarity + priceSimilarity + oilinessSimilarity) / 5;
 
-		// double userSimilarity = (styleSimilarity + majorGroupSimilarity + minorGroupSimilarity) / 3;
+		 double userSimilarity = (styleSimilarity + majorGroupSimilarity + minorGroupSimilarity) / 3;
 
 		// correction for Taste framework (interface says the return value should be between -1 and +1,
 		// yet the computed similarity is between 0 and +1)
