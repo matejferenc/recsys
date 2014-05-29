@@ -12,8 +12,19 @@ import org.apache.mahout.cf.taste.model.DataModel;
 import recsys.dataset.SushiDataset;
 import recsys.dataset.SushiItemDataModelDataset;
 import recsys.recommender.sushi.model.SushiDataModel;
+import recsys.recommender.sushi.recommender.SushiCombinedGlobalClassificationRecommenderBuilder;
+import recsys.recommender.sushi.recommender.SushiGlobalClassificationRecommenderBuilder;
+import recsys.recommender.sushi.recommender.SushiGlobalNaiveBayesRecommenderBuilder;
 import recsys.recommender.sushi.recommender.SushiGlobalRandomForestRecommenderBuilder;
-import recsys.recommender.sushi.recommender.SushiRandomForestRecommenderBuilder;
+import recsys.recommender.sushi.recommender.SushiLocalClassificationRecommenderBuilder;
+import recsys.recommender.sushi.recommender.SushiLocalNaiveBayesRecommenderBuilder;
+import recsys.recommender.sushi.recommender.SushiLocalRandomForestRecommenderBuilder;
+import weka.classifiers.Classifier;
+import weka.classifiers.bayes.NaiveBayes;
+import weka.classifiers.functions.Logistic;
+import weka.classifiers.trees.J48;
+import weka.classifiers.trees.RandomForest;
+import weka.classifiers.trees.RandomTree;
 
 public class SushiEvaluator {
 
@@ -112,7 +123,22 @@ public class SushiEvaluator {
 		// builders.add(new ItemAverageRecommenderBuilder());
 		
 //		builders.add(new SushiRandomForestRecommenderBuilder(sushiDataModel));
-		builders.add(new SushiGlobalRandomForestRecommenderBuilder(sushiDataModel));
+//		builders.add(new SushiGlobalRandomForestRecommenderBuilder(sushiDataModel));//1.197
+//		builders.add(new SushiLocalRandomForestRecommenderBuilder(sushiDataModel));//1.278
+//		builders.add(new SushiGlobalNaiveBayesRecommenderBuilder(sushiDataModel));//1.241
+//		builders.add(new SushiLocalNaiveBayesRecommenderBuilder(sushiDataModel));//1.501
+//		builders.add(new SushiGlobalClassificationRecommenderBuilder(sushiDataModel) {public Classifier createClassifier() {return new J48();}});//1.211
+//		builders.add(new SushiGlobalClassificationRecommenderBuilder(sushiDataModel) {public Classifier createClassifier() {return new RandomTree();}});//1.199
+//		builders.add(new SushiGlobalClassificationRecommenderBuilder(sushiDataModel) {public Classifier createClassifier() {return new Logistic();}});//1.226
+//		builders.add(new SushiGlobalClassificationRecommenderBuilder(sushiDataModel) {public Classifier createClassifier() {return new NaiveBayes();}});//1.242
+//		builders.add(new SushiGlobalClassificationRecommenderBuilder(sushiDataModel) {public Classifier createClassifier() {return new RandomForest();}});//1.199
+		
+		builders.add(new SushiLocalClassificationRecommenderBuilder(sushiDataModel) {public Classifier createClassifier() {return new J48();}});//1.369
+		builders.add(new SushiLocalClassificationRecommenderBuilder(sushiDataModel) {public Classifier createClassifier() {return new RandomTree();}});//1.390
+		builders.add(new SushiLocalClassificationRecommenderBuilder(sushiDataModel) {public Classifier createClassifier() {return new Logistic();}});//1.530
+		builders.add(new SushiLocalClassificationRecommenderBuilder(sushiDataModel) {public Classifier createClassifier() {return new NaiveBayes();}});//1.503
+		builders.add(new SushiLocalClassificationRecommenderBuilder(sushiDataModel) {public Classifier createClassifier() {return new RandomForest();}});//1.276
+//		builders.add(new SushiCombinedGlobalClassificationRecommenderBuilder(sushiDataModel));
 
 		// builders.add(new SvdRecommenderBuilder(new SVDPlusPlusFactorizer(dataModel, 1, 10)));
 		// builders.add(new SvdRecommenderBuilder(new SVDPlusPlusFactorizer(dataModel, 2, 10)));
@@ -162,7 +188,7 @@ public class SushiEvaluator {
 		for (RecommenderBuilder builder : builders) {
 			Date start = new Date();
 
-			int repeats = 10;
+			int repeats = 100;
 			int totalEstimated = 0;
 			int totalNotEstimated = 0;
 			double totalEvaluationResult = 0;

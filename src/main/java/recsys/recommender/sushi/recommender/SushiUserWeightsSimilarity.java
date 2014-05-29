@@ -111,7 +111,7 @@ public class SushiUserWeightsSimilarity implements UserSimilarity {
 	}
 
 	private double calculateSimilarityFromVariances(double variance1, double variance2) {
-		// maximum of variance for random variable x in [0,4]
+		// maximum of variance for random variable x in [0,4] is 4
 		double maxVariance = 4;
 		double diff = Math.abs(variance1 - variance2) / maxVariance;
 		return 1 / (1 + diff);

@@ -8,13 +8,13 @@ import org.apache.mahout.cf.taste.recommender.Recommender;
 import recsys.recommender.sushi.model.SushiDataModel;
 import recsys.recommender.sushi.model.UserModel;
 import weka.classifiers.Classifier;
-import weka.classifiers.trees.RandomForest;
+import weka.classifiers.bayes.NaiveBayes;
 
-public class SushiGlobalRandomForestRecommenderBuilder implements RecommenderBuilder {
+public class SushiGlobalNaiveBayesRecommenderBuilder implements RecommenderBuilder {
 
 	private final SushiDataModel sushiDataModel;
 
-	public SushiGlobalRandomForestRecommenderBuilder(SushiDataModel sushiDataModel) {
+	public SushiGlobalNaiveBayesRecommenderBuilder(SushiDataModel sushiDataModel) {
 		this.sushiDataModel = sushiDataModel;
 	}
 
@@ -27,7 +27,10 @@ public class SushiGlobalRandomForestRecommenderBuilder implements RecommenderBui
 
 				@Override
 				public Classifier createClassifier() {
-					return new RandomForest();
+					return new NaiveBayes();
+//					return new J48();
+//					return new RandomTree();
+//					return new Logistic();
 				}
 				
 			};
@@ -38,7 +41,7 @@ public class SushiGlobalRandomForestRecommenderBuilder implements RecommenderBui
 
 	@Override
 	public String getName() {
-		return "Sushi Global Random Forest Recommender Builder";
+		return "Sushi Global Naive Bayes Recommender Builder";
 	}
 
 	@Override

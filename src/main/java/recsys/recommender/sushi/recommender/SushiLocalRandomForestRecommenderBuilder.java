@@ -10,11 +10,11 @@ import recsys.recommender.sushi.model.UserModel;
 import weka.classifiers.Classifier;
 import weka.classifiers.trees.RandomForest;
 
-public class SushiGlobalRandomForestRecommenderBuilder implements RecommenderBuilder {
+public class SushiLocalRandomForestRecommenderBuilder implements RecommenderBuilder {
 
 	private final SushiDataModel sushiDataModel;
 
-	public SushiGlobalRandomForestRecommenderBuilder(SushiDataModel sushiDataModel) {
+	public SushiLocalRandomForestRecommenderBuilder(SushiDataModel sushiDataModel) {
 		this.sushiDataModel = sushiDataModel;
 	}
 
@@ -23,7 +23,7 @@ public class SushiGlobalRandomForestRecommenderBuilder implements RecommenderBui
 		UserModelBuilder userModelBuilder = new UserModelBuilder(dataModel, sushiDataModel);
 		UserModel userModel = userModelBuilder.build();
 		try {
-			return new SushiGlobalClassificationRecommender(dataModel, userModel, sushiDataModel){
+			return new SushiLocalClassificationRecommender(dataModel, userModel, sushiDataModel){
 
 				@Override
 				public Classifier createClassifier() {
@@ -38,7 +38,7 @@ public class SushiGlobalRandomForestRecommenderBuilder implements RecommenderBui
 
 	@Override
 	public String getName() {
-		return "Sushi Global Random Forest Recommender Builder";
+		return "Sushi Local Random Forest Recommender Builder";
 	}
 
 	@Override

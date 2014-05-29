@@ -18,7 +18,6 @@ import recsys.recommender.sushi.SushiPiece;
 import recsys.recommender.sushi.model.SushiDataModel;
 import recsys.recommender.sushi.model.UserModel;
 import weka.classifiers.Classifier;
-import weka.classifiers.trees.RandomForest;
 import weka.core.Attribute;
 import weka.core.FastVector;
 import weka.core.Instance;
@@ -26,14 +25,14 @@ import weka.core.Instances;
 
 import com.google.common.base.Preconditions;
 
-public class SushiRandomForestRecommender implements Recommender {
+public abstract class SushiClassificationRecommender implements Recommender {
 
-	private final DataModel dataModel;
+	protected final DataModel dataModel;
 	private final UserModel userModel;
 	private final SushiDataModel sushiDataModel;
 
-	private static final Logger log = LoggerFactory.getLogger(SushiRandomForestRecommender.class);
-	private FastVector attributes;
+	private static final Logger log = LoggerFactory.getLogger(SushiClassificationRecommender.class);
+	protected FastVector attributes;
 	private Attribute styleAttribute;
 	private Attribute majorGroupAttribute;
 	private Attribute minorGroupAttribute;
@@ -41,11 +40,25 @@ public class SushiRandomForestRecommender implements Recommender {
 	private Attribute oilinessAttribute;
 	private Attribute ratingAttribute;
 
-	public SushiRandomForestRecommender(DataModel dataModel, UserModel userModel, SushiDataModel sushiDataModel) {
+	public SushiClassificationRecommender(DataModel dataModel, UserModel userModel, SushiDataModel sushiDataModel) throws Exception {
 		this.dataModel = dataModel;
 		this.userModel = userModel;
 		this.sushiDataModel = sushiDataModel;
 		attributes = createAttributes();
+	}
+
+
+	protected double getModelResult(Instance testInstance, Classifier classifier) throws Exception {
+		double[] classificationResult = classifier.distributionForInstance(testInstance);
+
+		double sumOfEstimates = 0;
+		double sumOfProbabilities = 0;
+		for (int i = 0; i < classificationResult.length; i++) {
+			sumOfEstimates += classificationResult[i] * i;
+			sumOfProbabilities += classificationResult[i];
+		}
+		double resultEstimate = sumOfEstimates / sumOfProbabilities;
+		return resultEstimate;
 	}
 
 	@Override
@@ -62,39 +75,16 @@ public class SushiRandomForestRecommender implements Recommender {
 		return null;
 	}
 
-	@Override
-	public float estimatePreference(long userID, long itemID) throws TasteException {
-		try {
-			PreferenceArray preferencesFromUser = dataModel.getPreferencesFromUser(userID);
-
-			Classifier classifier = new RandomForest();
-
-			Instances trainingSet = new Instances("a", attributes, preferencesFromUser.length());
-			// Set class index
-			trainingSet.setClassIndex(5);
-
-			fillTrainingSet(userID, trainingSet);
-
-			classifier.buildClassifier(trainingSet);
-
-			Instance testInstance = fillTestSet(itemID, trainingSet);
-
-			double[] classificationResult = classifier.distributionForInstance(testInstance);
-
-			double sumOfEstimates = 0;
-			double sumOfProbabilities = 0;
-			for (int i = 0; i < classificationResult.length; i++) {
-				sumOfEstimates += classificationResult[i] * i;
-				sumOfProbabilities += classificationResult[i];
-			}
-			double resultEstimate = sumOfEstimates / sumOfProbabilities;
-			return (float) resultEstimate;
-		} catch (Exception e) {
-			throw new TasteException(e);
-		}
+	protected Instances trainLocalModel(PreferenceArray preferencesFromUser, Classifier localClassifier) throws TasteException, Exception {
+		Instances localTrainingSet = new Instances("a", attributes, preferencesFromUser.length());
+		// Set class index
+		localTrainingSet.setClassIndex(5);
+		fillTrainingSet(preferencesFromUser, localTrainingSet);
+		localClassifier.buildClassifier(localTrainingSet);
+		return localTrainingSet;
 	}
 
-	private Instance fillTestSet(long itemID, Instances trainingSet) {
+	protected Instance fillTestSet(long itemID, Instances trainingSet) {
 		SushiPiece sushiPiece = sushiDataModel.getSushiPiece((int) itemID);
 
 		// Create the instance
@@ -109,8 +99,7 @@ public class SushiRandomForestRecommender implements Recommender {
 		return instance;
 	}
 
-	private void fillTrainingSet(long userID, Instances trainingSet) throws TasteException {
-		PreferenceArray preferencesFromUser = dataModel.getPreferencesFromUser(userID);
+	protected void fillTrainingSet(PreferenceArray preferencesFromUser, Instances trainingSet) throws TasteException {
 		for (Preference preference : preferencesFromUser) {
 			long itemID = preference.getItemID();
 			SushiPiece sushiPiece = sushiDataModel.getSushiPiece((int) itemID);
