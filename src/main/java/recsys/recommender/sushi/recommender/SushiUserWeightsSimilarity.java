@@ -17,9 +17,13 @@ import recsys.recommender.sushi.model.UserModel;
 
 public class SushiUserWeightsSimilarity implements UserSimilarity {
 
+	private static final int maxRating = 4;
+
 	private final UserModel userModel;
 
 	private Map<Pair<Long, Long>, Double> cache;
+
+	private static final double maxVariance = 4;
 
 
 	public SushiUserWeightsSimilarity(UserModel userModel) {
@@ -83,13 +87,13 @@ public class SushiUserWeightsSimilarity implements UserSimilarity {
 	private double calculatePriceSimilarity(User user1, User user2) {
 		double variance1 = user1.getPricePreferences().getVariance();
 		double variance2 = user2.getPricePreferences().getVariance();
-		return calculateSimilarityFromVariances(variance1, variance2);
+		return calculateSimilarityFromWeights(variance1, variance2);
 	}
 
 	private double calculateOilinessSimilarity(User user1, User user2) {
 		double variance1 = user1.getOilinessPreferences().getVariance();
 		double variance2 = user2.getOilinessPreferences().getVariance();
-		return calculateSimilarityFromVariances(variance1, variance2);
+		return calculateSimilarityFromWeights(variance1, variance2);
 	}
 
 	private double calculateStyleSimilarity(User user1, User user2) {
@@ -105,26 +109,24 @@ public class SushiUserWeightsSimilarity implements UserSimilarity {
 	}
 
 	private double calculatePropertySetSimilarity(SetPreference set1, SetPreference set2) {
-		double variance1 = calculatePropertySetVariance(set1);
-		double variance2 = calculatePropertySetVariance(set2);
-		return calculateSimilarityFromVariances(variance1, variance2);
+		double weight1 = calculatePropertySetWeight(set1);
+		double weight2 = calculatePropertySetWeight(set2);
+		return calculateSimilarityFromWeights(weight1, weight2);
 	}
 
-	private double calculateSimilarityFromVariances(double variance1, double variance2) {
-		// maximum of variance for random variable x in [0,4] is 4
-		double maxVariance = 4;
-		double diff = Math.abs(variance1 - variance2) / maxVariance;
+	private double calculateSimilarityFromWeights(double weight1, double weight2) {
+		double diff = Math.abs(weight1 - weight2) / maxVariance;
 		return 1 / (1 + diff);
 	}
 
-	private double calculatePropertySetVariance(SetPreference set) {
+	private double calculatePropertySetWeight(SetPreference set) {
 		Set<Integer> allPropertyIds = set.getAllPropertyIds();
 		double accumulatedVariance = 0;
 		for (Integer propertyId : allPropertyIds) {
-			double propertyVariance = set.getPropertyVariance(propertyId);
+			double propertyVariance = set.getPropertyVariance(propertyId) * set.getPropertyAverage(propertyId);
 			accumulatedVariance += propertyVariance;
 		}
-		return accumulatedVariance / allPropertyIds.size();
+		return accumulatedVariance / (allPropertyIds.size() * maxRating);
 	}
 
 	@Override

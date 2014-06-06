@@ -87,7 +87,7 @@ public class SushiContentBasedRecommender implements Recommender {
 	private double calculatePreference(int itemAttribute, SetPreference attributePreferences) {
 		Set<Integer> allPropertyIds = attributePreferences.getAllPropertyIds();
 		if (allPropertyIds.contains(itemAttribute)) {
-			return attributePreferences.getPropertyPreference(itemAttribute);
+			return attributePreferences.getPropertyAverage(itemAttribute);
 		} else
 			return 0;
 	}

@@ -71,9 +71,9 @@ public class SushiUserSimilarity implements UserSimilarity {
 		double eastWest15Similarity = calculateEastWest15Similarity(user1, user2);
 		double eastWestCurrentSimilarity = calculateEastWestCurrentSimilarity(user1, user2);
 
-		 double userSimilarity = (genderSimilarity + ageSimilarity + region15Similarity + regionCurrentSimilarity + prefecture15Similarity + prefectureCurrentSimilarity + eastWest15Similarity +
-		 eastWestCurrentSimilarity
-		 + styleSimilarity + majorGroupSimilarity + minorGroupSimilarity + oilinessSimilarity + priceSimilarity) / 13;
+//		 double userSimilarity = (genderSimilarity + ageSimilarity + region15Similarity + regionCurrentSimilarity + prefecture15Similarity + prefectureCurrentSimilarity + eastWest15Similarity +
+//		 eastWestCurrentSimilarity
+//		 + styleSimilarity + majorGroupSimilarity + minorGroupSimilarity + oilinessSimilarity + priceSimilarity) / 13;
 
 //		double userSimilarity = minorGroupSimilarity;
 		
@@ -84,8 +84,10 @@ public class SushiUserSimilarity implements UserSimilarity {
 		// every partial similarity has the same weight: 1
 		// we need to divide by total weight
 //		 double userSimilarity = (styleSimilarity + majorGroupSimilarity + minorGroupSimilarity + priceSimilarity) / 4;
+		
+//		double userSimilarity = (styleSimilarity + majorGroupSimilarity + minorGroupSimilarity + oilinessSimilarity) / 4;
 
-		// double userSimilarity = (styleSimilarity + majorGroupSimilarity + minorGroupSimilarity) / 3;
+		 double userSimilarity = (styleSimilarity + majorGroupSimilarity + minorGroupSimilarity) / 3;
 
 		// correction for Taste framework (interface says the return value should be between -1 and +1,
 		// yet the computed similarity is between 0 and +1)
@@ -162,8 +164,8 @@ public class SushiUserSimilarity implements UserSimilarity {
 		List<Double> user1Preferences = new ArrayList<>();
 		List<Double> user2Preferences = new ArrayList<>();
 		for (Integer propertyId : commonPropertyIds) {
-			user1Preferences.add(set1.getPropertyPreference(propertyId));
-			user2Preferences.add(set2.getPropertyPreference(propertyId));
+			user1Preferences.add(set1.getPropertyAverage(propertyId));
+			user2Preferences.add(set2.getPropertyAverage(propertyId));
 		}
 		return calculateCommonPropertiesSimilarity(user1Preferences, user2Preferences);
 	}

@@ -5,26 +5,16 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.mahout.cf.taste.eval.RecommenderBuilder;
-import org.apache.mahout.cf.taste.impl.eval.AbstractDifferenceRecommenderEvaluator;
-import org.apache.mahout.cf.taste.impl.eval.RMSRecommenderEvaluator;
 import org.apache.mahout.cf.taste.model.DataModel;
 
 import recsys.dataset.SushiDataset;
 import recsys.dataset.SushiItemDataModelDataset;
+import recsys.evaluator.AbstractDifferenceRecommenderCrossEvaluator;
+import recsys.evaluator.RMSRecommenderCrossEvaluator;
+import recsys.evaluator.builder.EuclideanDistanceUserSimilarityBuilder;
+import recsys.evaluator.builder.NearestNUserNeighborhoodBuilder;
 import recsys.recommender.sushi.model.SushiDataModel;
-import recsys.recommender.sushi.recommender.SushiCombinedGlobalClassificationRecommenderBuilder;
-import recsys.recommender.sushi.recommender.SushiGlobalClassificationRecommenderBuilder;
-import recsys.recommender.sushi.recommender.SushiGlobalNaiveBayesRecommenderBuilder;
-import recsys.recommender.sushi.recommender.SushiGlobalRandomForestRecommenderBuilder;
-import recsys.recommender.sushi.recommender.SushiLocalClassificationRecommenderBuilder;
-import recsys.recommender.sushi.recommender.SushiLocalNaiveBayesRecommenderBuilder;
-import recsys.recommender.sushi.recommender.SushiLocalRandomForestRecommenderBuilder;
-import weka.classifiers.Classifier;
-import weka.classifiers.bayes.NaiveBayes;
-import weka.classifiers.functions.Logistic;
-import weka.classifiers.trees.J48;
-import weka.classifiers.trees.RandomForest;
-import weka.classifiers.trees.RandomTree;
+import recsys.userBased.UserBasedRecommenderBuilder;
 
 public class SushiEvaluator {
 
@@ -39,9 +29,9 @@ public class SushiEvaluator {
 		List<RecommenderBuilder> builders = new ArrayList<>();
 
 		SushiDataModel sushiDataModel = new SushiItemDataModelDataset().build();
-//		UserSimilarityBuilder sushiUserSimilarityBuilder = new SushiUserSimilarityBuilder(sushiDataModel);
+//		 UserSimilarityBuilder sushiUserSimilarityBuilder = new SushiUserSimilarityBuilder(sushiDataModel);
 //		UserSimilarityBuilder sushiUserSimilarityBuilder = new SushiUserWeightsSimilarityBuilder(sushiDataModel);
-//		UserSimilarityBuilder sushiUserSimilarityBuilder = new SushiUserWeightedSimilarityBuilder(sushiDataModel);
+		// UserSimilarityBuilder sushiUserSimilarityBuilder = new SushiUserWeightedSimilarityBuilder(sushiDataModel);
 
 //		builders.add(new UserBasedRecommenderBuilder(sushiUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(5)));
 //		builders.add(new UserBasedRecommenderBuilder(sushiUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(10)));
@@ -56,37 +46,37 @@ public class SushiEvaluator {
 //		builders.add(new UserBasedRecommenderBuilder(sushiUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(75)));
 //		builders.add(new UserBasedRecommenderBuilder(sushiUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(100)));
 
-		// EuclideanDistanceUserSimilarityBuilder euclideanDistanceUserSimilarityBuilder = new EuclideanDistanceUserSimilarityBuilder();
+		 EuclideanDistanceUserSimilarityBuilder euclideanDistanceUserSimilarityBuilder = new EuclideanDistanceUserSimilarityBuilder();
 		// TrueEuclideanDistanceUserSimilarityBuilder euclideanDistanceUserSimilarityBuilder = new TrueEuclideanDistanceUserSimilarityBuilder();
 		//
-		// builders.add(new UserBasedRecommenderBuilder(euclideanDistanceUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(5)));
-		// builders.add(new UserBasedRecommenderBuilder(euclideanDistanceUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(10)));
-		// builders.add(new UserBasedRecommenderBuilder(euclideanDistanceUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(15)));
-		// builders.add(new UserBasedRecommenderBuilder(euclideanDistanceUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(20)));
-		// builders.add(new UserBasedRecommenderBuilder(euclideanDistanceUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(25)));
-		// builders.add(new UserBasedRecommenderBuilder(euclideanDistanceUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(30)));
-		// builders.add(new UserBasedRecommenderBuilder(euclideanDistanceUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(35)));
-		// builders.add(new UserBasedRecommenderBuilder(euclideanDistanceUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(40)));
-		// builders.add(new UserBasedRecommenderBuilder(euclideanDistanceUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(45)));
-		// builders.add(new UserBasedRecommenderBuilder(euclideanDistanceUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(50)));
+		 builders.add(new UserBasedRecommenderBuilder(euclideanDistanceUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(5)));
+		 builders.add(new UserBasedRecommenderBuilder(euclideanDistanceUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(10)));
+		 builders.add(new UserBasedRecommenderBuilder(euclideanDistanceUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(15)));
+		 builders.add(new UserBasedRecommenderBuilder(euclideanDistanceUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(20)));
+		 builders.add(new UserBasedRecommenderBuilder(euclideanDistanceUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(25)));
+		 builders.add(new UserBasedRecommenderBuilder(euclideanDistanceUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(30)));
+		 builders.add(new UserBasedRecommenderBuilder(euclideanDistanceUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(35)));
+		 builders.add(new UserBasedRecommenderBuilder(euclideanDistanceUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(40)));
+		 builders.add(new UserBasedRecommenderBuilder(euclideanDistanceUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(45)));
+		 builders.add(new UserBasedRecommenderBuilder(euclideanDistanceUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(50)));
 		// builders.add(new UserBasedRecommenderBuilder(euclideanDistanceUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(60)));
 		// builders.add(new UserBasedRecommenderBuilder(euclideanDistanceUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(70)));
 		// builders.add(new UserBasedRecommenderBuilder(euclideanDistanceUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(80)));
 		// builders.add(new UserBasedRecommenderBuilder(euclideanDistanceUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(90)));
 		// builders.add(new UserBasedRecommenderBuilder(euclideanDistanceUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(100)));
 
-//		 PearsonCorrelationUserSimilarityBuilder pearsonCorrelationUserSimilarityBuilder = new PearsonCorrelationUserSimilarityBuilder();
-//		
-//		 builders.add(new UserBasedRecommenderBuilder(pearsonCorrelationUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(5)));
-//		 builders.add(new UserBasedRecommenderBuilder(pearsonCorrelationUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(10)));
-//		 builders.add(new UserBasedRecommenderBuilder(pearsonCorrelationUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(15)));
-//		 builders.add(new UserBasedRecommenderBuilder(pearsonCorrelationUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(20)));
-//		 builders.add(new UserBasedRecommenderBuilder(pearsonCorrelationUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(25)));
-//		 builders.add(new UserBasedRecommenderBuilder(pearsonCorrelationUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(30)));
-//		 builders.add(new UserBasedRecommenderBuilder(pearsonCorrelationUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(35)));
-//		 builders.add(new UserBasedRecommenderBuilder(pearsonCorrelationUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(40)));
-//		 builders.add(new UserBasedRecommenderBuilder(pearsonCorrelationUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(45)));
-//		 builders.add(new UserBasedRecommenderBuilder(pearsonCorrelationUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(50)));
+		// PearsonCorrelationUserSimilarityBuilder pearsonCorrelationUserSimilarityBuilder = new PearsonCorrelationUserSimilarityBuilder();
+		// ////
+		// builders.add(new UserBasedRecommenderBuilder(pearsonCorrelationUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(5)));
+		// builders.add(new UserBasedRecommenderBuilder(pearsonCorrelationUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(10)));
+		// builders.add(new UserBasedRecommenderBuilder(pearsonCorrelationUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(15)));
+		// builders.add(new UserBasedRecommenderBuilder(pearsonCorrelationUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(20)));
+		// builders.add(new UserBasedRecommenderBuilder(pearsonCorrelationUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(25)));
+		// builders.add(new UserBasedRecommenderBuilder(pearsonCorrelationUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(30)));
+		// builders.add(new UserBasedRecommenderBuilder(pearsonCorrelationUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(35)));
+		// builders.add(new UserBasedRecommenderBuilder(pearsonCorrelationUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(40)));
+		// builders.add(new UserBasedRecommenderBuilder(pearsonCorrelationUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(45)));
+		// builders.add(new UserBasedRecommenderBuilder(pearsonCorrelationUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(50)));
 		// builders.add(new UserBasedRecommenderBuilder(pearsonCorrelationUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(60)));
 		// builders.add(new UserBasedRecommenderBuilder(pearsonCorrelationUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(70)));
 		// builders.add(new UserBasedRecommenderBuilder(pearsonCorrelationUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(80)));
@@ -116,29 +106,35 @@ public class SushiEvaluator {
 		// EuclideanDistanceItemSimilarityBuilder euclideanDistanceItemSimilarityBuilder = new EuclideanDistanceItemSimilarityBuilder();
 		// builders.add(new ItemBasedRecommenderBuilder(euclideanDistanceItemSimilarityBuilder));
 		//
+		// PearsonCorrelationItemSimilarityBuilder pearsonCorrelationItemSimilarityBuilder = new PearsonCorrelationItemSimilarityBuilder();
+		// builders.add(new ItemBasedRecommenderBuilder(pearsonCorrelationItemSimilarityBuilder));
+		// //
 		// SushiItemSimilarityBuilder sushiItemSimilarityBuilder = new SushiItemSimilarityBuilder(sushiDataModel);
 		// builders.add(new ItemBasedRecommenderBuilder(sushiItemSimilarityBuilder));
 
 		// builders.add(new UserAverageRecommenderBuilder());
 		// builders.add(new ItemAverageRecommenderBuilder());
-		
-//		builders.add(new SushiRandomForestRecommenderBuilder(sushiDataModel));
-//		builders.add(new SushiGlobalRandomForestRecommenderBuilder(sushiDataModel));//1.197
-//		builders.add(new SushiLocalRandomForestRecommenderBuilder(sushiDataModel));//1.278
-//		builders.add(new SushiGlobalNaiveBayesRecommenderBuilder(sushiDataModel));//1.241
-//		builders.add(new SushiLocalNaiveBayesRecommenderBuilder(sushiDataModel));//1.501
-//		builders.add(new SushiGlobalClassificationRecommenderBuilder(sushiDataModel) {public Classifier createClassifier() {return new J48();}});//1.211
-//		builders.add(new SushiGlobalClassificationRecommenderBuilder(sushiDataModel) {public Classifier createClassifier() {return new RandomTree();}});//1.199
-//		builders.add(new SushiGlobalClassificationRecommenderBuilder(sushiDataModel) {public Classifier createClassifier() {return new Logistic();}});//1.226
-//		builders.add(new SushiGlobalClassificationRecommenderBuilder(sushiDataModel) {public Classifier createClassifier() {return new NaiveBayes();}});//1.242
-//		builders.add(new SushiGlobalClassificationRecommenderBuilder(sushiDataModel) {public Classifier createClassifier() {return new RandomForest();}});//1.199
-		
-		builders.add(new SushiLocalClassificationRecommenderBuilder(sushiDataModel) {public Classifier createClassifier() {return new J48();}});//1.369
-		builders.add(new SushiLocalClassificationRecommenderBuilder(sushiDataModel) {public Classifier createClassifier() {return new RandomTree();}});//1.390
-		builders.add(new SushiLocalClassificationRecommenderBuilder(sushiDataModel) {public Classifier createClassifier() {return new Logistic();}});//1.530
-		builders.add(new SushiLocalClassificationRecommenderBuilder(sushiDataModel) {public Classifier createClassifier() {return new NaiveBayes();}});//1.503
-		builders.add(new SushiLocalClassificationRecommenderBuilder(sushiDataModel) {public Classifier createClassifier() {return new RandomForest();}});//1.276
-//		builders.add(new SushiCombinedGlobalClassificationRecommenderBuilder(sushiDataModel));
+
+		// builders.add(new SushiGlobalClassificationRecommenderBuilder(sushiDataModel) {public Classifier createClassifier() {return new J48();}});//1.211
+		// builders.add(new SushiGlobalClassificationRecommenderBuilder(sushiDataModel) {public Classifier createClassifier() {return new RandomTree();}});//1.199
+		// builders.add(new SushiGlobalClassificationRecommenderBuilder(sushiDataModel) {public Classifier createClassifier() {return new Logistic();}});//1.226
+		// builders.add(new SushiGlobalClassificationRecommenderBuilder(sushiDataModel) {public Classifier createClassifier() {return new NaiveBayes();}});//1.242
+		// builders.add(new SushiGlobalClassificationRecommenderBuilder(sushiDataModel) {public Classifier createClassifier() {return new RandomForest();}});//1.199
+
+		// builders.add(new SushiLocalClassificationRecommenderBuilder(sushiDataModel) {public Classifier createClassifier() {return new J48();}});//1.369
+		// builders.add(new SushiLocalClassificationRecommenderBuilder(sushiDataModel) {public Classifier createClassifier() {return new RandomTree();}});//1.390
+		// builders.add(new SushiLocalClassificationRecommenderBuilder(sushiDataModel) {public Classifier createClassifier() {return new Logistic();}});//1.530
+		// builders.add(new SushiLocalClassificationRecommenderBuilder(sushiDataModel) {public Classifier createClassifier() {return new NaiveBayes();}});//1.503
+		// builders.add(new SushiLocalClassificationRecommenderBuilder(sushiDataModel) {public Classifier createClassifier() {return new RandomForest();}});//1.276
+		// builders.add(new SushiCombinedGlobalClassificationRecommenderBuilder(sushiDataModel));
+
+		// builders.add(new SushiGlobalAndLocalClassificationRecommenderBuilder(sushiDataModel) {public Classifier createClassifier() {return new RandomForest();}});
+
+		// builders.add(new SushiAndUserClassificationRecommenderBuilder(sushiDataModel) {public Classifier createClassifier() {return new J48();}});//1.207
+		// builders.add(new SushiAndUserClassificationRecommenderBuilder(sushiDataModel) {public Classifier createClassifier() {return new RandomTree();}});//1.246
+		// builders.add(new SushiAndUserClassificationRecommenderBuilder(sushiDataModel) {public Classifier createClassifier() {return new Logistic();}});//1.234
+		// builders.add(new SushiAndUserClassificationRecommenderBuilder(sushiDataModel) {public Classifier createClassifier() {return new NaiveBayes();}});//1.239
+		// builders.add(new SushiAndUserClassificationRecommenderBuilder(sushiDataModel) {public Classifier createClassifier() {return new RandomForest();}});//1.172
 
 		// builders.add(new SvdRecommenderBuilder(new SVDPlusPlusFactorizer(dataModel, 1, 10)));
 		// builders.add(new SvdRecommenderBuilder(new SVDPlusPlusFactorizer(dataModel, 2, 10)));
@@ -179,30 +175,22 @@ public class SushiEvaluator {
 		sb.append("\n");
 
 		double trainingPercentage = 0.7;
-		double evaluationPercentage = 0.3;
+//		double evaluationPercentage = 0.3;
 		sb.append("Training percentage: " + trainingPercentage);
 		sb.append("\n");
-		sb.append("Evaluation percentage: " + evaluationPercentage);
-		sb.append("\n");
+//		sb.append("Evaluation percentage: " + evaluationPercentage);
+//		sb.append("\n");
 
 		for (RecommenderBuilder builder : builders) {
 			Date start = new Date();
 
-			int repeats = 100;
-			int totalEstimated = 0;
-			int totalNotEstimated = 0;
-			double totalEvaluationResult = 0;
 
-			for (int i = 0; i < repeats; i++) {
-				// RecommenderEvaluator e = new AverageAbsoluteDifferenceRecommenderEvaluator();
-				AbstractDifferenceRecommenderEvaluator e = new RMSRecommenderEvaluator();
-				// AbstractDifferenceRecommenderEvaluator e = new TopHalfRMSRecommenderEvaluator(dataModel);
-				double evaluate = e.evaluate(builder, null, dataModel, trainingPercentage, evaluationPercentage);
-				totalEvaluationResult += evaluate;
+			AbstractDifferenceRecommenderCrossEvaluator e = new RMSRecommenderCrossEvaluator();
+			List<Double> evaluate = e.evaluate(builder, dataModel, trainingPercentage);
 
-				totalEstimated += e.getEstimateCounter().intValue();
-				totalNotEstimated += e.getNoEstimateCounter().intValue();
-			}
+			int totalEstimated = e.getEstimateCounter().intValue();
+			int totalNotEstimated = e.getNoEstimateCounter().intValue();
+
 			Date end = new Date();
 
 			sb.append("Using builder: " + builder.getName());
@@ -211,7 +199,7 @@ public class SushiEvaluator {
 			sb.append("\n");
 			sb.append("Not estimated in: " + totalNotEstimated + " cases");
 			sb.append("\n");
-			sb.append("Score: " + totalEvaluationResult / repeats);
+			sb.append("Score: " + listToString(evaluate));
 			sb.append("\n");
 			sb.append("Time: " + (end.getTime() - start.getTime()) / 1000 + " seconds");
 			sb.append("\n");
@@ -221,5 +209,13 @@ public class SushiEvaluator {
 		}
 
 		System.out.println(sb.toString());
+	}
+
+	private String listToString(List<Double> evaluate) {
+		String s = "";
+		for (Double double1 : evaluate) {
+			s += double1 + ", ";
+		}
+		return s;
 	}
 }

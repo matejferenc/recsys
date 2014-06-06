@@ -118,8 +118,8 @@ public class SushiUserWeightedSimilarity implements UserSimilarity {
 		List<Double> user1Preferences = new ArrayList<>();
 		List<Double> user2Preferences = new ArrayList<>();
 		for (Integer propertyId : commonPropertyIds) {
-			user1Preferences.add(set1.getPropertyPreference(propertyId));
-			user2Preferences.add(set2.getPropertyPreference(propertyId));
+			user1Preferences.add(set1.getPropertyAverage(propertyId));
+			user2Preferences.add(set2.getPropertyAverage(propertyId));
 		}
 		return calculateCommonPropertiesSimilarity(user1Preferences, user2Preferences);
 	}

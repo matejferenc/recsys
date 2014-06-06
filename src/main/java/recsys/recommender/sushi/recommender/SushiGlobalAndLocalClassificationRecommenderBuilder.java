@@ -8,29 +8,27 @@ import org.apache.mahout.cf.taste.recommender.Recommender;
 import recsys.recommender.sushi.model.SushiDataModel;
 import recsys.recommender.sushi.model.UserModel;
 import weka.classifiers.Classifier;
-import weka.classifiers.bayes.NaiveBayes;
 
-public class SushiGlobalNaiveBayesRecommenderBuilder implements RecommenderBuilder {
+public abstract class SushiGlobalAndLocalClassificationRecommenderBuilder implements RecommenderBuilder {
 
 	private final SushiDataModel sushiDataModel;
 
-	public SushiGlobalNaiveBayesRecommenderBuilder(SushiDataModel sushiDataModel) {
+	public SushiGlobalAndLocalClassificationRecommenderBuilder(SushiDataModel sushiDataModel) {
 		this.sushiDataModel = sushiDataModel;
 	}
+	
+	abstract public Classifier createClassifier();
 
 	@Override
 	public Recommender buildRecommender(DataModel dataModel) throws TasteException {
 		UserModelBuilder userModelBuilder = new UserModelBuilder(dataModel, sushiDataModel);
 		UserModel userModel = userModelBuilder.build();
 		try {
-			return new SushiGlobalClassificationRecommender(dataModel, userModel, sushiDataModel){
+			return new SushiGlobalAndLocalClassificationRecommender(dataModel, userModel, sushiDataModel){
 
 				@Override
 				public Classifier createClassifier() {
-					return new NaiveBayes();
-//					return new J48();
-//					return new RandomTree();
-//					return new Logistic();
+					return SushiGlobalAndLocalClassificationRecommenderBuilder.this.createClassifier();
 				}
 				
 			};
@@ -41,7 +39,7 @@ public class SushiGlobalNaiveBayesRecommenderBuilder implements RecommenderBuild
 
 	@Override
 	public String getName() {
-		return "Sushi Global Naive Bayes Recommender Builder";
+		return "Sushi Global Random Forest Recommender Builder";
 	}
 
 	@Override

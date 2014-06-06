@@ -92,7 +92,7 @@ public class SetPreference {
 	 * @param propertyId
 	 * @return
 	 */
-	public double getPropertyPreference(int propertyId) {
+	public double getPropertyAverage(int propertyId) {
 		ItemPreference itemPreference = propertyPreferences.get(propertyId);
 		return itemPreference.getAveragePreference();
 	}

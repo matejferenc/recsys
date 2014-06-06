@@ -116,7 +116,7 @@ public class MovieLensContentBasedRecommender implements Recommender {
 		Set<Integer> commonPropertyIds = getCommonPropertyIds(itemImdbGenres, allPropertyIds);
 		double totalPreference = 0;
 		for (Integer propertyId : commonPropertyIds) {
-			double propertyPreference = genrePreferences.getPropertyPreference(propertyId);
+			double propertyPreference = genrePreferences.getPropertyAverage(propertyId);
 			totalPreference += propertyPreference;
 		}
 		if (commonPropertyIds.size() == 0) {

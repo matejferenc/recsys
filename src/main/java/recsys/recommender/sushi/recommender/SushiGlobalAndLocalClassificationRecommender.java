@@ -5,15 +5,10 @@ import org.apache.mahout.cf.taste.model.DataModel;
 
 import recsys.recommender.sushi.model.SushiDataModel;
 import recsys.recommender.sushi.model.UserModel;
-import weka.classifiers.Classifier;
-import weka.core.Instances;
 
-public abstract class SushiGlobalClassificationRecommender extends SushiClassificationRecommender {
+public abstract class SushiGlobalAndLocalClassificationRecommender extends SushiClassificationRecommender {
 
-	protected Instances globalTrainingSet;
-	protected Classifier globalClassifier;
-
-	public SushiGlobalClassificationRecommender(DataModel dataModel, UserModel userModel, SushiDataModel sushiDataModel) throws Exception {
+	public SushiGlobalAndLocalClassificationRecommender(DataModel dataModel, UserModel userModel, SushiDataModel sushiDataModel) throws Exception {
 		super(dataModel, userModel, sushiDataModel);
 		trainGlobalModel();
 	}
@@ -23,7 +18,9 @@ public abstract class SushiGlobalClassificationRecommender extends SushiClassifi
 		try {
 			double globalResult = getGlobalResult(userID, itemID);
 
-			return (float) globalResult;
+			double localResult = getLocalResult(userID, itemID);
+
+			return (float) (globalResult + localResult) / 2;
 		} catch (Exception e) {
 			throw new TasteException(e);
 		}

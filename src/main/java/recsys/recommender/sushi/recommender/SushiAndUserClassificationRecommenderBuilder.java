@@ -8,28 +8,29 @@ import org.apache.mahout.cf.taste.recommender.Recommender;
 import recsys.recommender.sushi.model.SushiDataModel;
 import recsys.recommender.sushi.model.UserModel;
 import weka.classifiers.Classifier;
-import weka.classifiers.trees.RandomForest;
 
-public class SushiGlobalRandomForestRecommenderBuilder implements RecommenderBuilder {
+public abstract class SushiAndUserClassificationRecommenderBuilder implements RecommenderBuilder {
 
 	private final SushiDataModel sushiDataModel;
 
-	public SushiGlobalRandomForestRecommenderBuilder(SushiDataModel sushiDataModel) {
+	public SushiAndUserClassificationRecommenderBuilder(SushiDataModel sushiDataModel) {
 		this.sushiDataModel = sushiDataModel;
 	}
+	
+	abstract public Classifier createClassifier();
 
 	@Override
 	public Recommender buildRecommender(DataModel dataModel) throws TasteException {
 		UserModelBuilder userModelBuilder = new UserModelBuilder(dataModel, sushiDataModel);
 		UserModel userModel = userModelBuilder.build();
 		try {
-			return new SushiGlobalClassificationRecommender(dataModel, userModel, sushiDataModel){
+			return new SushiAndUserClassificationRecommender(dataModel, userModel, sushiDataModel){
 
 				@Override
 				public Classifier createClassifier() {
-					return new RandomForest();
+					return SushiAndUserClassificationRecommenderBuilder.this.createClassifier();
 				}
-				
+
 			};
 		} catch (Exception e) {
 			throw new TasteException(e);
@@ -38,7 +39,7 @@ public class SushiGlobalRandomForestRecommenderBuilder implements RecommenderBui
 
 	@Override
 	public String getName() {
-		return "Sushi Global Random Forest Recommender Builder";
+		return "Sushi And User Recommender Builder";
 	}
 
 	@Override
