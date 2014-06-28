@@ -3,9 +3,7 @@ package recsys.recommender.sushi.model;
 import java.util.HashMap;
 import java.util.Map;
 
-import recsys.recommender.sushi.SushiPiece;
-
-public class SushiDataModel {
+public class SushiItemDataModel {
 
 	// price has values from interval [0,5]
 	public static final double MAX_PRICE = 5;
@@ -15,7 +13,7 @@ public class SushiDataModel {
 
 	private Map<Integer, SushiPiece> sushis;
 
-	public SushiDataModel() {
+	public SushiItemDataModel() {
 		sushis = new HashMap<>();
 	}
 

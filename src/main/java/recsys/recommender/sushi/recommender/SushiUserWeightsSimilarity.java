@@ -36,31 +36,31 @@ public class SushiUserWeightsSimilarity implements UserSimilarity {
 	}
 
 	@Override
-	public synchronized double userSimilarity(long userID1, long userID2) throws TasteException {
-		Pair<Long, Long> key = new Pair<Long, Long>(userID1, userID2);
-		Double cached = cache.get(key);
-		Pair<Long, Long> keySwapped = new Pair<Long, Long>(userID2, userID1);
-		Double cachedSwapped = cache.get(keySwapped);
-		if (cached != null) {
-			return cached;
-		} else if (cachedSwapped != null) {
-			return cachedSwapped;
-		} else {
-			double similarity = computeSimilarity(userID1, userID2);
-			cache.put(key, similarity);
+	public double userSimilarity(long userID1, long userID2) throws TasteException {
+//		Pair<Long, Long> key = new Pair<Long, Long>(userID1, userID2);
+//		Double cached = cache.get(key);
+//		Pair<Long, Long> keySwapped = new Pair<Long, Long>(userID2, userID1);
+//		Double cachedSwapped = cache.get(keySwapped);
+//		if (cached != null) {
+//			return cached;
+//		} else if (cachedSwapped != null) {
+//			return cachedSwapped;
+//		} else {
+			double similarity = computeSimilarity((int)userID1, (int)userID2);
+//			cache.put(key, similarity);
 			return similarity;
-		}
+//		}
 
 	}
 
-	private double computeSimilarity(long userID1, long userID2) {
+	private double computeSimilarity(int userID1, int userID2) {
 		User user1 = userModel.get(userID1);
 		User user2 = userModel.get(userID2);
 		double styleSimilarity = calculateStyleSimilarity(user1, user2);
 		double majorGroupSimilarity = calculateMajorGroupSimilarity(user1, user2);
 		double minorGroupSimilarity = calculateMinorGroupSimilarity(user1, user2);
-		double oilinessSimilarity = calculateOilinessSimilarity(user1, user2);
-		double priceSimilarity = calculatePriceSimilarity(user1, user2);
+//		double oilinessSimilarity = calculateOilinessSimilarity(user1, user2);
+//		double priceSimilarity = calculatePriceSimilarity(user1, user2);
 
 		// double userSimilarity = minorGroupSimilarity;
 

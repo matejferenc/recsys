@@ -39,24 +39,23 @@ import com.google.common.collect.Lists;
 /**
  * Abstract superclass of a couple implementations, providing shared functionality.
  */
-public abstract class AbstractDifferenceRecommenderCrossEvaluator implements RecommenderCrossEvaluator {
+public abstract class AbstractDifferenceRecommenderFairEvaluator implements RecommenderFairEvaluator {
 
-	private static final Logger log = LoggerFactory.getLogger(AbstractDifferenceRecommenderCrossEvaluator.class);
+	private static final Logger log = LoggerFactory.getLogger(AbstractDifferenceRecommenderFairEvaluator.class);
 
 	private final Random random;
 
 	private AtomicInteger noEstimateCounter = new AtomicInteger();
 	private AtomicInteger estimateCounter = new AtomicInteger();
-	
 
 	private DataModel dataModel;
 
-	protected AbstractDifferenceRecommenderCrossEvaluator() {
+	protected AbstractDifferenceRecommenderFairEvaluator() {
 		random = RandomUtils.getRandom();
 	}
 
 	@Override
-	public List<Double> evaluate(RecommenderBuilder recommenderBuilder, DataModel dataModel, double trainingPercentage) throws TasteException {
+	public double evaluate(RecommenderBuilder recommenderBuilder, DataModel dataModel, double trainingPercentage, double evaluationPercentage) throws TasteException {
 		this.dataModel = dataModel;
 		Preconditions.checkNotNull(recommenderBuilder);
 		Preconditions.checkNotNull(dataModel);
@@ -64,74 +63,29 @@ public abstract class AbstractDifferenceRecommenderCrossEvaluator implements Rec
 
 		log.info("Beginning evaluation using {} of {}", trainingPercentage, dataModel);
 
-		List<Double> results = new ArrayList<Double>();
-
 		int numUsers = dataModel.getNumUsers();
-		// FastByIDMap<PreferenceArray> trainingPrefs = new FastByIDMap<PreferenceArray>(1 + (int) (evaluationPercentage * numUsers));
-		// FastByIDMap<PreferenceArray> testPrefs = new FastByIDMap<PreferenceArray>(1 + (int) (evaluationPercentage * numUsers));
+		FastByIDMap<PreferenceArray> trainingPrefs = new FastByIDMap<PreferenceArray>(1 + (int) (evaluationPercentage * numUsers));
+		FastByIDMap<PreferenceArray> testPrefs = new FastByIDMap<PreferenceArray>(1 + (int) (evaluationPercentage * numUsers));
 
-		int numParts = 9;// we divide training set 9 times
-		int usersInOnePart = numUsers / numParts;
-		int rest = numUsers - usersInOnePart * numParts;
-
-		List<List<Long>> userPartitions = partitionUsers(usersInOnePart, rest);
-
-		for (int i = 0; i < numParts; i++) {
-			FastByIDMap<PreferenceArray> trainingPrefs = new FastByIDMap<PreferenceArray>();
-			FastByIDMap<PreferenceArray> testPrefs = new FastByIDMap<PreferenceArray>();
-			createDataModel(userPartitions, i, trainingPrefs, testPrefs, trainingPercentage);
-
-			DataModel trainingModel = new GenericDataModel(trainingPrefs);
-			Recommender recommender = recommenderBuilder.buildRecommender(trainingModel);
-			double result = getEvaluation(testPrefs, recommender);
-			log.info("Evaluation result: {}", result);
-			results.add(result);
-		}
-
-		logResults(results);
-
-		return results;
-	}
-
-	private void logResults(List<Double> results) {
-		String resString = "";
-		for (Double result : results) {
-			resString += result + ", ";
-		}
-		log.info("Evaluation results: {}", resString);
-	}
-
-	private void createDataModel(List<List<Long>> userPartitions, int i, FastByIDMap<PreferenceArray> trainingPrefs, FastByIDMap<PreferenceArray> testPrefs, double trainingPercentage) throws TasteException {
-		for (List<Long> list : userPartitions) {
-			if (userPartitions.get(i) == list) {
-				for (Long userID : list) {
-					splitOneUsersPrefs(trainingPercentage, trainingPrefs, testPrefs, userID);
-				}
-			} else {
-				for (Long userID : list) {
-					trainingPrefs.put(userID, dataModel.getPreferencesFromUser(userID));
-				}
-			}
-		}
-	}
-
-	private List<List<Long>> partitionUsers(int usersInOnePart, int rest) throws TasteException {
-		List<List<Long>> userPartitions = new ArrayList<List<Long>>();
-		userPartitions.add(new ArrayList<Long>());
-		LongPrimitiveIterator userIDs = dataModel.getUserIDs();
+		List<Integer> evaluationSample = createSample(numUsers, (int) Math.floor(numUsers * evaluationPercentage));
 		int i = 0;
-		int actualPart = 0;
-		while (userIDs.hasNext()) {
-			if (i >= usersInOnePart + (actualPart < rest ? 1 : 0)) {
-				actualPart++;
-				i = 0;
-				userPartitions.add(new ArrayList<Long>());
+		LongPrimitiveIterator it = dataModel.getUserIDs();
+		while (it.hasNext()) {
+			long userID = it.nextLong();
+			if (evaluationSample.contains(i)) {
+				splitOneUsersPrefs(trainingPercentage, trainingPrefs, testPrefs, userID);
 			}
 			i++;
-			Long userID = userIDs.next();
-			userPartitions.get(actualPart).add(userID);
 		}
-		return userPartitions;
+
+		DataModel trainingModel = new GenericDataModel(trainingPrefs);
+
+		Recommender recommender = recommenderBuilder.buildRecommender(trainingModel);
+
+		double result = getEvaluation(testPrefs, recommender);
+		log.info("Evaluation result: {}", result);
+		return result;
+
 	}
 
 	private void splitOneUsersPrefs(double trainingPercentage, FastByIDMap<PreferenceArray> trainingPrefs, FastByIDMap<PreferenceArray> testPrefs, long userID) throws TasteException {
@@ -140,7 +94,7 @@ public abstract class AbstractDifferenceRecommenderCrossEvaluator implements Rec
 		PreferenceArray prefs = dataModel.getPreferencesFromUser(userID);
 		int size = prefs.length();
 		int trainSampleSize = (int) Math.floor(size * trainingPercentage);
-		List<Integer> trainingSample = createTrainingSample(size, trainSampleSize);
+		List<Integer> trainingSample = createSample(size, trainSampleSize);
 		for (int i = 0; i < size; i++) {
 			Preference newPref = new GenericPreference(userID, prefs.getItemID(i), prefs.getValue(i));
 			if (trainingSample.contains(i)) {
@@ -163,11 +117,11 @@ public abstract class AbstractDifferenceRecommenderCrossEvaluator implements Rec
 		}
 	}
 
-	private List<Integer> createTrainingSample(int max, int trainSampleSize) {
+	private List<Integer> createSample(int max, int sampleSize) {
 		List<Integer> results = new ArrayList<>();
-		for (int i = 0; i < trainSampleSize; i++) {
+		for (int i = 0; i < sampleSize; i++) {
 			int rand = random.nextInt(max);
-			while(results.contains(rand)){
+			while (results.contains(rand)) {
 				rand = random.nextInt(max);
 			}
 			results.add(rand);

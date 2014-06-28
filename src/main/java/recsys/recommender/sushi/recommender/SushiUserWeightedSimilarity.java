@@ -15,7 +15,7 @@ import org.apache.mahout.cf.taste.similarity.UserSimilarity;
 import org.apache.mahout.common.Pair;
 
 import recsys.recommender.model.SetPreference;
-import recsys.recommender.sushi.model.SushiDataModel;
+import recsys.recommender.sushi.model.SushiItemDataModel;
 import recsys.recommender.sushi.model.User;
 import recsys.recommender.sushi.model.UserModel;
 
@@ -84,9 +84,9 @@ public class SushiUserWeightedSimilarity implements UserSimilarity {
 	}
 
 	private double calculatePriceSimilarity(User user1, User user2) {
-		double preferred1 = user1.getPricePreferences().preferredValue();
-		double preferred2 = user2.getPricePreferences().preferredValue();
-		return 1 - (Math.abs(preferred1 - preferred2)) / SushiDataModel.MAX_PRICE;
+		double preferred1 = user1.getPricePreferences().getPreferredValue();
+		double preferred2 = user2.getPricePreferences().getPreferredValue();
+		return 1 - (Math.abs(preferred1 - preferred2)) / SushiItemDataModel.MAX_PRICE;
 	}
 
 	/**
@@ -96,9 +96,9 @@ public class SushiUserWeightedSimilarity implements UserSimilarity {
 	 * @return number from interval [0,1]
 	 */
 	private double calculateOilinessSimilarity(User user1, User user2) {
-		double preferred1 = user1.getOilinessPreferences().preferredValue();
-		double preferred2 = user2.getOilinessPreferences().preferredValue();
-		return 1 - (Math.abs(preferred1 - preferred2)) / SushiDataModel.MAX_OILINESS;
+		double preferred1 = user1.getOilinessPreferences().getPreferredValue();
+		double preferred2 = user2.getOilinessPreferences().getPreferredValue();
+		return 1 - (Math.abs(preferred1 - preferred2)) / SushiItemDataModel.MAX_OILINESS;
 	}
 
 	private double calculateStyleSimilarity(User user1, User user2) {

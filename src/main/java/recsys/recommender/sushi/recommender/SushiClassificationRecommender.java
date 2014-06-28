@@ -15,8 +15,8 @@ import org.apache.mahout.cf.taste.recommender.Recommender;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import recsys.recommender.sushi.SushiPiece;
-import recsys.recommender.sushi.model.SushiDataModel;
+import recsys.recommender.sushi.model.SushiItemDataModel;
+import recsys.recommender.sushi.model.SushiPiece;
 import recsys.recommender.sushi.model.User;
 import recsys.recommender.sushi.model.UserModel;
 import weka.classifiers.Classifier;
@@ -30,7 +30,7 @@ import com.google.common.base.Preconditions;
 public abstract class SushiClassificationRecommender implements Recommender {
 
 	protected final DataModel dataModel;
-	protected final SushiDataModel sushiDataModel;
+	protected final SushiItemDataModel sushiDataModel;
 	protected UserModel userModel;
 
 	protected Instances globalTrainingSet;
@@ -45,7 +45,7 @@ public abstract class SushiClassificationRecommender implements Recommender {
 	private Attribute oilinessAttribute;
 	protected Attribute ratingAttribute;
 
-	public SushiClassificationRecommender(DataModel dataModel, UserModel userModel, SushiDataModel sushiDataModel) throws Exception {
+	public SushiClassificationRecommender(DataModel dataModel, UserModel userModel, SushiItemDataModel sushiDataModel) throws Exception {
 		this.dataModel = dataModel;
 		this.userModel = userModel;
 		this.sushiDataModel = sushiDataModel;
@@ -96,7 +96,7 @@ public abstract class SushiClassificationRecommender implements Recommender {
 		userIDs = dataModel.getUserIDs();
 		while (userIDs.hasNext()) {
 			Long userID = userIDs.next();
-			User user = userModel.get(userID);
+			User user = userModel.get(userID.intValue());
 			PreferenceArray preferencesFromUser = dataModel.getPreferencesFromUser(userID);
 			fillTrainingSet(preferencesFromUser, globalTrainingSet, user);
 		}
@@ -231,14 +231,14 @@ public abstract class SushiClassificationRecommender implements Recommender {
 	}
 
 	protected double getGlobalResult(long userID, long itemID) throws Exception {
-		User user = userModel.get(userID);
+		User user = userModel.get((int) userID);
 		Instance globalTestInstance = fillTestSet(itemID, globalTrainingSet, user);
 		double globalResult = getModelResult(globalTestInstance, globalClassifier);
 		return globalResult;
 	}
 
 	protected double getLocalResult(long userID, long itemID) throws Exception {
-		User user = userModel.get(userID);
+		User user = userModel.get((int) userID);
 		PreferenceArray preferencesFromUser = dataModel.getPreferencesFromUser(userID);
 		Classifier localClassifier = createClassifier();
 		Instances localTrainingSet = trainLocalModel(preferencesFromUser, localClassifier, user);

@@ -5,15 +5,15 @@ import org.apache.mahout.cf.taste.eval.RecommenderBuilder;
 import org.apache.mahout.cf.taste.model.DataModel;
 import org.apache.mahout.cf.taste.recommender.Recommender;
 
-import recsys.recommender.sushi.model.SushiDataModel;
+import recsys.recommender.sushi.model.SushiItemDataModel;
 import recsys.recommender.sushi.model.UserModel;
 import weka.classifiers.Classifier;
 
 public abstract class SushiLocalClassificationRecommenderBuilder implements RecommenderBuilder {
 
-	private final SushiDataModel sushiDataModel;
+	private final SushiItemDataModel sushiDataModel;
 
-	public SushiLocalClassificationRecommenderBuilder(SushiDataModel sushiDataModel) {
+	public SushiLocalClassificationRecommenderBuilder(SushiItemDataModel sushiDataModel) {
 		this.sushiDataModel = sushiDataModel;
 	}
 	
@@ -39,7 +39,7 @@ public abstract class SushiLocalClassificationRecommenderBuilder implements Reco
 
 	@Override
 	public String getName() {
-		return "Sushi Global Random Forest Recommender Builder";
+		return "Sushi Local Random Forest Recommender Builder";
 	}
 
 	@Override

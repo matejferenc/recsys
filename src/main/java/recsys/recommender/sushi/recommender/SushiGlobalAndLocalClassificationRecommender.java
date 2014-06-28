@@ -3,12 +3,12 @@ package recsys.recommender.sushi.recommender;
 import org.apache.mahout.cf.taste.common.TasteException;
 import org.apache.mahout.cf.taste.model.DataModel;
 
-import recsys.recommender.sushi.model.SushiDataModel;
+import recsys.recommender.sushi.model.SushiItemDataModel;
 import recsys.recommender.sushi.model.UserModel;
 
 public abstract class SushiGlobalAndLocalClassificationRecommender extends SushiClassificationRecommender {
 
-	public SushiGlobalAndLocalClassificationRecommender(DataModel dataModel, UserModel userModel, SushiDataModel sushiDataModel) throws Exception {
+	public SushiGlobalAndLocalClassificationRecommender(DataModel dataModel, UserModel userModel, SushiItemDataModel sushiDataModel) throws Exception {
 		super(dataModel, userModel, sushiDataModel);
 		trainGlobalModel();
 	}

@@ -5,14 +5,14 @@ import org.apache.mahout.cf.taste.eval.RecommenderBuilder;
 import org.apache.mahout.cf.taste.model.DataModel;
 import org.apache.mahout.cf.taste.recommender.Recommender;
 
-import recsys.recommender.sushi.model.SushiDataModel;
+import recsys.recommender.sushi.model.SushiItemDataModel;
 import recsys.recommender.sushi.model.UserModel;
 
 public class SushiContentBasedRecommenderBuilder implements RecommenderBuilder {
 
-	private final SushiDataModel sushiDataModel;
+	private final SushiItemDataModel sushiDataModel;
 
-	public SushiContentBasedRecommenderBuilder(SushiDataModel sushiDataModel) {
+	public SushiContentBasedRecommenderBuilder(SushiItemDataModel sushiDataModel) {
 		this.sushiDataModel = sushiDataModel;
 	}
 

@@ -51,8 +51,9 @@ public class SushiUserDataModelLoader {
 		while (dataFileIterator.hasNext()) {
 			String line = dataFileIterator.next();
 			if (!line.isEmpty()) {
-				processLine(line);
-				if (++count % 1000000 == 0) {
+				count++;
+				processLine(line, count);
+				if (count % 1000000 == 0) {
 					log.info("Processed {} lines", count);
 				}
 			}
@@ -67,7 +68,7 @@ public class SushiUserDataModelLoader {
 	 * @param genres
 	 * @param names
 	 */
-	protected void processLine(String line) {
+	protected void processLine(String line, int lineNumber) {
 		// Ignore empty lines and comments
 		if (line.isEmpty() || line.charAt(0) == COMMENT_CHAR) {
 			return;
@@ -96,7 +97,9 @@ public class SushiUserDataModelLoader {
 			Integer eastWestIDCurrent = Integer.parseInt(eastWestIDCurrentString);
 			String attributes5And8EqualString = tokens.next();
 
-			User user = userModel.getOrCreate(userID);
+//			User user = userModel.getOrCreate(userID);
+			// we use artificial IDs for users - the line numbers
+			User user = userModel.getOrCreate(lineNumber);
 			user.setAge(age);
 			user.setGender(gender);
 			user.setPrefectureIDCurrent(prefectureIDCurrent);

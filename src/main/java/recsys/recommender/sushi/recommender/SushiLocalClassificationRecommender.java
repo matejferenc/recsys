@@ -3,13 +3,13 @@ package recsys.recommender.sushi.recommender;
 import org.apache.mahout.cf.taste.common.TasteException;
 import org.apache.mahout.cf.taste.model.DataModel;
 
-import recsys.recommender.sushi.model.SushiDataModel;
+import recsys.recommender.sushi.model.SushiItemDataModel;
 import recsys.recommender.sushi.model.UserModel;
 import weka.classifiers.Classifier;
 
 public abstract class SushiLocalClassificationRecommender extends SushiClassificationRecommender{
 
-	public SushiLocalClassificationRecommender(DataModel dataModel, UserModel userModel, SushiDataModel sushiDataModel) throws Exception {
+	public SushiLocalClassificationRecommender(DataModel dataModel, UserModel userModel, SushiItemDataModel sushiDataModel) throws Exception {
 		super(dataModel, userModel, sushiDataModel);
 	}
 

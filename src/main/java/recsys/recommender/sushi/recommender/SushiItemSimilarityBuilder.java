@@ -5,13 +5,13 @@ import org.apache.mahout.cf.taste.model.DataModel;
 import org.apache.mahout.cf.taste.similarity.ItemSimilarity;
 
 import recsys.evaluator.builder.ItemSimilarityBuilder;
-import recsys.recommender.sushi.model.SushiDataModel;
+import recsys.recommender.sushi.model.SushiItemDataModel;
 
 public class SushiItemSimilarityBuilder implements ItemSimilarityBuilder {
 
-	private final SushiDataModel sushiDataModel;
+	private final SushiItemDataModel sushiDataModel;
 	
-	public SushiItemSimilarityBuilder(SushiDataModel sushiDataModel) {
+	public SushiItemSimilarityBuilder(SushiItemDataModel sushiDataModel) {
 		this.sushiDataModel = sushiDataModel;
 	}
 

@@ -6,14 +6,14 @@ import org.apache.mahout.cf.taste.common.Refreshable;
 import org.apache.mahout.cf.taste.common.TasteException;
 import org.apache.mahout.cf.taste.similarity.ItemSimilarity;
 
-import recsys.recommender.sushi.SushiPiece;
-import recsys.recommender.sushi.model.SushiDataModel;
+import recsys.recommender.sushi.model.SushiItemDataModel;
+import recsys.recommender.sushi.model.SushiPiece;
 
 public class SushiItemSimilarity implements ItemSimilarity {
 
-	private final SushiDataModel sushiDataModel;
+	private final SushiItemDataModel sushiDataModel;
 
-	public SushiItemSimilarity(SushiDataModel sushiDataModel) {
+	public SushiItemSimilarity(SushiItemDataModel sushiDataModel) {
 		this.sushiDataModel = sushiDataModel;
 	}
 
@@ -34,11 +34,11 @@ public class SushiItemSimilarity implements ItemSimilarity {
 	}
 
 	private double calculateOilinessSimilarity(SushiPiece sushiPiece1, SushiPiece sushiPiece2) {
-		return 1 - Math.abs(sushiPiece1.getOiliness() - sushiPiece2.getOiliness()) / SushiDataModel.MAX_OILINESS;
+		return 1 - Math.abs(sushiPiece1.getOiliness() - sushiPiece2.getOiliness()) / SushiItemDataModel.MAX_OILINESS;
 	}
 
 	private double calculatePriceSimilarity(SushiPiece sushiPiece1, SushiPiece sushiPiece2) {
-		return 1 - Math.abs(sushiPiece1.getPrice() - sushiPiece2.getPrice()) / SushiDataModel.MAX_PRICE;
+		return 1 - Math.abs(sushiPiece1.getPrice() - sushiPiece2.getPrice()) / SushiItemDataModel.MAX_PRICE;
 	}
 
 	private double calculateMajorGroupSimilarity(SushiPiece sushiPiece1, SushiPiece sushiPiece2) {

@@ -40,7 +40,7 @@ public class NumericPreference {
 		return previousRating;
 	}
 
-	public Double preferredValue() {
+	public Double getPreferredValue() {
 		Double sumOfPreferences = 0d;
 		int ratingsCount = 0;
 		Iterator<Entry<Double, Double>> it = preferences.entrySet().iterator();

@@ -14,8 +14,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import recsys.recommender.model.SetPreference;
-import recsys.recommender.sushi.SushiPiece;
-import recsys.recommender.sushi.model.SushiDataModel;
+import recsys.recommender.sushi.model.SushiItemDataModel;
+import recsys.recommender.sushi.model.SushiPiece;
 import recsys.recommender.sushi.model.User;
 import recsys.recommender.sushi.model.UserModel;
 
@@ -25,11 +25,11 @@ public class SushiContentBasedRecommender implements Recommender {
 
 	private final DataModel dataModel;
 	private final UserModel userModel;
-	private final SushiDataModel sushiDataModel;
+	private final SushiItemDataModel sushiDataModel;
 
 	private static final Logger log = LoggerFactory.getLogger(SushiContentBasedRecommender.class);
 
-	public SushiContentBasedRecommender(DataModel dataModel, UserModel userModel, SushiDataModel sushiDataModel) {
+	public SushiContentBasedRecommender(DataModel dataModel, UserModel userModel, SushiItemDataModel sushiDataModel) {
 		this.dataModel = dataModel;
 		this.userModel = userModel;
 		this.sushiDataModel = sushiDataModel;

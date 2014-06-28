@@ -5,15 +5,15 @@ import org.apache.mahout.cf.taste.eval.RecommenderBuilder;
 import org.apache.mahout.cf.taste.model.DataModel;
 import org.apache.mahout.cf.taste.recommender.Recommender;
 
-import recsys.recommender.sushi.model.SushiDataModel;
+import recsys.recommender.sushi.model.SushiItemDataModel;
 import recsys.recommender.sushi.model.UserModel;
 import weka.classifiers.Classifier;
 
 public abstract class SushiGlobalClassificationRecommenderBuilder implements RecommenderBuilder {
 
-	private final SushiDataModel sushiDataModel;
+	private final SushiItemDataModel sushiDataModel;
 
-	public SushiGlobalClassificationRecommenderBuilder(SushiDataModel sushiDataModel) {
+	public SushiGlobalClassificationRecommenderBuilder(SushiItemDataModel sushiDataModel) {
 		this.sushiDataModel = sushiDataModel;
 	}
 	

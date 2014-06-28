@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Set;
 
 import recsys.recommender.movielens.model.movielens.MovielensDataModel;
-import recsys.recommender.movielens.model.shared.Movie;
 
 public class MovieLensMovieModel<T> {
 

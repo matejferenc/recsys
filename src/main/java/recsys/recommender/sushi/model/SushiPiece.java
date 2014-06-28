@@ -1,4 +1,4 @@
-package recsys.recommender.sushi;
+package recsys.recommender.sushi.model;
 
 public class SushiPiece {
 

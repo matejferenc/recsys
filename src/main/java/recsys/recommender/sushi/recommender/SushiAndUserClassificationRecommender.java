@@ -3,8 +3,8 @@ package recsys.recommender.sushi.recommender;
 import org.apache.mahout.cf.taste.common.TasteException;
 import org.apache.mahout.cf.taste.model.DataModel;
 
-import recsys.recommender.sushi.SushiPiece;
-import recsys.recommender.sushi.model.SushiDataModel;
+import recsys.recommender.sushi.model.SushiItemDataModel;
+import recsys.recommender.sushi.model.SushiPiece;
 import recsys.recommender.sushi.model.User;
 import recsys.recommender.sushi.model.UserModel;
 import weka.core.Attribute;
@@ -22,7 +22,7 @@ public abstract class SushiAndUserClassificationRecommender extends SushiClassif
 	private Attribute eastWestIDUntil15Attribute;
 	private Attribute eastWestIDCurrentAttribute;
 
-	public SushiAndUserClassificationRecommender(DataModel dataModel, UserModel userModel, SushiDataModel sushiDataModel) throws Exception {
+	public SushiAndUserClassificationRecommender(DataModel dataModel, UserModel userModel, SushiItemDataModel sushiDataModel) throws Exception {
 		super(dataModel, userModel, sushiDataModel);
 		trainGlobalModel();
 	}
