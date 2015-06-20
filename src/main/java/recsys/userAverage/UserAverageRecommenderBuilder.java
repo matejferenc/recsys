@@ -18,11 +18,14 @@ public class UserAverageRecommenderBuilder implements RecommenderBuilder {
 	public String getName() {
 		return "User average recommender builder";
 	}
+	
+	@Override
+	public String getShortName() {
+		return "UA";
+	}
 
 	@Override
 	public void freeReferences() {
-		// TODO Auto-generated method stub
-		
 	}
 
 }

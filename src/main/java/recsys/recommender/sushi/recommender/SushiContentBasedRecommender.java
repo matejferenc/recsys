@@ -16,20 +16,20 @@ import org.slf4j.LoggerFactory;
 import recsys.recommender.model.SetPreference;
 import recsys.recommender.sushi.model.SushiItemDataModel;
 import recsys.recommender.sushi.model.SushiPiece;
-import recsys.recommender.sushi.model.User;
-import recsys.recommender.sushi.model.UserModel;
+import recsys.recommender.sushi.model.SushiUser;
+import recsys.recommender.sushi.model.SushiUserModel;
 
 import com.google.common.base.Preconditions;
 
 public class SushiContentBasedRecommender implements Recommender {
 
 	private final DataModel dataModel;
-	private final UserModel userModel;
+	private final SushiUserModel userModel;
 	private final SushiItemDataModel sushiDataModel;
 
 	private static final Logger log = LoggerFactory.getLogger(SushiContentBasedRecommender.class);
 
-	public SushiContentBasedRecommender(DataModel dataModel, UserModel userModel, SushiItemDataModel sushiDataModel) {
+	public SushiContentBasedRecommender(DataModel dataModel, SushiUserModel userModel, SushiItemDataModel sushiDataModel) {
 		this.dataModel = dataModel;
 		this.userModel = userModel;
 		this.sushiDataModel = sushiDataModel;
@@ -52,7 +52,7 @@ public class SushiContentBasedRecommender implements Recommender {
 
 	@Override
 	public float estimatePreference(long userID, long itemID) throws TasteException {
-		User user = userModel.get(userID);
+		SushiUser user = userModel.get((int) userID);
 		double styleRating = calculateStyleRating(user, (int) itemID);
 		double majorGroupRating = calculateMajorGroupRating(user, (int) itemID);
 		double minorGroupRating = calculateMinorGroupRating(user, (int) itemID);
@@ -69,17 +69,17 @@ public class SushiContentBasedRecommender implements Recommender {
 		return Math.abs(rating) < 0.001 ? 0 : 1;
 	}
 
-	private double calculateMinorGroupRating(User user, int itemID) {
+	private double calculateMinorGroupRating(SushiUser user, int itemID) {
 		SushiPiece sushiPiece = sushiDataModel.getSushiPiece(itemID);
 		return calculatePreference(sushiPiece.getStyle(), user.getMinorGroupPreferences());
 	}
 
-	private double calculateMajorGroupRating(User user, int itemID) {
+	private double calculateMajorGroupRating(SushiUser user, int itemID) {
 		SushiPiece sushiPiece = sushiDataModel.getSushiPiece(itemID);
 		return calculatePreference(sushiPiece.getStyle(), user.getMajorGroupPreferences());
 	}
 
-	private double calculateStyleRating(User user, int itemID) {
+	private double calculateStyleRating(SushiUser user, int itemID) {
 		SushiPiece sushiPiece = sushiDataModel.getSushiPiece(itemID);
 		return calculatePreference(sushiPiece.getStyle(), user.getStylePreferences());
 	}

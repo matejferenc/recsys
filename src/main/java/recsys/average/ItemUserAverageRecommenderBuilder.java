@@ -21,11 +21,14 @@ public class ItemUserAverageRecommenderBuilder implements RecommenderBuilder {
 	public String getName() {
 		return "Item User Average Recommender Builder";
 	}
+	
+	@Override
+	public String getShortName() {
+		return "IUA";
+	}
 
 	@Override
 	public void freeReferences() {
-		// TODO Auto-generated method stub
-		
 	}
 
 }

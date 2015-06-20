@@ -2,7 +2,7 @@ package recsys.recommender.sushi.model;
 
 import recsys.recommender.model.SetPreference;
 
-public class User {
+public class SushiUser {
 	
 	private int gender;
 	
@@ -37,7 +37,7 @@ public class User {
 
 	private NumericPreference sellingFrequencyPreferences;
 
-	public User() {
+	public SushiUser() {
 		stylePreferences = new SetPreference();
 		majorGroupPreferences = new SetPreference();
 		minorGroupPreferences = new SetPreference();

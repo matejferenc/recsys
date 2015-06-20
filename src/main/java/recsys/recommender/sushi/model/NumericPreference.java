@@ -42,16 +42,16 @@ public class NumericPreference {
 
 	public Double getPreferredValue() {
 		Double sumOfPreferences = 0d;
-		int ratingsCount = 0;
+		Double ratingTotal = 0d;
 		Iterator<Entry<Double, Double>> it = preferences.entrySet().iterator();
 		while (it.hasNext()) {
 			Map.Entry<Double, Double> pair = (Map.Entry<Double, Double>) it.next();
 			Double numericValue = pair.getKey();
 			Double rating = pair.getValue();
 			sumOfPreferences += rating * numericValue;
-			ratingsCount++;
+			ratingTotal += rating;
 		}
-		return sumOfPreferences / ratingsCount;
+		return sumOfPreferences / ratingTotal;
 	}
 	
 	public double getVariance(){

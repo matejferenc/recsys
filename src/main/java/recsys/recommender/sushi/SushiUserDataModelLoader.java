@@ -10,8 +10,8 @@ import org.apache.mahout.common.iterator.FileLineIterator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import recsys.recommender.sushi.model.User;
-import recsys.recommender.sushi.model.UserModel;
+import recsys.recommender.sushi.model.SushiUser;
+import recsys.recommender.sushi.model.SushiUserModel;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Splitter;
@@ -22,12 +22,12 @@ public class SushiUserDataModelLoader {
 
 	private static final char COMMENT_CHAR = '#';
 
-	private final UserModel userModel;
+	private final SushiUserModel userModel;
 
 	private Splitter delimiterPattern = Splitter.on("\t");
 
 	private SushiUserDataModelLoader() {
-		userModel = new UserModel();
+		userModel = new SushiUserModel();
 	}
 
 	public SushiUserDataModelLoader(File dataFile) throws Exception {
@@ -99,7 +99,7 @@ public class SushiUserDataModelLoader {
 
 //			User user = userModel.getOrCreate(userID);
 			// we use artificial IDs for users - the line numbers
-			User user = userModel.getOrCreate(lineNumber);
+			SushiUser user = userModel.getOrCreate(lineNumber);
 			user.setAge(age);
 			user.setGender(gender);
 			user.setPrefectureIDCurrent(prefectureIDCurrent);
@@ -113,7 +113,7 @@ public class SushiUserDataModelLoader {
 		}
 	}
 
-	public UserModel getUserModel() {
+	public SushiUserModel getUserModel() {
 		return userModel;
 	}
 

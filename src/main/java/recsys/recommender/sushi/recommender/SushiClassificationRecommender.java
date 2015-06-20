@@ -17,26 +17,29 @@ import org.slf4j.LoggerFactory;
 
 import recsys.recommender.sushi.model.SushiItemDataModel;
 import recsys.recommender.sushi.model.SushiPiece;
-import recsys.recommender.sushi.model.User;
-import recsys.recommender.sushi.model.UserModel;
+import recsys.recommender.sushi.model.SushiUser;
+import recsys.recommender.sushi.model.SushiUserModel;
 import weka.classifiers.Classifier;
 import weka.core.Attribute;
+import weka.core.DenseInstance;
 import weka.core.FastVector;
 import weka.core.Instance;
 import weka.core.Instances;
 
 import com.google.common.base.Preconditions;
 
+@SuppressWarnings("deprecation")
 public abstract class SushiClassificationRecommender implements Recommender {
 
 	protected final DataModel dataModel;
 	protected final SushiItemDataModel sushiDataModel;
-	protected UserModel userModel;
+	protected SushiUserModel userModel;
 
 	protected Instances globalTrainingSet;
 	protected Classifier globalClassifier;
 
 	private static final Logger log = LoggerFactory.getLogger(SushiClassificationRecommender.class);
+	@SuppressWarnings({ "rawtypes" })
 	protected FastVector attributes;
 	private Attribute styleAttribute;
 	private Attribute majorGroupAttribute;
@@ -45,7 +48,8 @@ public abstract class SushiClassificationRecommender implements Recommender {
 	private Attribute oilinessAttribute;
 	protected Attribute ratingAttribute;
 
-	public SushiClassificationRecommender(DataModel dataModel, UserModel userModel, SushiItemDataModel sushiDataModel) throws Exception {
+	@SuppressWarnings({ "unchecked" })
+	public SushiClassificationRecommender(DataModel dataModel, SushiUserModel userModel, SushiItemDataModel sushiDataModel) throws Exception {
 		this.dataModel = dataModel;
 		this.userModel = userModel;
 		this.sushiDataModel = sushiDataModel;
@@ -80,6 +84,7 @@ public abstract class SushiClassificationRecommender implements Recommender {
 		return null;
 	}
 
+	@SuppressWarnings("unchecked")
 	protected void trainGlobalModel() throws Exception {
 		int trainingSetSize = 0;
 		LongPrimitiveIterator userIDs = dataModel.getUserIDs();
@@ -96,7 +101,7 @@ public abstract class SushiClassificationRecommender implements Recommender {
 		userIDs = dataModel.getUserIDs();
 		while (userIDs.hasNext()) {
 			Long userID = userIDs.next();
-			User user = userModel.get(userID.intValue());
+			SushiUser user = userModel.get(userID.intValue());
 			PreferenceArray preferencesFromUser = dataModel.getPreferencesFromUser(userID);
 			fillTrainingSet(preferencesFromUser, globalTrainingSet, user);
 		}
@@ -108,7 +113,8 @@ public abstract class SushiClassificationRecommender implements Recommender {
 
 	public abstract Classifier createClassifier();
 
-	protected Instances trainLocalModel(PreferenceArray preferencesFromUser, Classifier localClassifier, User user) throws TasteException, Exception {
+	@SuppressWarnings("unchecked")
+	protected Instances trainLocalModel(PreferenceArray preferencesFromUser, Classifier localClassifier, SushiUser user) throws TasteException, Exception {
 		Instances localTrainingSet = new Instances("a", attributes, preferencesFromUser.length());
 		// Set class index
 		localTrainingSet.setClassIndex(getAttributeCount() - 1);
@@ -117,11 +123,11 @@ public abstract class SushiClassificationRecommender implements Recommender {
 		return localTrainingSet;
 	}
 
-	protected Instance fillTestSet(long itemID, Instances trainingSet, User user) {
+	protected Instance fillTestSet(long itemID, Instances trainingSet, SushiUser user) {
 		SushiPiece sushiPiece = sushiDataModel.getSushiPiece((int) itemID);
 
 		// Create the instance
-		Instance instance = new Instance(getAttributeCount() - 1);
+		Instance instance = new DenseInstance(getAttributeCount() - 1);
 		setAttributeValues(sushiPiece, instance, user);
 
 		instance.setDataset(trainingSet);
@@ -133,7 +139,7 @@ public abstract class SushiClassificationRecommender implements Recommender {
 		return 6;
 	}
 
-	protected void setAttributeValues(SushiPiece sushiPiece, Instance instance, User user) {
+	protected void setAttributeValues(SushiPiece sushiPiece, Instance instance, SushiUser user) {
 		instance.setValue(styleAttribute, sushiPiece.getStyle());
 		instance.setValue(majorGroupAttribute, sushiPiece.getMajorGroup());
 		instance.setValue(minorGroupAttribute, sushiPiece.getMinorGroup());
@@ -145,13 +151,13 @@ public abstract class SushiClassificationRecommender implements Recommender {
 		instance.setValue(ratingAttribute, preference.getValue());
 	}
 
-	protected void fillTrainingSet(PreferenceArray preferencesFromUser, Instances trainingSet, User user) throws TasteException {
+	protected void fillTrainingSet(PreferenceArray preferencesFromUser, Instances trainingSet, SushiUser user) throws TasteException {
 		for (Preference preference : preferencesFromUser) {
 			long itemID = preference.getItemID();
 			SushiPiece sushiPiece = sushiDataModel.getSushiPiece((int) itemID);
 
 			// Create the instance
-			Instance instance = new Instance(getAttributeCount());
+			Instance instance = new DenseInstance(getAttributeCount());
 			setAttributeValues(sushiPiece, instance, user);
 			setClassValue(instance, preference);
 
@@ -160,6 +166,7 @@ public abstract class SushiClassificationRecommender implements Recommender {
 		}
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	protected FastVector createAttributes() {
 		// Declare a nominal attribute along with its values
 		FastVector style = new FastVector(2);
@@ -231,14 +238,14 @@ public abstract class SushiClassificationRecommender implements Recommender {
 	}
 
 	protected double getGlobalResult(long userID, long itemID) throws Exception {
-		User user = userModel.get((int) userID);
+		SushiUser user = userModel.get((int) userID);
 		Instance globalTestInstance = fillTestSet(itemID, globalTrainingSet, user);
 		double globalResult = getModelResult(globalTestInstance, globalClassifier);
 		return globalResult;
 	}
 
 	protected double getLocalResult(long userID, long itemID) throws Exception {
-		User user = userModel.get((int) userID);
+		SushiUser user = userModel.get((int) userID);
 		PreferenceArray preferencesFromUser = dataModel.getPreferencesFromUser(userID);
 		Classifier localClassifier = createClassifier();
 		Instances localTrainingSet = trainLocalModel(preferencesFromUser, localClassifier, user);

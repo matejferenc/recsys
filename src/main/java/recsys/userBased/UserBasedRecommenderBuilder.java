@@ -17,8 +17,10 @@ public class UserBasedRecommenderBuilder implements RecommenderBuilder {
 	private UserNeighborhoodBuilder neighborhoodBuilder;
 
 	
-	String neighborhoodName;
-	String userSimilarityName;
+	private String neighborhoodName;
+	private String userSimilarityName;
+	private String userSimilarityShortName;
+	private String neighborhoodShortName;
 
 	public UserBasedRecommenderBuilder(UserSimilarityBuilder userSimilarityBuilder, UserNeighborhoodBuilder neighborhoodBuilder) {
 		this.userSimilarityBuilder = userSimilarityBuilder;
@@ -27,14 +29,13 @@ public class UserBasedRecommenderBuilder implements RecommenderBuilder {
 
 	@Override
 	public Recommender buildRecommender(DataModel dataModel) throws TasteException {
-
-		// UserSimilarity userSimilarity = new UncenteredCosineSimilarity(dataModel);
-
 		UserSimilarity userSimilarity = userSimilarityBuilder.build(dataModel);
 		UserNeighborhood neighborhood = neighborhoodBuilder.build(userSimilarity, dataModel);
 		
 		neighborhoodName = neighborhood.getName();
+		neighborhoodShortName = neighborhood.getShortName();
 		userSimilarityName = userSimilarity.getName();
+		userSimilarityShortName = userSimilarity.getShortName();
 
 		Recommender recommender = new GenericUserBasedRecommender(dataModel, neighborhood, userSimilarity);
 		return recommender;
@@ -43,6 +44,11 @@ public class UserBasedRecommenderBuilder implements RecommenderBuilder {
 	@Override
 	public String getName() {
 		return "User based recommender builder" + " with user similarity: " + userSimilarityName + " with neighborhood: " + neighborhoodName;
+	}
+	
+	@Override
+	public String getShortName() {
+		return "UB" + userSimilarityShortName + neighborhoodShortName;
 	}
 
 	@Override

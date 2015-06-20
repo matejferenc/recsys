@@ -1,6 +1,7 @@
 package recsys.recommender.sushi.recommender;
 
 import java.util.Collection;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -12,22 +13,26 @@ import org.apache.mahout.cf.taste.similarity.UserSimilarity;
 import org.apache.mahout.common.Pair;
 
 import recsys.recommender.model.SetPreference;
-import recsys.recommender.sushi.model.User;
-import recsys.recommender.sushi.model.UserModel;
+import recsys.recommender.sushi.model.SushiItemDataModel;
+import recsys.recommender.sushi.model.SushiUser;
+import recsys.recommender.sushi.model.SushiUserModel;
 
 public class SushiUserWeightsSimilarity implements UserSimilarity {
 
 	private static final int maxRating = 4;
 
-	private final UserModel userModel;
+	private final SushiUserModel userModel;
 
 	private Map<Pair<Long, Long>, Double> cache;
 
 	private static final double maxVariance = 4;
 
+	private EnumSet<Include> includeProperties;
 
-	public SushiUserWeightsSimilarity(UserModel userModel) {
+
+	public SushiUserWeightsSimilarity(SushiUserModel userModel, EnumSet<Include> includeProperties) {
 		this.userModel = userModel;
+		this.includeProperties = includeProperties;
 		cache = new HashMap<Pair<Long, Long>, Double>();
 	}
 
@@ -54,57 +59,52 @@ public class SushiUserWeightsSimilarity implements UserSimilarity {
 	}
 
 	private double computeSimilarity(int userID1, int userID2) {
-		User user1 = userModel.get(userID1);
-		User user2 = userModel.get(userID2);
-		double styleSimilarity = calculateStyleSimilarity(user1, user2);
-		double majorGroupSimilarity = calculateMajorGroupSimilarity(user1, user2);
-		double minorGroupSimilarity = calculateMinorGroupSimilarity(user1, user2);
-//		double oilinessSimilarity = calculateOilinessSimilarity(user1, user2);
-//		double priceSimilarity = calculatePriceSimilarity(user1, user2);
+		SushiUser user1 = userModel.get(userID1);
+		SushiUser user2 = userModel.get(userID2);
+		
+		double userSimilarity = (includeProperties.contains(Include.STYLE) ? calculateStyleSimilarity(user1, user2) : 0) +
+				(includeProperties.contains(Include.MAJOR) ? calculateMajorGroupSimilarity(user1, user2) : 0) +
+				(includeProperties.contains(Include.MINOR) ? calculateMinorGroupSimilarity(user1, user2) : 0) +
+				(includeProperties.contains(Include.OILINESS) ? calculateOilinessSimilarity(user1, user2) : 0) +
+				(includeProperties.contains(Include.PRICE) ? calculatePriceSimilarity(user1, user2) : 0) +
+				(includeProperties.contains(Include.GENDER) ? calculateGenderSimilarity(user1, user2) : 0) +
+				(includeProperties.contains(Include.AGE) ? calculateAgeSimilarity(user1, user2) : 0) +
+				(includeProperties.contains(Include.REGION15) ? calculateRegion15Similarity(user1, user2) : 0) +
+				(includeProperties.contains(Include.REGION_CURRENT) ? calculateRegionCurrentSimilarity(user1, user2) : 0) +
+				(includeProperties.contains(Include.PREFECTURE15) ? calculatePrefecture15Similarity(user1, user2) : 0) +
+				(includeProperties.contains(Include.PREFECTURE_CURRENT) ? calculatePrefectureCurrentSimilarity(user1, user2) : 0) +
+				(includeProperties.contains(Include.EAST_WEST15) ? calculateEastWest15Similarity(user1, user2) : 0) +
+				(includeProperties.contains(Include.EAST_WEST_CURRENT) ? calculateEastWestCurrentSimilarity(user1, user2) : 0);
 
-		// double userSimilarity = minorGroupSimilarity;
-
-		// double userSimilarity = (styleSimilarity + majorGroupSimilarity + minorGroupSimilarity)/3;
-
-		// double userSimilarity = (genderSimilarity + ageSimilarity + region15Similarity + regionCurrentSimilarity + prefecture15Similarity + prefectureCurrentSimilarity + eastWest15Similarity +
-		// eastWestCurrentSimilarity) / 8;
-
-		// every partial similarity has the same weight: 1
-		// we need to divide by total weight
-		// double userSimilarity = (styleSimilarity + majorGroupSimilarity + minorGroupSimilarity + priceSimilarity) / 4;
-
-//		double userSimilarity = (styleSimilarity + majorGroupSimilarity + minorGroupSimilarity + priceSimilarity + oilinessSimilarity) / 5;
-
-		 double userSimilarity = (styleSimilarity + majorGroupSimilarity + minorGroupSimilarity) / 3;
-
+		userSimilarity /= includeProperties.size();
+		
 		// correction for Taste framework (interface says the return value should be between -1 and +1,
 		// yet the computed similarity is between 0 and +1)
 		double transformedUserSimilarity = userSimilarity * 2 - 1;
-		// double transformedUserSimilarity = userSimilarity;
 		return transformedUserSimilarity;
 	}
 
-	private double calculatePriceSimilarity(User user1, User user2) {
+	private double calculatePriceSimilarity(SushiUser user1, SushiUser user2) {
 		double variance1 = user1.getPricePreferences().getVariance();
 		double variance2 = user2.getPricePreferences().getVariance();
 		return calculateSimilarityFromWeights(variance1, variance2);
 	}
 
-	private double calculateOilinessSimilarity(User user1, User user2) {
+	private double calculateOilinessSimilarity(SushiUser user1, SushiUser user2) {
 		double variance1 = user1.getOilinessPreferences().getVariance();
 		double variance2 = user2.getOilinessPreferences().getVariance();
 		return calculateSimilarityFromWeights(variance1, variance2);
 	}
 
-	private double calculateStyleSimilarity(User user1, User user2) {
+	private double calculateStyleSimilarity(SushiUser user1, SushiUser user2) {
 		return calculatePropertySetSimilarity(user1.getStylePreferences(), user2.getStylePreferences());
 	}
 
-	private double calculateMajorGroupSimilarity(User user1, User user2) {
+	private double calculateMajorGroupSimilarity(SushiUser user1, SushiUser user2) {
 		return calculatePropertySetSimilarity(user1.getMajorGroupPreferences(), user2.getMajorGroupPreferences());
 	}
 
-	private double calculateMinorGroupSimilarity(User user1, User user2) {
+	private double calculateMinorGroupSimilarity(SushiUser user1, SushiUser user2) {
 		return calculatePropertySetSimilarity(user1.getMinorGroupPreferences(), user2.getMinorGroupPreferences());
 	}
 
@@ -128,6 +128,39 @@ public class SushiUserWeightsSimilarity implements UserSimilarity {
 		}
 		return accumulatedVariance / (allPropertyIds.size() * maxRating);
 	}
+	
+	private double calculateEastWestCurrentSimilarity(SushiUser user1, SushiUser user2) {
+		return user1.getEastWestIDCurrent() == user2.getEastWestIDCurrent() ? 1 : 0;
+	}
+
+	private double calculateEastWest15Similarity(SushiUser user1, SushiUser user2) {
+		return user1.getEastWestIDUntil15() == user2.getEastWestIDUntil15() ? 1 : 0;
+	}
+
+	private double calculateRegion15Similarity(SushiUser user1, SushiUser user2) {
+		return user1.getRegionIDUntil15() == user2.getRegionIDUntil15() ? 1 : 0;
+	}
+
+	private double calculateRegionCurrentSimilarity(SushiUser user1, SushiUser user2) {
+		return user1.getRegionIDCurrent() == user2.getRegionIDCurrent() ? 1 : 0;
+	}
+
+	private double calculatePrefecture15Similarity(SushiUser user1, SushiUser user2) {
+		return user1.getPrefectureIDUntil15() == user2.getPrefectureIDUntil15() ? 1 : 0;
+	}
+
+	private double calculatePrefectureCurrentSimilarity(SushiUser user1, SushiUser user2) {
+		return user1.getPrefectureIDCurrent() == user2.getPrefectureIDCurrent() ? 1 : 0;
+	}
+
+	private double calculateAgeSimilarity(SushiUser user1, SushiUser user2) {
+		int MAX_AGE = 5;
+		return 1 - (Math.abs(user1.getAge() - user2.getAge())) / MAX_AGE;
+	}
+
+	private double calculateGenderSimilarity(SushiUser user1, SushiUser user2) {
+		return 1 - Math.abs(user1.getGender() - user2.getGender());
+	}
 
 	@Override
 	public void setPreferenceInferrer(PreferenceInferrer inferrer) {
@@ -136,6 +169,11 @@ public class SushiUserWeightsSimilarity implements UserSimilarity {
 	@Override
 	public String getName() {
 		return "Sushi User Weights Similarity";
+	}
+
+	@Override
+	public String getShortName() {
+		return "W";
 	}
 
 }

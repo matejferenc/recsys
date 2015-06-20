@@ -6,7 +6,7 @@ import org.apache.mahout.cf.taste.model.DataModel;
 import org.apache.mahout.cf.taste.recommender.Recommender;
 
 import recsys.recommender.sushi.model.SushiItemDataModel;
-import recsys.recommender.sushi.model.UserModel;
+import recsys.recommender.sushi.model.SushiUserModel;
 import weka.classifiers.Classifier;
 
 public abstract class SushiGlobalClassificationRecommenderBuilder implements RecommenderBuilder {
@@ -21,8 +21,8 @@ public abstract class SushiGlobalClassificationRecommenderBuilder implements Rec
 
 	@Override
 	public Recommender buildRecommender(DataModel dataModel) throws TasteException {
-		UserModelBuilder userModelBuilder = new UserModelBuilder(dataModel, sushiDataModel);
-		UserModel userModel = userModelBuilder.build();
+		SushiUserModelBuilder userModelBuilder = new SushiUserModelBuilder(dataModel, sushiDataModel);
+		SushiUserModel userModel = userModelBuilder.build();
 		try {
 			return new SushiGlobalClassificationRecommender(dataModel, userModel, sushiDataModel){
 
@@ -39,7 +39,12 @@ public abstract class SushiGlobalClassificationRecommenderBuilder implements Rec
 
 	@Override
 	public String getName() {
-		return "Sushi Global Random Forest Recommender Builder";
+		return "Sushi Global Recommender Builder";
+	}
+	
+	@Override
+	public String getShortName() {
+		return "g";
 	}
 
 	@Override

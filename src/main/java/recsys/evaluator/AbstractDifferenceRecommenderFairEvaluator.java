@@ -39,14 +39,11 @@ import com.google.common.collect.Lists;
 /**
  * Abstract superclass of a couple implementations, providing shared functionality.
  */
-public abstract class AbstractDifferenceRecommenderFairEvaluator implements RecommenderFairEvaluator {
+public abstract class AbstractDifferenceRecommenderFairEvaluator extends AbstractRecommenderFairEvaluator {
 
 	private static final Logger log = LoggerFactory.getLogger(AbstractDifferenceRecommenderFairEvaluator.class);
 
 	private final Random random;
-
-	private AtomicInteger noEstimateCounter = new AtomicInteger();
-	private AtomicInteger estimateCounter = new AtomicInteger();
 
 	private DataModel dataModel;
 
@@ -184,7 +181,7 @@ public abstract class AbstractDifferenceRecommenderFairEvaluator implements Reco
 		Collection<Callable<Void>> wrapped = Lists.newArrayList();
 		int count = 0;
 		for (Callable<Void> callable : callables) {
-			boolean logStats = count++ % 100 == 0; // log every 1000 or so iterations
+			boolean logStats = count++ % 100 == 0; // log every 100 or so iterations
 			wrapped.add(new StatsCallable(callable, logStats, timing, noEstimateCounter, estimateCounter));
 		}
 		return wrapped;
@@ -244,14 +241,6 @@ public abstract class AbstractDifferenceRecommenderFairEvaluator implements Reco
 			return null;
 		}
 
-	}
-
-	public AtomicInteger getNoEstimateCounter() {
-		return noEstimateCounter;
-	}
-
-	public AtomicInteger getEstimateCounter() {
-		return estimateCounter;
 	}
 
 }

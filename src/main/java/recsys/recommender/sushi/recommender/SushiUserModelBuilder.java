@@ -8,19 +8,19 @@ import org.apache.mahout.cf.taste.model.PreferenceArray;
 
 import recsys.dataset.SushiUserDataModelDataset;
 import recsys.recommender.sushi.model.SushiItemDataModel;
-import recsys.recommender.sushi.model.User;
-import recsys.recommender.sushi.model.UserModel;
+import recsys.recommender.sushi.model.SushiUser;
+import recsys.recommender.sushi.model.SushiUserModel;
 
-public class UserModelBuilder {
+public class SushiUserModelBuilder {
 
 	private final DataModel ratingsDataModel;
 
 	private final SushiItemDataModel sushiDataModel;
 
-	private UserModel userModel;
+	private SushiUserModel userModel;
 
 
-	public UserModelBuilder(DataModel ratingsDataModel, SushiItemDataModel sushiDataModel) throws TasteException {
+	public SushiUserModelBuilder(DataModel ratingsDataModel, SushiItemDataModel sushiDataModel) throws TasteException {
 		this.ratingsDataModel = ratingsDataModel;
 		this.sushiDataModel = sushiDataModel;
 		try {
@@ -30,13 +30,13 @@ public class UserModelBuilder {
 		}
 	}
 
-	public UserModel build() throws TasteException {
+	public SushiUserModel build() throws TasteException {
 		LongPrimitiveIterator userIDs = ratingsDataModel.getUserIDs();
 		// cycle all users
 		while (userIDs.hasNext()) {
 			Long userID = userIDs.next();
 			// we created userModel in constructor, so we can change it arbitrarily
-			User user = userModel.getOrCreate(userID.intValue());
+			SushiUser user = userModel.getOrCreate(userID.intValue());
 			PreferenceArray preferencesFromUser = ratingsDataModel.getPreferencesFromUser(userID);
 			// cycle user's preferences
 			for (Preference preference : preferencesFromUser) {
@@ -54,37 +54,37 @@ public class UserModelBuilder {
 		return userModel;
 	}
 
-	private void buildStylePreferences(User user, int itemID, double p) {
+	private void buildStylePreferences(SushiUser user, int itemID, double p) {
 		int style = sushiDataModel.getSushiPiece(itemID).getStyle();
 		user.getStylePreferences().addPropertyPreference(style, p);
 	}
 	
-	private void buildMajorGroupPreferences(User user, int itemID, double p) {
+	private void buildMajorGroupPreferences(SushiUser user, int itemID, double p) {
 		int majorGroup = sushiDataModel.getSushiPiece(itemID).getMajorGroup();
 		user.getMajorGroupPreferences().addPropertyPreference(majorGroup, p);
 	}
 	
-	private void buildMinorGroupPreferences(User user, int itemID, double p) {
+	private void buildMinorGroupPreferences(SushiUser user, int itemID, double p) {
 		int minorGroup = sushiDataModel.getSushiPiece(itemID).getMinorGroup();
 		user.getMinorGroupPreferences().addPropertyPreference(minorGroup, p);
 	}
 	
-	private void buildOilinessPreferences(User user, int itemID, double p) {
+	private void buildOilinessPreferences(SushiUser user, int itemID, double p) {
 		double oiliness = sushiDataModel.getSushiPiece(itemID).getOiliness();
 		user.getOilinessPreferences().addPreference(oiliness, p);
 	}
 	
-	private void buildEatingFrequencyPreferences(User user, int itemID, double p) {
+	private void buildEatingFrequencyPreferences(SushiUser user, int itemID, double p) {
 		double eatingFrequency = sushiDataModel.getSushiPiece(itemID).getEatingFrequency();
 		user.getEatingFrequencyPreferences().addPreference(eatingFrequency, p);
 	}
 	
-	private void buildPricePreferences(User user, int itemID, double p) {
+	private void buildPricePreferences(SushiUser user, int itemID, double p) {
 		double price = sushiDataModel.getSushiPiece(itemID).getPrice();
 		user.getPricePreferences().addPreference(price, p);
 	}
 	
-	private void buildSellingFrequencyPreferences(User user, int itemID, double p) {
+	private void buildSellingFrequencyPreferences(SushiUser user, int itemID, double p) {
 		double sellingFrequency = sushiDataModel.getSushiPiece(itemID).getSellingFrequency();
 		user.getOilinessPreferences().addPreference(sellingFrequency, p);
 	}

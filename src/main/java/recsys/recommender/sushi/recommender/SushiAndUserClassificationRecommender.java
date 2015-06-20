@@ -5,12 +5,13 @@ import org.apache.mahout.cf.taste.model.DataModel;
 
 import recsys.recommender.sushi.model.SushiItemDataModel;
 import recsys.recommender.sushi.model.SushiPiece;
-import recsys.recommender.sushi.model.User;
-import recsys.recommender.sushi.model.UserModel;
+import recsys.recommender.sushi.model.SushiUser;
+import recsys.recommender.sushi.model.SushiUserModel;
 import weka.core.Attribute;
 import weka.core.FastVector;
 import weka.core.Instance;
 
+@SuppressWarnings("deprecation")
 public abstract class SushiAndUserClassificationRecommender extends SushiClassificationRecommender {
 
 	private Attribute genderAttribute;
@@ -22,7 +23,7 @@ public abstract class SushiAndUserClassificationRecommender extends SushiClassif
 	private Attribute eastWestIDUntil15Attribute;
 	private Attribute eastWestIDCurrentAttribute;
 
-	public SushiAndUserClassificationRecommender(DataModel dataModel, UserModel userModel, SushiItemDataModel sushiDataModel) throws Exception {
+	public SushiAndUserClassificationRecommender(DataModel dataModel, SushiUserModel userModel, SushiItemDataModel sushiDataModel) throws Exception {
 		super(dataModel, userModel, sushiDataModel);
 		trainGlobalModel();
 	}
@@ -41,7 +42,7 @@ public abstract class SushiAndUserClassificationRecommender extends SushiClassif
 	}
 
 	@Override
-	protected void setAttributeValues(SushiPiece sushiPiece, Instance instance, User user) {
+	protected void setAttributeValues(SushiPiece sushiPiece, Instance instance, SushiUser user) {
 		super.setAttributeValues(sushiPiece, instance, user);
 		instance.setValue(ageAttribute, user.getAge());
 		instance.setValue(genderAttribute, user.getGender());
@@ -58,6 +59,7 @@ public abstract class SushiAndUserClassificationRecommender extends SushiClassif
 		return super.getAttributeCount() + 8;
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	protected FastVector createAttributes() {
 		FastVector attributes = super.createAttributes();

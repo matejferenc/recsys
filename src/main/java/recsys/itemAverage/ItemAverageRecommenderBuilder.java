@@ -18,11 +18,14 @@ public class ItemAverageRecommenderBuilder implements RecommenderBuilder {
 	public String getName() {
 		return "Item average recommender builder";
 	}
+	
+	@Override
+	public String getShortName() {
+		return "IA";
+	}
 
 	@Override
 	public void freeReferences() {
-		// TODO Auto-generated method stub
-		
 	}
 
 }

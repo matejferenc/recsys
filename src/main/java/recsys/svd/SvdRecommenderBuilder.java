@@ -25,11 +25,14 @@ public class SvdRecommenderBuilder implements RecommenderBuilder {
 	public String getName() {
 		return "SVD Recommender Builder with (" + factorizer.getName() + ")";
 	}
+	
+	@Override
+	public String getShortName() {
+		return "SVD" + factorizer.getShortName();
+	}
 
 	@Override
 	public void freeReferences() {
-		// TODO Auto-generated method stub
-		
 	}
 
 }

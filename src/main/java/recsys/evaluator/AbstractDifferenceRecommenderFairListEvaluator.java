@@ -39,14 +39,11 @@ import com.google.common.collect.Lists;
 /**
  * Abstract superclass of a couple implementations, providing shared functionality.
  */
-public abstract class AbstractDifferenceRecommenderFairListEvaluator implements RecommenderFairEvaluator {
+public abstract class AbstractDifferenceRecommenderFairListEvaluator extends AbstractRecommenderFairEvaluator {
 
 	private static final Logger log = LoggerFactory.getLogger(AbstractDifferenceRecommenderFairListEvaluator.class);
 
 	private final Random random;
-
-	private AtomicInteger noEstimateCounter = new AtomicInteger();
-	private AtomicInteger estimateCounter = new AtomicInteger();
 
 	private DataModel dataModel;
 
@@ -248,14 +245,6 @@ public abstract class AbstractDifferenceRecommenderFairListEvaluator implements 
 			return null;
 		}
 
-	}
-
-	public AtomicInteger getNoEstimateCounter() {
-		return noEstimateCounter;
-	}
-
-	public AtomicInteger getEstimateCounter() {
-		return estimateCounter;
 	}
 
 }

@@ -23,6 +23,11 @@ public class SlopeOneRecommenderBuilder implements RecommenderBuilder {
 	public String getName() {
 		return "Slope One Recommender Builder";
 	}
+	
+	@Override
+	public String getShortName() {
+		return "SO";
+	}
 
 	@Override
 	public void freeReferences() {

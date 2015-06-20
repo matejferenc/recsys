@@ -6,7 +6,7 @@ import org.apache.mahout.cf.taste.model.DataModel;
 import org.apache.mahout.cf.taste.recommender.Recommender;
 
 import recsys.recommender.sushi.model.SushiItemDataModel;
-import recsys.recommender.sushi.model.UserModel;
+import recsys.recommender.sushi.model.SushiUserModel;
 
 public class SushiContentBasedRecommenderBuilder implements RecommenderBuilder {
 
@@ -18,14 +18,19 @@ public class SushiContentBasedRecommenderBuilder implements RecommenderBuilder {
 
 	@Override
 	public Recommender buildRecommender(DataModel dataModel) throws TasteException {
-		UserModelBuilder userModelBuilder = new UserModelBuilder(dataModel, sushiDataModel);
-		UserModel userModel = userModelBuilder.build();
+		SushiUserModelBuilder userModelBuilder = new SushiUserModelBuilder(dataModel, sushiDataModel);
+		SushiUserModel userModel = userModelBuilder.build();
 		return new SushiContentBasedRecommender(dataModel, userModel, sushiDataModel);
 	}
 
 	@Override
 	public String getName() {
 		return "Sushi Content Based Recommender Builder";
+	}
+	
+	@Override
+	public String getShortName() {
+		return "FIXME Sushi Content Based Recommender Builder";
 	}
 
 	@Override

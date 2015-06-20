@@ -56,7 +56,7 @@ public class MovieLensUserSimilarity implements UserSimilarity {
 //		double actorsSimilarity = calculateActorsSimilarity(user1, user2);
 //		double actressesSimilarity = calculateActressesSimilarity(user1, user2);
 		// every partial similarity has the same weight: 1
-		// we need to divide by 4 (total weight)
+//		 we need to divide by 4 (total weight)
 //		double userSimilarity = (genresSimilarity + directoresSimilarity + actorsSimilarity + actressesSimilarity) / 4;
 //		double userSimilarity = (genresSimilarity);
 		double userSimilarity = (genresSimilarity + directoresSimilarity) / 2;
@@ -125,6 +125,11 @@ public class MovieLensUserSimilarity implements UserSimilarity {
 	@Override
 	public String getName() {
 		return "MovieLens User Similarity";
+	}
+
+	@Override
+	public String getShortName() {
+		return "MLUS";
 	}
 
 }
