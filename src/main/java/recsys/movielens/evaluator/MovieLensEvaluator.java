@@ -50,10 +50,6 @@ public class MovieLensEvaluator extends AbstractEvaluator {
 	public void evaluate() throws Exception {
 		DataModel dataModel = new Movielens1MDataset().build();
 		
-//		String genresPath = prop.getProperty("movielens-1m-movies.dat");
-		// String genresPath = prop.getProperty("movielens-10m-movies.dat");
-//		GenresDataModel genresModel = new GenresDataModel(new File(genresPath));
-		
 		List<RecommenderBuilder> builders = createRecommenderBuilders(dataModel);
 		evaluateRecommenders(dataModel, builders, argsList);
 	}

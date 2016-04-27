@@ -11,7 +11,6 @@ import recsys.notebooks.model.NotebooksDataModel;
 import recsys.notebooks.model.NotebooksUserModel;
 import recsys.notebooks.model.builder.NotebooksUserModelBuilder;
 import recsys.notebooks.recommender.NotebooksRecommender;
-import recsys.notebooks.similarity.NotebooksUserSimilarity;
 import recsys.notebooks.similarity.NotebooksUserSimilarity.Include;
 
 public class NotebooksRecommenderBuilder implements RecommenderBuilder {

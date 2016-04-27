@@ -61,13 +61,7 @@ public class SushiUserDataModelLoader {
 		log.info("Read lines: {}", count);
 	}
 
-	/**
-	 * processing of one line
-	 * 
-	 * @param line
-	 * @param genres
-	 * @param names
-	 */
+	@SuppressWarnings("unused")
 	protected void processLine(String line, int lineNumber) {
 		// Ignore empty lines and comments
 		if (line.isEmpty() || line.charAt(0) == COMMENT_CHAR) {
@@ -97,7 +91,6 @@ public class SushiUserDataModelLoader {
 			Integer eastWestIDCurrent = Integer.parseInt(eastWestIDCurrentString);
 			String attributes5And8EqualString = tokens.next();
 
-//			User user = userModel.getOrCreate(userID);
 			// we use artificial IDs for users - the line numbers
 			SushiUser user = userModel.getOrCreate(lineNumber);
 			user.setAge(age);

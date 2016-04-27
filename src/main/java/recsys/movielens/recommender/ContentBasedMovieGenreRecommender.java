@@ -40,7 +40,6 @@ public class ContentBasedMovieGenreRecommender extends AbstractRecommender {
 		FastIDSet itemIDsFromUser = model.getItemIDsFromUser(userID);
 		List<Long> itemsWithAtLeastOneSameGenre = new ArrayList<Long>();
 		List<Float> similarities = getItemsWithAtLeastOneSameGenre(itemIDsFromUser, itemGenres, itemsWithAtLeastOneSameGenre);
-//		List<Float> similarities = getAllItems(itemIDsFromUser, itemGenres, itemsWithAtLeastOneSameGenre);
 		float averageRating = calculateAverageRating(itemsWithAtLeastOneSameGenre, userID, similarities);
 		return averageRating;
 	}
@@ -64,15 +63,6 @@ public class ContentBasedMovieGenreRecommender extends AbstractRecommender {
 		return sumOfRatings / sumOfSimilarities;
 	}
 
-	/**
-	 * 
-	 * @param itemIDsFromUser
-	 * @param itemGenres
-	 * @param itemsWithSameGenre
-	 *            output List of items
-	 * @return
-	 * @throws TasteException
-	 */
 	private List<Float> getItemsWithAtLeastOneSameGenre(FastIDSet itemIDsFromUser, Set<String> itemGenres, List<Long> itemsWithSameGenre) throws TasteException {
 		List<Float> itemsSimilarity = new ArrayList<Float>();
 		for (Long itemIDFromUser : itemIDsFromUser) {
@@ -85,19 +75,8 @@ public class ContentBasedMovieGenreRecommender extends AbstractRecommender {
 		return itemsSimilarity;
 	}
 
-	private List<Float> getAllItems(FastIDSet itemIDsFromUser, Set<String> itemGenres, List<Long> itemsWithSameGenre) throws TasteException {
-		List<Float> itemsSimilarity = new ArrayList<Float>();
-		for (Long itemIDFromUser : itemIDsFromUser) {
-			itemsWithSameGenre.add(itemIDFromUser);
-			itemsSimilarity.add(1f);
-		}
-		return itemsSimilarity;
-	}
-
 	@Override
 	public void refresh(Collection<Refreshable> alreadyRefreshed) {
-		// TODO Auto-generated method stub
-
 	}
 
 }

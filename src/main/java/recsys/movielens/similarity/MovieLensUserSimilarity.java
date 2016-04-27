@@ -53,13 +53,11 @@ public class MovieLensUserSimilarity implements UserSimilarity {
 		User user2 = userModel.get(userID2);
 		double genresSimilarity = calculateGenresSimilarity(user1, user2);
 		double directoresSimilarity = calculateDirectorsSimilarity(user1, user2);
-//		double actorsSimilarity = calculateActorsSimilarity(user1, user2);
-//		double actressesSimilarity = calculateActressesSimilarity(user1, user2);
+		double actorsSimilarity = calculateActorsSimilarity(user1, user2);
+		double actressesSimilarity = calculateActressesSimilarity(user1, user2);
 		// every partial similarity has the same weight: 1
 //		 we need to divide by 4 (total weight)
-//		double userSimilarity = (genresSimilarity + directoresSimilarity + actorsSimilarity + actressesSimilarity) / 4;
-//		double userSimilarity = (genresSimilarity);
-		double userSimilarity = (genresSimilarity + directoresSimilarity) / 2;
+		double userSimilarity = (genresSimilarity + directoresSimilarity + actorsSimilarity + actressesSimilarity) / 4;
 		// correction for Taste framework (interface says the return value should be between -1 and +1,
 		// yet the computed similarity is between 0 and +1)
 		double transformedUserSimilarity = userSimilarity * 2 - 1;

@@ -2,19 +2,15 @@ package recsys.sushi.similarity;
 
 import java.util.Collection;
 import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Set;
 
 import org.apache.mahout.cf.taste.common.Refreshable;
 import org.apache.mahout.cf.taste.common.TasteException;
 import org.apache.mahout.cf.taste.similarity.PreferenceInferrer;
 import org.apache.mahout.cf.taste.similarity.UserSimilarity;
-import org.apache.mahout.common.Pair;
 
 import recsys.model.SetPreference;
 import recsys.sushi.evaluator.IncludeProperties;
-import recsys.sushi.model.SushiItemDataModel;
 import recsys.sushi.model.SushiUser;
 import recsys.sushi.model.SushiUserModel;
 

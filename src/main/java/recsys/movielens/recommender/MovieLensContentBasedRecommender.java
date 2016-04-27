@@ -57,26 +57,9 @@ public class MovieLensContentBasedRecommender implements Recommender {
 		double actorsRating = calculateActorsRating(user, itemID);
 		double actressesRating = calculateActressesRating(user, itemID);
 		
-//		int nonZeroRatingCount = getNonZeroRatingCount(genresRating, 0, 0, 0);
-//		return (float) (genresRating / nonZeroRatingCount);
+		int nonZeroRatingCount = getNonZeroRatingCount(genresRating, directorsRating, actorsRating, actressesRating);
+		return (float) ((genresRating + directorsRating + actorsRating + actressesRating) / nonZeroRatingCount);
 		
-//		int nonZeroRatingCount = getNonZeroRatingCount(0, directorsRating, 0, 0);
-//		return (float) (directorsRating / nonZeroRatingCount);
-		
-//		int nonZeroRatingCount = getNonZeroRatingCount(genresRating, directorsRating, actorsRating, actressesRating);
-//		return (float) ((genresRating + directorsRating + actorsRating + actressesRating) / nonZeroRatingCount);
-		
-//		int nonZeroRatingCount = getNonZeroRatingCount(genresRating, directorsRating, 0, 0);
-//		return (float) ((genresRating + directorsRating) / nonZeroRatingCount);
-		
-//		int nonZeroRatingCount = getNonZeroRatingCount(0, 0, actorsRating, actressesRating);
-//		return (float) ((actorsRating + actressesRating) / nonZeroRatingCount);
-
-		int nonZeroRatingCount = getNonZeroRatingCount(genresRating, directorsRating, actorsRating, 0);
-		return (float) ((genresRating + directorsRating + actorsRating) / nonZeroRatingCount);
-		
-//		int nonZeroRatingCount = getNonZeroRatingCount(genresRating, directorsRating, 0, actressesRating);
-//		return (float) ((genresRating + directorsRating + actressesRating) / nonZeroRatingCount);
 	}
 
 	private int getNonZeroRatingCount(double genresRating, double directorsRating, double actorsRating, double actressesRating) {

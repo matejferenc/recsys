@@ -3,14 +3,10 @@ package recsys.recommender.builder;
 import org.apache.mahout.cf.taste.common.TasteException;
 import org.apache.mahout.cf.taste.eval.RecommenderBuilder;
 import org.apache.mahout.cf.taste.impl.recommender.slopeone.SlopeOneRecommender;
-import org.apache.mahout.cf.taste.impl.recommender.svd.ALSWRFactorizer;
-import org.apache.mahout.cf.taste.impl.recommender.svd.Factorizer;
-import org.apache.mahout.cf.taste.impl.recommender.svd.RatingSGDFactorizer;
-import org.apache.mahout.cf.taste.impl.recommender.svd.SVDPlusPlusFactorizer;
-import org.apache.mahout.cf.taste.impl.recommender.svd.SVDRecommender;
 import org.apache.mahout.cf.taste.model.DataModel;
 import org.apache.mahout.cf.taste.recommender.Recommender;
 
+@SuppressWarnings("deprecation")
 public class SlopeOneRecommenderBuilder implements RecommenderBuilder {
 
 	@Override
@@ -31,7 +27,6 @@ public class SlopeOneRecommenderBuilder implements RecommenderBuilder {
 
 	@Override
 	public void freeReferences() {
-		// TODO Auto-generated method stub
 		
 	}
 

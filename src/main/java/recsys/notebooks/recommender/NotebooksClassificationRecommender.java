@@ -28,6 +28,7 @@ import weka.core.SparseInstance;
 
 import com.google.common.base.Preconditions;
 
+@SuppressWarnings({ "unchecked", "rawtypes", "deprecation" })
 public abstract class NotebooksClassificationRecommender implements Recommender {
 
 	protected final DataModel dataModel;

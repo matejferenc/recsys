@@ -19,7 +19,7 @@ public abstract class CollaborativeFilteringDataset {
 		long endTime = new Date().getTime();
 		int s = (int) ((endTime - startTime) / 1000);
 		params.seconds = s;
-		System.out.println("cas behu: " + s + "s");
+		System.out.println("time of execution: " + s + "s");
 		return params;
 	}
 	
@@ -36,13 +36,13 @@ public abstract class CollaborativeFilteringDataset {
 		
 		params.totalRatingCount = 0;
 
-		// histogram poctu hodnoteni na jeden film
+		// histogram of number of rating per one movie
 		Map<Long, Integer> itemRatingsCount = new HashMap<Long, Integer>();
 
-		// histogram poctu hodnoteni na jedneho uzivatela
+		// histogram of number of rating per one user
 		Map<Long, Integer> userRatingsCount = new HashMap<Long, Integer>();
 
-		// histogram hodnoteni
+		// histogram of ratings
 		Map<Float, Integer> totalRatingsCount = new HashMap<Float, Integer>();
 
 		LongPrimitiveIterator itemIDs = model.getItemIDs();
@@ -70,10 +70,9 @@ public abstract class CollaborativeFilteringDataset {
 		
 		double density = params.totalRatingCount / (params.itemCount * (double)params.userCount);
 
-		// zoskupime podla poctu hodnoteni
+		// group by the count of ratings
 		TreeMap<Integer, Integer> ratingsCountPerItemHistogram = new TreeMap<>();
 		for (Map.Entry<Long, Integer> entry : itemRatingsCount.entrySet()) {
-			// Long itemId = entry.getKey();
 			Integer ratingsCount = entry.getValue();
 
 			if (ratingsCountPerItemHistogram.containsKey(ratingsCount)) {
@@ -101,10 +100,9 @@ public abstract class CollaborativeFilteringDataset {
 			throw new IllegalStateException("check failed. expected " + params.totalRatingCount + " but was " + totalPreferencesFromUser);
 		}
 
-		// zoskupime podla poctu hodnoteni
+		// group by the number of ratings
 		TreeMap<Integer, Integer> ratingsCountPerUserHistogram = new TreeMap<>();
 		for (Map.Entry<Long, Integer> entry : userRatingsCount.entrySet()) {
-			// Long userId = entry.getKey();
 			Integer ratingsCount = entry.getValue();
 
 			if (ratingsCountPerUserHistogram.containsKey(ratingsCount)) {
@@ -175,7 +173,7 @@ public abstract class CollaborativeFilteringDataset {
 			}
 			i++;
 		}
-		// pridame posledny interval
+		// add the last interval
 		grouped.put(first + " - " + last, total);
 		return grouped;
 	}

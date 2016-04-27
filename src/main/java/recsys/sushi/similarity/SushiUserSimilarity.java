@@ -3,17 +3,14 @@ package recsys.sushi.similarity;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.EnumSet;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import org.apache.mahout.cf.taste.common.Refreshable;
 import org.apache.mahout.cf.taste.common.TasteException;
 import org.apache.mahout.cf.taste.similarity.PreferenceInferrer;
 import org.apache.mahout.cf.taste.similarity.UserSimilarity;
-import org.apache.mahout.common.Pair;
 
 import recsys.model.SetPreference;
 import recsys.sushi.evaluator.IncludeProperties;
@@ -26,13 +23,11 @@ public class SushiUserSimilarity implements UserSimilarity {
 	private static final int MAX_DIFFERENCE = 4;
 	private final SushiUserModel userModel;
 
-	private Map<Pair<Long, Long>, Double> cache;
 	private EnumSet<IncludeProperties> includeProperties;
 
 	public SushiUserSimilarity(SushiUserModel userModel, EnumSet<IncludeProperties> includeProperties) {
 		this.userModel = userModel;
 		this.includeProperties = includeProperties;
-		cache = new HashMap<Pair<Long, Long>, Double>();
 	}
 
 	@Override
@@ -41,26 +36,7 @@ public class SushiUserSimilarity implements UserSimilarity {
 
 	@Override
 	public double userSimilarity(long userID1, long userID2) throws TasteException {
-//		Pair<Long, Long> key = new Pair<Long, Long>(userID1, userID2);
-//		Double cached;
-//		Double cachedSwapped;
-//		synchronized (cache) {
-//			cached = cache.get(key);
-//			Pair<Long, Long> keySwapped = new Pair<Long, Long>(userID2, userID1);
-//			cachedSwapped = cache.get(keySwapped);
-//		}
-//		if (cached != null) {
-//			return cached;
-//		} else if (cachedSwapped != null) {
-//			return cachedSwapped;
-//		} else {
-			double similarity = computeSimilarity((int) userID1, (int) userID2);
-//			synchronized (cache) {
-//				cache.put(key, similarity);
-//			}
-			return similarity;
-//		}
-
+		return computeSimilarity((int) userID1, (int) userID2);
 	}
 
 	private double computeSimilarity(int userID1, int userID2) {
@@ -128,12 +104,6 @@ public class SushiUserSimilarity implements UserSimilarity {
 		return 1 - (Math.abs(preferred1 - preferred2)) / SushiItemDataModel.MAX_PRICE;
 	}
 
-	/**
-	 * 
-	 * @param user1
-	 * @param user2
-	 * @return number from interval [0,1]
-	 */
 	private double calculateOilinessSimilarity(SushiUser user1, SushiUser user2) {
 		double preferred1 = user1.getOilinessPreferences().getPreferredValue();
 		double preferred2 = user2.getOilinessPreferences().getPreferredValue();
@@ -163,12 +133,6 @@ public class SushiUserSimilarity implements UserSimilarity {
 		return calculateCommonPropertiesSimilarity(user1Preferences, user2Preferences);
 	}
 
-	/**
-	 * 
-	 * @param user1Preferences
-	 * @param user2Preferences
-	 * @return number from interval [0,1]
-	 */
 	private double calculateCommonPropertiesSimilarity(List<Double> user1Preferences, List<Double> user2Preferences) {
 		double nominator = 0;
 		for (int i = 0; i < user1Preferences.size(); i++) {

@@ -2,8 +2,6 @@ package recsys.evaluator.abstr;
 
 import java.util.List;
 
-import recsys.sushi.evaluator.IncludeUserSimilarityBuilder;
-
 public enum IncludeEvaluator {
 
 	WEIGHTED_RMSE("wrmse"),

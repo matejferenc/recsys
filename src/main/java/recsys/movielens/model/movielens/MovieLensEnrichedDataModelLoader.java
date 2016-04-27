@@ -13,9 +13,6 @@ import org.apache.mahout.common.iterator.FileLineIterator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import recsys.movielens.model.shared.Movie;
-import recsys.movielens.uniter.MovieLensMovieModel;
-
 import com.google.common.base.Preconditions;
 import com.google.common.base.Splitter;
 
@@ -65,13 +62,6 @@ public class MovieLensEnrichedDataModelLoader {
 		log.info("Read lines: {}", count);
 	}
 
-	/**
-	 * processing of one line
-	 * 
-	 * @param line
-	 * @param genres
-	 * @param names
-	 */
 	protected void processLine(String line) {
 		// Ignore empty lines and comments
 		if (line.isEmpty() || line.charAt(0) == COMMENT_CHAR) {
