@@ -69,8 +69,6 @@ public abstract class AbstractDifferenceRecommenderCrossEvaluator implements Rec
 		List<Double> results = new ArrayList<Double>();
 
 		int numUsers = dataModel.getNumUsers();
-		// FastByIDMap<PreferenceArray> trainingPrefs = new FastByIDMap<PreferenceArray>(1 + (int) (evaluationPercentage * numUsers));
-		// FastByIDMap<PreferenceArray> testPrefs = new FastByIDMap<PreferenceArray>(1 + (int) (evaluationPercentage * numUsers));
 
 		int numParts = 9;// we divide training set 9 times
 		int usersInOnePart = numUsers / numParts;
@@ -209,7 +207,6 @@ public abstract class AbstractDifferenceRecommenderCrossEvaluator implements Rec
 		log.info("Starting timing of {} tasks in {} threads", wrappedCallables.size(), numProcessors);
 		try {
 			List<Future<Void>> futures = executor.invokeAll(wrappedCallables);
-			// Go look for exceptions here, really
 			for (Future<Void> future : futures) {
 				future.get();
 			}
@@ -265,7 +262,6 @@ public abstract class AbstractDifferenceRecommenderCrossEvaluator implements Rec
 			for (Preference realPref : prefs) {
 				float estimatedPreference = Float.NaN;
 				try {
-					// estimatedPreference = recommender.estimatePreference(testUserID, realPref.getItemID());
 					// only takes relevant neighbors into account:
 					estimatedPreference = recommender.estimatePreference(testUserID, realPref.getItemID());
 				} catch (NoSuchUserException nsue) {

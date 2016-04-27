@@ -8,6 +8,10 @@ import java.util.TreeMap;
 
 import org.apache.commons.math.stat.regression.SimpleRegression;
 
+/**
+ * Class for counting mean and variance of numeric preferences.
+ *
+ */
 public class NumericPreference {
 
 	// map from numeric value to rating
@@ -19,25 +23,6 @@ public class NumericPreference {
 
 	public void addPreference(Double value, Double rating) {
 		preferences.put(value, rating);
-	}
-
-	public Double interpolation(Double value) {
-		Double previousRating = null;
-		Iterator<Entry<Double, Double>> it = preferences.entrySet().iterator();
-		while (it.hasNext()) {
-			Map.Entry<Double, Double> pair = (Map.Entry<Double, Double>) it.next();
-			Double numericValue = pair.getKey();
-			Double rating = pair.getValue();
-			if (value < numericValue) {
-				if (previousRating == null)
-					return rating;
-				else
-					return (previousRating + rating) / 2;
-			} else {
-				previousRating = rating;
-			}
-		}
-		return previousRating;
 	}
 
 	public Double getPreferredValue() {

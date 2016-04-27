@@ -10,8 +10,6 @@ import java.util.Set;
  * Represents a set of e.g. genres, actors, directors or actresses<br/>
  * and the preferences for each single e.g. genre, actor, director or actress.
  * 
- * @author Matej Ferenc
- * 
  */
 public class SetPreference {
 
@@ -23,8 +21,6 @@ public class SetPreference {
 
 	/**
 	 * Represents preference of one e.g. genre, director, actor or actress.
-	 * 
-	 * @author Matej Ferenc
 	 * 
 	 */
 	public class ItemPreference {
