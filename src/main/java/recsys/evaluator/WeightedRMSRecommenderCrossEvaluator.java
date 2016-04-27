@@ -4,6 +4,8 @@ import org.apache.mahout.cf.taste.impl.common.FullRunningAverage;
 import org.apache.mahout.cf.taste.impl.common.RunningAverage;
 import org.apache.mahout.cf.taste.model.Preference;
 
+import recsys.evaluator.abstr.AbstractDifferenceRecommenderCrossEvaluator;
+
 public final class WeightedRMSRecommenderCrossEvaluator extends AbstractDifferenceRecommenderCrossEvaluator {
 
 	private RunningAverage average;

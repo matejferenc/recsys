@@ -14,7 +14,7 @@ import org.apache.mahout.cf.taste.model.DataModel;
 import org.apache.mahout.cf.taste.recommender.IDRescorer;
 import org.apache.mahout.cf.taste.recommender.RecommendedItem;
 
-import recsys.recommender.movielens.SetSimilarity;
+import recsys.movielens.similarity.SetSimilarity;
 
 public class ContentBasedMovieGenreRecommender extends AbstractRecommender {
 

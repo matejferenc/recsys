@@ -5,6 +5,8 @@ import java.util.List;
 import org.apache.mahout.cf.taste.impl.common.FullRunningAverage;
 import org.apache.mahout.cf.taste.impl.common.RunningAverage;
 
+import recsys.evaluator.abstr.AbstractDifferenceRecommenderFairListEvaluator;
+
 public final class TauRecommenderFairListEvaluator extends AbstractDifferenceRecommenderFairListEvaluator {
 
 	private RunningAverage average;
