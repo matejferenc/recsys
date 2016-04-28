@@ -2,8 +2,12 @@ package recsys.sushi.evaluator;
 
 import java.util.List;
 
-
+/**
+ * Enum specifying which similarity builder will be used.
+ *
+ */
 public enum IncludeUserSimilarityBuilder {
+	
 	SUSHI_USER_SIMILARITY_BUILDER("s"),
 	SUSHI_USER_WEIGHTS_SIMILARITY_BUILDER("w"),
 	SUSHI_USER_WEIGHTED_SIMILARITY_BUILDER("wd");

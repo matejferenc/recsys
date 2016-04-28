@@ -16,6 +16,10 @@ import recsys.sushi.model.SushiPiece;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Splitter;
 
+/**
+ * Loader and parser of a file with sushi products.
+ *
+ */
 public class SushiItemDataModelLoader {
 
 	private static final Logger log = LoggerFactory.getLogger(FileDataModel.class);

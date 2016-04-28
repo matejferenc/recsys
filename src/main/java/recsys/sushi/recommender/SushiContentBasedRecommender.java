@@ -13,6 +13,7 @@ import org.apache.mahout.cf.taste.recommender.Recommender;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import recsys.model.NumericPreference;
 import recsys.model.SetPreference;
 import recsys.sushi.model.SushiItemDataModel;
 import recsys.sushi.model.SushiPiece;
@@ -56,13 +57,15 @@ public class SushiContentBasedRecommender implements Recommender {
 		double styleRating = calculateStyleRating(user, (int) itemID);
 		double majorGroupRating = calculateMajorGroupRating(user, (int) itemID);
 		double minorGroupRating = calculateMinorGroupRating(user, (int) itemID);
+		double oilinessRating = calculateOilinessRating(user, (int) itemID);
+		double priceRating = calculatePriceRating(user, (int) itemID);
 
-		int nonZeroRatingCount = getNonZeroRatingCount(styleRating, majorGroupRating, minorGroupRating);
+		int nonZeroRatingCount = getNonZeroRatingCount(styleRating, majorGroupRating, minorGroupRating, oilinessRating, priceRating);
 		return (float) ((styleRating + majorGroupRating + minorGroupRating) / nonZeroRatingCount);
 	}
 
-	private int getNonZeroRatingCount(double genresRating, double directorsRating, double actorsRating) {
-		return isNonZero(genresRating) + isNonZero(directorsRating) + isNonZero(actorsRating);
+	private int getNonZeroRatingCount(double styleRating, double majorGroupRating, double minorGroupRating, double oilinessRating, double priceRating) {
+		return isNonZero(styleRating) + isNonZero(majorGroupRating) + isNonZero(minorGroupRating) + isNonZero(oilinessRating) + isNonZero(priceRating);
 	}
 
 	private int isNonZero(double rating) {
@@ -83,13 +86,40 @@ public class SushiContentBasedRecommender implements Recommender {
 		SushiPiece sushiPiece = sushiDataModel.getSushiPiece(itemID);
 		return calculatePreference(sushiPiece.getStyle(), user.getStylePreferences());
 	}
+	
+	private double calculateOilinessRating(SushiUser user, int itemID) {
+		SushiPiece sushiPiece = sushiDataModel.getSushiPiece(itemID);
+		return calculatePreference(sushiPiece.getOiliness(), user.getOilinessPreferences());
+	}
+
+	private double calculatePriceRating(SushiUser user, int itemID) {
+		SushiPiece sushiPiece = sushiDataModel.getSushiPiece(itemID);
+		return calculatePreference(sushiPiece.getPrice(), user.getPricePreferences());
+	}
 
 	private double calculatePreference(int itemAttribute, SetPreference attributePreferences) {
 		Set<Integer> allPropertyIds = attributePreferences.getAllPropertyIds();
 		if (allPropertyIds.contains(itemAttribute)) {
 			return attributePreferences.getPropertyAverage(itemAttribute);
-		} else
+		} else {
 			return 0;
+		}
+	}
+	
+	/**
+	 * Linear preference guess.
+	 * @param itemValue
+	 * @param attributePreferences
+	 * @return
+	 */
+	private double calculatePreference(double itemValue, NumericPreference attributePreferences) {
+		double difference = Math.abs(attributePreferences.getPreferredValue() - itemValue);
+		if (difference > attributePreferences.getVariance()) {
+			return 0;
+		} else {
+			return 1 - (1/attributePreferences.getVariance()) * difference;
+		}
+		
 	}
 
 	@Override

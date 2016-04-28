@@ -3,6 +3,10 @@ package recsys.sushi.model;
 import recsys.model.NumericPreference;
 import recsys.model.SetPreference;
 
+/**
+ * Model of a single person who rated sushi products.
+ *
+ */
 public class SushiUser {
 	
 	private int gender;

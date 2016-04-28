@@ -11,6 +11,10 @@ import recsys.sushi.model.builder.SushiUserModelBuilder;
 import recsys.sushi.recommender.SushiAndUserClassificationRecommender;
 import weka.classifiers.Classifier;
 
+/**
+ * RecommenderBuilder which uses both global and local estimate and user information.
+ *
+ */
 public abstract class SushiAndUserClassificationRecommenderBuilder implements RecommenderBuilder {
 
 	private final SushiItemDataModel sushiDataModel;

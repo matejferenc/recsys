@@ -1,5 +1,9 @@
 package recsys.sushi.model;
 
+/**
+ * Information about one sushi product.
+ *
+ */
 public class SushiPiece {
 
 	private int style;

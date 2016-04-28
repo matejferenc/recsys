@@ -3,6 +3,9 @@ package recsys.sushi.evaluator;
 import java.util.EnumSet;
 import java.util.List;
 
+/**
+ * Enum of properties in sushi dataset.
+ */
 public enum IncludeProperties {
 
 	STYLE("s", "style"),

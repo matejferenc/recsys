@@ -45,6 +45,10 @@ import weka.classifiers.trees.J48;
 import weka.classifiers.trees.RandomForest;
 import weka.classifiers.trees.RandomTree;
 
+/**
+ * Evaluator of sushi dataset recommenders.
+ *
+ */
 public class SushiEvaluator extends AbstractEvaluator {
 	
 	private List<String> argsList;
@@ -62,11 +66,16 @@ public class SushiEvaluator extends AbstractEvaluator {
 	@Override
 	public void evaluate() throws Exception {
 		DataModel dataModel = new SushiDataset().build();
-
 		List<RecommenderBuilder> builders = createRecommenderBuilders(dataModel);
 		evaluateRecommenders(dataModel, builders, argsList);
 	}
 	
+	/**
+	 * Creates RecommenderBuilders from the specified command line arguments.
+	 * @param dataModel
+	 * @return
+	 * @throws Exception
+	 */
 	private List<RecommenderBuilder> createRecommenderBuilders(DataModel dataModel) throws Exception {
 		List<RecommenderBuilder> builders = new ArrayList<>();
 		SushiItemDataModel sushiDataModel = new SushiItemDataModelDataset().build();
@@ -136,22 +145,15 @@ public class SushiEvaluator extends AbstractEvaluator {
 			builders.add(new UserBasedRecommenderBuilder(pearsonCorrelationUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(75)));
 			builders.add(new UserBasedRecommenderBuilder(pearsonCorrelationUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(100)));
 		}
-
 		
-		if (argsList.contains("ubesdfsdd")) {
-//			builders.add(new SushiContentBasedRecommenderBuilder(sushiDataModel));
-		}
-
 		if (includeAlgorithms.contains(IncludeAlgorithms.ITEM_BASED_EUCLIDEAN_DISTANCE)) {
 			EuclideanDistanceItemSimilarityBuilder euclideanDistanceItemSimilarityBuilder = new EuclideanDistanceItemSimilarityBuilder();
 			builders.add(new ItemBasedRecommenderBuilder(euclideanDistanceItemSimilarityBuilder));
 		}
-
 		if (includeAlgorithms.contains(IncludeAlgorithms.ITEM_BASED_PEARSON_CORRELATION)) {
 			PearsonCorrelationItemSimilarityBuilder pearsonCorrelationItemSimilarityBuilder = new PearsonCorrelationItemSimilarityBuilder();
 			builders.add(new ItemBasedRecommenderBuilder(pearsonCorrelationItemSimilarityBuilder));
 		}
-
 		if (includeAlgorithms.contains(IncludeAlgorithms.USER_AVERAGE)) {
 			builders.add(new UserAverageRecommenderBuilder());
 		}
@@ -168,7 +170,6 @@ public class SushiEvaluator extends AbstractEvaluator {
 			SushiItemSimilarityBuilder sushiItemSimilarityBuilder = new SushiItemSimilarityBuilder(sushiDataModel, includeProperties);
 			builders.add(new ItemBasedRecommenderBuilder(sushiItemSimilarityBuilder));
 		}
-
 		if (includeAlgorithms.contains(IncludeAlgorithms.GLOBAL_AND_LOCAL_CLASSIFICATION)) {
 			if (includeClassificators.contains(IncludeClassificators.J48)) {
 				builders.add(new SushiGlobalAndLocalClassificationRecommenderBuilder(sushiDataModel) {public Classifier createClassifier() {return new J48();}});
@@ -241,8 +242,6 @@ public class SushiEvaluator extends AbstractEvaluator {
 			}
 		}
 
-//		 // builders.add(new SushiCombinedGlobalClassificationRecommenderBuilder(sushiDataModel));
-//
 		if (includeAlgorithms.contains(IncludeAlgorithms.SVD_PLUS_PLUS)) {
 			builders.add(new SvdRecommenderBuilder(new SVDPlusPlusFactorizer(dataModel, 1, 10)));
 			builders.add(new SvdRecommenderBuilder(new SVDPlusPlusFactorizer(dataModel, 2, 10)));
@@ -255,9 +254,6 @@ public class SushiEvaluator extends AbstractEvaluator {
 			builders.add(new SvdRecommenderBuilder(new SVDPlusPlusFactorizer(dataModel, 9, 10)));
 			builders.add(new SvdRecommenderBuilder(new SVDPlusPlusFactorizer(dataModel, 10, 10)));
 		}
-
-		// builders.add(new SvdRecommenderBuilder(new SVDPlusPlusFactorizer(dataModel, 10, 100)));
-		// builders.add(new SvdRecommenderBuilder(new SVDPlusPlusFactorizer(dataModel, 100, 100)));
 
 		if (includeAlgorithms.contains(IncludeAlgorithms.SVD_ASWLR)) {
 			builders.add(new SvdRecommenderBuilder(new ALSWRFactorizer(dataModel, 1, 0.001, 10)));
@@ -272,10 +268,6 @@ public class SushiEvaluator extends AbstractEvaluator {
 			builders.add(new SvdRecommenderBuilder(new ALSWRFactorizer(dataModel, 10, 0.001, 10)));
 		}
 
-		// builders.add(new SvdRecommenderBuilder(new ALSWRFactorizer(dataModel, 10, 0.001, 100)));
-		// builders.add(new SvdRecommenderBuilder(new ALSWRFactorizer(dataModel, 10, 0.001, 1000)));
-		// builders.add(new SvdRecommenderBuilder(new ALSWRFactorizer(dataModel, 100, 0.001, 10)));
-
 		if (includeAlgorithms.contains(IncludeAlgorithms.SLOPE_ONE)) {
 			builders.add(new SlopeOneRecommenderBuilder());
 		}
@@ -283,6 +275,13 @@ public class SushiEvaluator extends AbstractEvaluator {
 		return builders;
 	}
 
+	/**
+	 * Checking if all the necessary parameters are present as command line arguments when we use certain Recommenders.
+	 * @param includeAlgorithms
+	 * @param includeProperties
+	 * @param includeClassificators
+	 * @throws MissingArgumentException
+	 */
 	private void assertCorrectIncludes(EnumSet<IncludeAlgorithms> includeAlgorithms, EnumSet<IncludeProperties> includeProperties, EnumSet<IncludeClassificators> includeClassificators) throws MissingArgumentException {
 		if (includeAlgorithms.contains(IncludeAlgorithms.USER_BASED) || includeAlgorithms.contains(IncludeAlgorithms.SUSHI_ITEM_SIMILARITY)) {
 			if (includeProperties.size() == 0) {

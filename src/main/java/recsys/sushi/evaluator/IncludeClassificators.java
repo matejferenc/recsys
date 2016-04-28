@@ -3,6 +3,10 @@ package recsys.sushi.evaluator;
 import java.util.EnumSet;
 import java.util.List;
 
+/**
+ * Enum with classificators we use with sushi dataset.
+ *
+ */
 public enum IncludeClassificators {
 
 	J48("j48"),

@@ -3,6 +3,10 @@ package recsys.sushi.model;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Model of sushi products.
+ *
+ */
 public class SushiItemDataModel {
 
 	// price has values from interval [0,5]

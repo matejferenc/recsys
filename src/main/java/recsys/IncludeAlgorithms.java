@@ -3,6 +3,10 @@ package recsys;
 import java.util.EnumSet;
 import java.util.List;
 
+/**
+ * Enum with a set of supported algorithms in used recommenders.
+ *
+ */
 public enum IncludeAlgorithms {
 
 	USER_BASED("ub"),

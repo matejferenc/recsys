@@ -6,6 +6,10 @@ import java.util.Properties;
 import org.apache.mahout.cf.taste.impl.model.file.MatrixDataModel;
 import org.apache.mahout.cf.taste.model.DataModel;
 
+/**
+ * Class used to load a model of sushi dataset.
+ *
+ */
 public class SushiDataset {
 
 	public DataModel build() throws Exception {

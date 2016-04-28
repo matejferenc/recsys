@@ -16,6 +16,10 @@ import recsys.sushi.model.SushiUserModel;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Splitter;
 
+/**
+ * Loader and parser of file with people information.
+ *
+ */
 public class SushiUserDataModelLoader {
 
 	private static final Logger log = LoggerFactory.getLogger(FileDataModel.class);

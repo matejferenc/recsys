@@ -3,6 +3,10 @@ package recsys.sushi.model;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Model of people who rated sushi products.
+ *
+ */
 public class SushiUserModel {
 	
 	private Map<Integer, SushiUser> users;

@@ -6,6 +6,10 @@ import java.util.Properties;
 import recsys.sushi.model.SushiItemDataModel;
 import recsys.sushi.model.loader.SushiItemDataModelLoader;
 
+/**
+ * Class used for loading item dataset for sushi.
+ *
+ */
 public class SushiItemDataModelDataset {
 
 	public SushiItemDataModel build() throws Exception {
