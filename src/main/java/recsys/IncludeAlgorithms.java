@@ -29,7 +29,8 @@ public enum IncludeAlgorithms {
 	MOVIE_LENS_USER_SIMILARITY("mlus"),
 	MOVIE_LENS_CONTENT_BASED("mlcb"),
 	NOTEBOOKS("ntb"),
-	USER_BASED_SIMILARITY("ubs");
+	USER_BASED_SIMILARITY("ubs"),
+	MOVIELENS_ITEM_SIMILARITY("ibs");
 	
 	private String shortName;
 

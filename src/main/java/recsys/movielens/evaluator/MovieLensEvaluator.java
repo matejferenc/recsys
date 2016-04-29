@@ -18,6 +18,7 @@ import recsys.movielens.dataset.MovieLensEnrichedModelDataset;
 import recsys.movielens.dataset.Movielens1MDataset;
 import recsys.movielens.model.movielens.MovieLensEnrichedModel;
 import recsys.movielens.recommender.builder.MovieLensContentBasedRecommenderBuilder;
+import recsys.movielens.similarity.builder.MovieLensItemSimilarityBuilder;
 import recsys.movielens.similarity.builder.MovieLensUserSimilarityBuilder;
 import recsys.recommender.builder.ItemAndUserAverageRecommenderBuilder;
 import recsys.recommender.builder.ItemAverageRecommenderBuilder;
@@ -29,6 +30,7 @@ import recsys.recommender.builder.UserAverageRecommenderBuilder;
 import recsys.recommender.builder.UserBasedRecommenderBuilder;
 import recsys.similarity.builder.EuclideanDistanceItemSimilarityBuilder;
 import recsys.similarity.builder.EuclideanDistanceUserSimilarityBuilder;
+import recsys.similarity.builder.PearsonCorrelationItemSimilarityBuilder;
 import recsys.similarity.builder.PearsonCorrelationUserSimilarityBuilder;
 import recsys.similarity.builder.UserSimilarityBuilder;
 
@@ -117,17 +119,21 @@ public class MovieLensEvaluator extends AbstractEvaluator {
 			EuclideanDistanceItemSimilarityBuilder euclideanDistanceItemSimilarityBuilder = new EuclideanDistanceItemSimilarityBuilder();
 			builders.add(new ItemBasedRecommenderBuilder(euclideanDistanceItemSimilarityBuilder));
 		}
+		if (includeAlgorithms.contains(IncludeAlgorithms.ITEM_BASED_PEARSON_CORRELATION)) {
+			PearsonCorrelationItemSimilarityBuilder pearsonCorrelationItemSimilarityBuilder = new PearsonCorrelationItemSimilarityBuilder();
+			builders.add(new ItemBasedRecommenderBuilder(pearsonCorrelationItemSimilarityBuilder));
+		}
 		if (includeAlgorithms.contains(IncludeAlgorithms.USER_AVERAGE)) {
 			builders.add(new UserAverageRecommenderBuilder());
+		}
+		if (includeAlgorithms.contains(IncludeAlgorithms.ITEM_AVERAGE)) {
+			builders.add(new ItemAverageRecommenderBuilder());
 		}
 		if (includeAlgorithms.contains(IncludeAlgorithms.ITEM_USER_AVERAGE)) {
 			builders.add(new ItemUserAverageRecommenderBuilder());
 		}
 		if (includeAlgorithms.contains(IncludeAlgorithms.ITEM_AND_USER_AVERAGE)) {
 			builders.add(new ItemAndUserAverageRecommenderBuilder());
-		}
-		if (includeAlgorithms.contains(IncludeAlgorithms.ITEM_AVERAGE)) {
-			builders.add(new ItemAverageRecommenderBuilder());
 		}
 		
 		if (includeAlgorithms.contains(IncludeAlgorithms.SVD_PLUS_PLUS)) {
@@ -158,6 +164,11 @@ public class MovieLensEvaluator extends AbstractEvaluator {
 		
 		if (includeAlgorithms.contains(IncludeAlgorithms.SLOPE_ONE)) {
 			builders.add(new SlopeOneRecommenderBuilder());
+		}
+		
+		if (includeAlgorithms.contains(IncludeAlgorithms.MOVIELENS_ITEM_SIMILARITY)) {
+			MovieLensItemSimilarityBuilder movieLensItemSimilarityBuilder = new MovieLensItemSimilarityBuilder(movieLensEnrichedModel);
+			builders.add(new ItemBasedRecommenderBuilder(movieLensItemSimilarityBuilder));
 		}
 		
 		return builders;
