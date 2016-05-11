@@ -30,6 +30,7 @@ import recsys.recommender.builder.UserAverageRecommenderBuilder;
 import recsys.recommender.builder.UserBasedRecommenderBuilder;
 import recsys.similarity.builder.EuclideanDistanceItemSimilarityBuilder;
 import recsys.similarity.builder.EuclideanDistanceUserSimilarityBuilder;
+import recsys.similarity.builder.PearsonCorrelationItemSimilarityBuilder;
 import recsys.similarity.builder.PearsonCorrelationUserSimilarityBuilder;
 
 public class NotebooksEvaluator extends AbstractEvaluator {
@@ -126,6 +127,10 @@ public class NotebooksEvaluator extends AbstractEvaluator {
 			EuclideanDistanceItemSimilarityBuilder euclideanDistanceItemSimilarityBuilder = new EuclideanDistanceItemSimilarityBuilder();
 			builders.add(new ItemBasedRecommenderBuilder(euclideanDistanceItemSimilarityBuilder));
 		}
+		if (includeAlgorithms.contains(IncludeAlgorithms.ITEM_BASED_PEARSON_CORRELATION)) {
+			PearsonCorrelationItemSimilarityBuilder pearsonCorrelationItemSimilarityBuilder = new PearsonCorrelationItemSimilarityBuilder();
+			builders.add(new ItemBasedRecommenderBuilder(pearsonCorrelationItemSimilarityBuilder));
+		}
 		if (includeAlgorithms.contains(IncludeAlgorithms.USER_AVERAGE)) {
 			builders.add(new UserAverageRecommenderBuilder());
 		}
@@ -165,24 +170,6 @@ public class NotebooksEvaluator extends AbstractEvaluator {
 			builders.add(new SvdRecommenderBuilder(new ALSWRFactorizer(dataModel, 10, 0.001, 10)));
 		}
 		
-//		builders.add(new NotebooksGlobalAndLocalClassificationRecommenderBuilder(notebooksDataModel) {public Classifier createClassifier() {return new J48();}});
-//		builders.add(new NotebooksGlobalAndLocalClassificationRecommenderBuilder(notebooksDataModel) {public Classifier createClassifier() {return new RandomTree();}});
-//		builders.add(new NotebooksGlobalAndLocalClassificationRecommenderBuilder(notebooksDataModel) {public Classifier createClassifier() {return new Logistic();}});
-//		builders.add(new NotebooksGlobalAndLocalClassificationRecommenderBuilder(notebooksDataModel) {public Classifier createClassifier() {return new NaiveBayes();}});
-//		builders.add(new NotebooksGlobalAndLocalClassificationRecommenderBuilder(notebooksDataModel) {public Classifier createClassifier() {return new RandomForest();}});
-
-//		 builders.add(new NotebooksGlobalClassificationRecommenderBuilder(notebooksDataModel) {public Classifier createClassifier() {return new J48();}});
-//		 builders.add(new NotebooksGlobalClassificationRecommenderBuilder(notebooksDataModel) {public Classifier createClassifier() {return new RandomTree();}});
-//		 builders.add(new NotebooksGlobalClassificationRecommenderBuilder(notebooksDataModel) {public Classifier createClassifier() {return new Logistic();}});
-//		 builders.add(new NotebooksGlobalClassificationRecommenderBuilder(notebooksDataModel) {public Classifier createClassifier() {return new NaiveBayes();}});
-//		 builders.add(new NotebooksGlobalClassificationRecommenderBuilder(notebooksDataModel) {public Classifier createClassifier() {return new RandomForest();}});
-
-//		 builders.add(new NotebooksLocalClassificationRecommenderBuilder(notebooksDataModel) {public Classifier createClassifier() {return new J48();}});
-//		 builders.add(new NotebooksLocalClassificationRecommenderBuilder(notebooksDataModel) {public Classifier createClassifier() {return new RandomTree();}});
-//		 builders.add(new NotebooksLocalClassificationRecommenderBuilder(notebooksDataModel) {public Classifier createClassifier() {return new Logistic();}});
-//		 builders.add(new NotebooksLocalClassificationRecommenderBuilder(notebooksDataModel) {public Classifier createClassifier() {return new NaiveBayes();}});
-//		 builders.add(new NotebooksLocalClassificationRecommenderBuilder(notebooksDataModel) {public Classifier createClassifier() {return new RandomForest();}});
-
 		
 		if (includeAlgorithms.contains(IncludeAlgorithms.SLOPE_ONE)) {
 			builders.add(new SlopeOneRecommenderBuilder());

@@ -52,7 +52,7 @@ public abstract class AbstractEvaluator {
 	
 	protected void evaluateRecommenders(DataModel dataModel, List<RecommenderBuilder> builders, List<String> argsList) throws MissingArgumentException, TasteException {
 		StringBuilder sb = new StringBuilder();
-		IncludeEvaluator evaluator = IncludeEvaluator.fromList(argsList);
+		IncludeMetrics evaluator = IncludeMetrics.fromList(argsList);
 		int repeats = Repeats.fromList(argsList);
 
 		sb.append("minimum possible preference: " + dataModel.getMinPreference());
@@ -111,16 +111,16 @@ public abstract class AbstractEvaluator {
 		System.out.println(sb.toString());
 	}
 
-	private AbstractRecommenderFairEvaluator createEvaluator(IncludeEvaluator evaluator) throws MissingArgumentException {
+	private AbstractRecommenderFairEvaluator createEvaluator(IncludeMetrics evaluator) throws MissingArgumentException {
 		AbstractRecommenderFairEvaluator e;
-		if (evaluator == IncludeEvaluator.WEIGHTED_RMSE) {
+		if (evaluator == IncludeMetrics.WEIGHTED_RMSE) {
 			e = new WeightedRMSRecommenderFairEvaluator(5, 1);
-		} else if (evaluator == IncludeEvaluator.RMSE) {
+		} else if (evaluator == IncludeMetrics.RMSE) {
 			e = new RMSRecommenderFairEvaluator();
-		} else if (evaluator == IncludeEvaluator.TAU) {
+		} else if (evaluator == IncludeMetrics.TAU) {
 			e = new TauRecommenderFairListEvaluator();
 		} else {
-			throw new MissingArgumentException("Metrics missing. Choose one from [" + IncludeEvaluator.getAllNames() + "].");
+			throw new MissingArgumentException("Metrics missing. Choose one from [" + IncludeMetrics.getAllNames() + "].");
 		}
 		return e;
 	}
