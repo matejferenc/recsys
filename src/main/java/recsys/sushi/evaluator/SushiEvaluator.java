@@ -47,7 +47,6 @@ import weka.classifiers.trees.RandomTree;
 
 /**
  * Evaluator of sushi dataset recommenders.
- *
  */
 public class SushiEvaluator extends AbstractEvaluator {
 	

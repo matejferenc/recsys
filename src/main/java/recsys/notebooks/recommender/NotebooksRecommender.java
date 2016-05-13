@@ -80,12 +80,6 @@ public class NotebooksRecommender implements Recommender {
 		return 1 - (Math.abs(preferred1 - preferred2)) / NotebooksDataModel.MAX_PRICE;
 	}
 
-	/**
-	 * 
-	 * @param user
-	 * @param notebook
-	 * @return number from interval [0,1]
-	 */
 	private double calculateRamSimilarity(NotebooksUser user, Notebook notebook) {
 		double preferred1 = user.getRamPreferences().getPreferredValue();
 		double preferred2 = notebook.getRam();
