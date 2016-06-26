@@ -18,17 +18,14 @@ public class MovieLensEnrichedModel {
 		this.movies = new HashMap<>();
 	}
 	
-	public void addEnrichedMovie(String itemTitle, long itemID, int itemYear, Set<String> genres, Set<Integer> imdbGenres, Set<Integer> imdbDirectors, Set<Integer> imdbActors, Set<Integer> imdbActresses){
+	public void addEnrichedMovie(String itemTitle, long itemID, int itemYear, Set<String> genres,
+			Set<Integer> imdbGenres, Set<Integer> imdbDirectors, Set<Integer> imdbActors, Set<Integer> imdbActresses, Set<Integer> imdbKeywords){
 		movielensDataModel.getItemIDs().add(itemID);
 		movielensDataModel.getNames().put(itemID, itemTitle);
 		movielensDataModel.getGenres().put(itemID, genres);
 		movielensDataModel.getYears().put(itemID, itemYear);
 		
-		Movie<Integer> movie = new Movie<>();
-		movie.setGenres(imdbGenres);
-		movie.setDirectors(imdbDirectors);
-		movie.setActors(imdbActors);
-		movie.setActresses(imdbActresses);
+		Movie<Integer> movie = new Movie<>(imdbGenres, imdbDirectors, imdbActors, imdbActresses, imdbKeywords);
 		movies.put(itemID, movie);
 	}
 	
@@ -50,6 +47,11 @@ public class MovieLensEnrichedModel {
 	public Set<Integer> getItemImdbActresses(long itemId){
 		Movie<Integer> movie = getMovie(itemId);
 		return movie.getActresses();
+	}
+	
+	public Set<Integer> getItemImdbKeywords(long itemId){
+		Movie<Integer> movie = getMovie(itemId);
+		return movie.getKeywords();
 	}
 	
 	private Movie<Integer> getMovie(long itemId) {

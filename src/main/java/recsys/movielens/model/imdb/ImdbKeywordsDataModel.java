@@ -12,35 +12,31 @@ import recsys.movielens.model.shared.Movie;
 
 import com.google.common.base.Preconditions;
 
-public class ImdbActressesDataModel extends ImdbDataModel {
+public class ImdbKeywordsDataModel extends ImdbDataModel {
 
 	private static final Logger log = LoggerFactory.getLogger(FileDataModel.class);
 
 	private static final char COMMENT_CHAR = '#';
 
-	private int count;
-
-	public ImdbActressesDataModel(File dataFile) throws Exception {
+	public ImdbKeywordsDataModel(File dataFile) throws Exception {
 		Preconditions.checkNotNull(dataFile.getAbsoluteFile());
 		if (!dataFile.exists() || dataFile.isDirectory()) {
 			throw new FileNotFoundException(dataFile.toString());
 		}
 		Preconditions.checkArgument(dataFile.length() > 0L, "dataFile is empty");
-		log.info("Creating ImdbActressesDataModel for file {}", dataFile);
+		log.info("Creating KeywordsDataModel for file {}", dataFile);
 		FileLineIterator iterator = new FileLineIterator(dataFile, false);
 		processFile(iterator);
 	}
 
 	protected void processFile(FileLineIterator dataFileIterator) {
 		log.info("Reading file info...");
-		count = 0;
-		skipLines(dataFileIterator, 241);
+		int count = 0;
+		skipLines(dataFileIterator, 80578);
 		while (dataFileIterator.hasNext()) {
 			String line = dataFileIterator.next();
-			if(isAtEnd(line))
-				break;
 			if (!line.isEmpty()) {
-				processLine(line, dataFileIterator);
+				processLine(line);
 				if (++count % 1000000 == 0) {
 					log.info("Processed {} lines", count);
 				}
@@ -52,7 +48,7 @@ public class ImdbActressesDataModel extends ImdbDataModel {
 	/**
 	 * processing of one line
 	 */
-	protected void processLine(String line, FileLineIterator dataFileIterator) {
+	protected void processLine(String line) {
 		// Ignore empty lines and comments
 		if (line.isEmpty() || line.charAt(0) == COMMENT_CHAR) {
 			return;
@@ -60,29 +56,12 @@ public class ImdbActressesDataModel extends ImdbDataModel {
 
 		try {
 			String[] parts = line.split("\\t+");
-			String actressName = parts[0];
-			String movieString = parts[1];
-
+			String movieString = parts[0];
+			String keyword = parts[1];
 			Movie<String> movie = parseMovie(movieString.trim());
-			movie.getActresses().add(actressName);
-
-			while (dataFileIterator.hasNext()) {
-				line = dataFileIterator.next();
-				if (line.isEmpty()) {
-					break;
-				} else {
-					movie = parseMovie(line.trim());
-					movie.getActresses().add(actressName);
-
-					if (++count % 1000000 == 0) {
-						log.info("Processed {} lines", count);
-					}
-				}
-			}
-
+			movie.getKeywords().add(keyword);
 		} catch (Exception e) {
 			throw new IllegalStateException("something wrong with this line: " + line, e);
 		}
 	}
-
 }

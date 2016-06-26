@@ -9,24 +9,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import recsys.movielens.model.shared.Movie;
-import recsys.movielens.uniter.MovieCollection;
 
 import com.google.common.base.Preconditions;
 
-public class ImdbGenresDataModel {
+public class ImdbGenresDataModel extends ImdbDataModel {
 
 	private static final Logger log = LoggerFactory.getLogger(FileDataModel.class);
 
 	private static final char COMMENT_CHAR = '#';
 
-	private MovieCollection<String> movieCollection;
-
-	private ImdbGenresDataModel() {
-		movieCollection = new MovieCollection<String>();
-	}
-
 	public ImdbGenresDataModel(File dataFile) throws Exception {
-		this();
 		Preconditions.checkNotNull(dataFile.getAbsoluteFile());
 		if (!dataFile.exists() || dataFile.isDirectory()) {
 			throw new FileNotFoundException(dataFile.toString());
@@ -54,44 +46,22 @@ public class ImdbGenresDataModel {
 
 	/**
 	 * processing of one line
-	 * 
-	 * @param line
-	 * @param genres
-	 * @param names
 	 */
 	protected void processLine(String line) {
 		// Ignore empty lines and comments
 		if (line.isEmpty() || line.charAt(0) == COMMENT_CHAR) {
 			return;
 		}
-
+		
 		try {
-
-			String[] parts = line.split(" \\(.*\\)");
-			String itemTitle = parts[0];
-			String rest = parts[1];
-
-			String yearString = line.substring(parts[0].length() + 2, parts[0].length() + 6);
-			Integer year = null;
-			if (yearString.matches("[0-9]{4}")) {
-				year = Integer.parseInt(yearString);
-			}
-
-			String[] split = rest.split("\t+");
-			String genre = split[split.length - 1];
-
-			Movie<String> movie = movieCollection.getOrCreateMovie(itemTitle, year);
+			String[] parts = line.split("\\t+");
+			String movieString = parts[0];
+			String genre = parts[1];
+			Movie<String> movie = parseMovie(movieString.trim());
 			movie.getGenres().add(genre);
 		} catch (Exception e) {
 			throw new IllegalStateException("something wrong with this line: " + line, e);
 		}
 	}
 
-	public MovieCollection<String> getMovieCollection() {
-		return movieCollection;
-	}
-
-	public void setMovieCollection(MovieCollection<String> movieCollection) {
-		this.movieCollection = movieCollection;
-	}
 }

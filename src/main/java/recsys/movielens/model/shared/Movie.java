@@ -5,50 +5,45 @@ import java.util.Set;
 
 public class Movie<T> {
 
-	private Set<T> genres;
+	private final Set<T> genres;
 
-	private Set<T> directors;
+	private final Set<T> directors;
 	
-	private Set<T> actors;
+	private final Set<T> actors;
 	
-	private Set<T> actresses;
+	private final Set<T> actresses;
+	
+	private final Set<T> keywords;
 
 	public Movie() {
-		genres = new HashSet<T>();
-		directors = new HashSet<T>();
-		actors = new HashSet<T>();
-		actresses = new HashSet<T>();
+		this(new HashSet<T>(), new HashSet<T>(), new HashSet<T>(), new HashSet<T>(), new HashSet<T>());
+	}
+	
+	public Movie(Set<T> genres, Set<T> directors, Set<T> actors, Set<T> actresses, Set<T> keywords) {
+		this.genres = genres;
+		this.directors = directors;
+		this.actors = actors;
+		this.actresses = actresses;
+		this.keywords = keywords;
 	}
 
 	public Set<T> getGenres() {
 		return genres;
 	}
 
-	public void setGenres(Set<T> genres) {
-		this.genres = genres;
-	}
-
 	public Set<T> getDirectors() {
 		return directors;
-	}
-
-	public void setDirectors(Set<T> directors) {
-		this.directors = directors;
 	}
 
 	public Set<T> getActors() {
 		return actors;
 	}
 
-	public void setActors(Set<T> actors) {
-		this.actors = actors;
-	}
-
 	public Set<T> getActresses() {
 		return actresses;
 	}
 
-	public void setActresses(Set<T> actresses) {
-		this.actresses = actresses;
+	public Set<T> getKeywords() {
+		return keywords;
 	}
 }

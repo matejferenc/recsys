@@ -85,8 +85,11 @@ public class MovieLensEnrichedDataModelLoader {
 			Set<Integer> imdbActorsSet = readIdsFromString(imdbActorsString);
 			String imdbActressesString = tokens.next();
 			Set<Integer> imdbActressesSet = readIdsFromString(imdbActressesString);
+			String imdbKeywordsString = tokens.next();
+			Set<Integer> imdbKeywordsSet = readIdsFromString(imdbKeywordsString);
 
-			movieLensEnrichedModel.addEnrichedMovie(itemTitle, itemID, itemYear, genresSet, imdbGenresSet, imdbDirectorsSet, imdbActorsSet, imdbActressesSet);
+			movieLensEnrichedModel.addEnrichedMovie(itemTitle, itemID, itemYear, genresSet,
+					imdbGenresSet, imdbDirectorsSet, imdbActorsSet, imdbActressesSet, imdbKeywordsSet);
 		} catch (Exception e) {
 			throw new IllegalStateException("something wrong on this line: " + line, e);
 		}

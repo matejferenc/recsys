@@ -2,32 +2,26 @@ package recsys.movielens.similarity;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import org.apache.mahout.cf.taste.common.Refreshable;
 import org.apache.mahout.cf.taste.common.TasteException;
 import org.apache.mahout.cf.taste.similarity.PreferenceInferrer;
 import org.apache.mahout.cf.taste.similarity.UserSimilarity;
-import org.apache.mahout.common.Pair;
 
 import recsys.model.SetPreference;
 import recsys.movielens.model.movielens.User;
 import recsys.movielens.model.movielens.UserModel;
 
-public class MovieLensUserSimilarity implements UserSimilarity {
+public class MovielensUserSimilarity implements UserSimilarity {
 
 	private static final int MAX_DIFFERENCE = 4;
 	private final UserModel userModel;
 
-	private Map<Pair<Long, Long>, Double> cache;
-
-	public MovieLensUserSimilarity(UserModel userModel) {
+	public MovielensUserSimilarity(UserModel userModel) {
 		this.userModel = userModel;
-		cache = new HashMap<Pair<Long, Long>, Double>();
 	}
 
 	@Override
@@ -35,17 +29,9 @@ public class MovieLensUserSimilarity implements UserSimilarity {
 	}
 
 	@Override
-	public synchronized double userSimilarity(long userID1, long userID2) throws TasteException {
-		Pair<Long, Long> key = new Pair<Long, Long>(userID1, userID2);
-		Double cached = cache.get(key);
-		if (cached != null) {
-			return cached;
-		} else {
-			double similarity = computeSimilarity(userID1, userID2);
-			cache.put(key, similarity);
-			return similarity;
-		}
-
+	public double userSimilarity(long userID1, long userID2) throws TasteException {
+		double similarity = computeSimilarity(userID1, userID2);
+		return similarity;
 	}
 
 	private double computeSimilarity(long userID1, long userID2) {
@@ -122,7 +108,7 @@ public class MovieLensUserSimilarity implements UserSimilarity {
 
 	@Override
 	public String getName() {
-		return "MovieLens User Similarity";
+		return "Movielens User Similarity";
 	}
 
 	@Override

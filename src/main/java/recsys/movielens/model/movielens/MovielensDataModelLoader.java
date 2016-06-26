@@ -16,7 +16,7 @@ import org.slf4j.LoggerFactory;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Splitter;
 
-public class MovieLensDataModelLoader {
+public class MovielensDataModelLoader {
 
 	private static final Logger log = LoggerFactory.getLogger(FileDataModel.class);
 
@@ -26,11 +26,11 @@ public class MovieLensDataModelLoader {
 	
 	private MovielensDataModel movielensDataModel;
 	
-	public MovieLensDataModelLoader() {
+	public MovielensDataModelLoader() {
 		movielensDataModel = new MovielensDataModel();
 	}
 
-	public MovieLensDataModelLoader(File dataFile) throws Exception {
+	public MovielensDataModelLoader(File dataFile) throws Exception {
 		this();
 		Preconditions.checkNotNull(dataFile.getAbsoluteFile());
 		if (!dataFile.exists() || dataFile.isDirectory()) {
@@ -59,17 +59,16 @@ public class MovieLensDataModelLoader {
 
 	/**
 	 * processing of one line
-	 * 
-	 * @param line
-	 * @param genres
-	 * @param names
 	 */
 	protected void processLine(String line) {
+		if (line.equals("3309::Dog's Life, A (1920)::Comedy")) {
+			boolean stop = true;
+		}
 		// Ignore empty lines and comments
 		if (line.isEmpty() || line.charAt(0) == COMMENT_CHAR) {
 			return;
 		}
-
+		
 		try {
 			Iterator<String> tokens = delimiterPattern.split(line).iterator();
 			String itemIDString = tokens.next();

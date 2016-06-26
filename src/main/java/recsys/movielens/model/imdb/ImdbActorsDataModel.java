@@ -9,26 +9,18 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import recsys.movielens.model.shared.Movie;
-import recsys.movielens.uniter.MovieCollection;
 
 import com.google.common.base.Preconditions;
 
-public class ImdbActorsDataModel {
+public class ImdbActorsDataModel extends ImdbDataModel {
 
 	private static final Logger log = LoggerFactory.getLogger(FileDataModel.class);
 
 	private static final char COMMENT_CHAR = '#';
 
-	private MovieCollection<String> movieCollection;
-
 	private int count;
 
-	private ImdbActorsDataModel() {
-		movieCollection = new MovieCollection<String>();
-	}
-
 	public ImdbActorsDataModel(File dataFile) throws Exception {
-		this();
 		Preconditions.checkNotNull(dataFile.getAbsoluteFile());
 		if (!dataFile.exists() || dataFile.isDirectory()) {
 			throw new FileNotFoundException(dataFile.toString());
@@ -57,25 +49,8 @@ public class ImdbActorsDataModel {
 		log.info("Read lines: {}", count);
 	}
 
-	private boolean isAtEnd(String line) {
-		return "-----------------------------------------------------------------------------".equals(line);
-	}
-
-	private void skipLines(FileLineIterator dataFileIterator, int lines) {
-		for (int j = 0; j < lines; j++) {
-			if (dataFileIterator.hasNext()) {
-				dataFileIterator.next();
-			}
-		}
-	}
-
 	/**
 	 * processing of one line
-	 * 
-	 * @param line
-	 * @param dataFileIterator
-	 * @param genres
-	 * @param names
 	 */
 	protected void processLine(String line, FileLineIterator dataFileIterator) {
 		// Ignore empty lines and comments
@@ -108,36 +83,5 @@ public class ImdbActorsDataModel {
 		} catch (Exception e) {
 			throw new IllegalStateException("something wrong with this line: " + line, e);
 		}
-	}
-
-	private Movie<String> parseMovie(String movieString) {
-		String movieName = parseMovieName(movieString);
-		String movieYearString = parseMovieYear(movieString, movieName);
-
-		Integer year = null;
-		if (movieYearString.matches("[0-9]{4}")) {
-			year = Integer.parseInt(movieYearString);
-		}
-
-		Movie<String> movie = movieCollection.getOrCreateMovie(movieName, year);
-		return movie;
-	}
-
-	private String parseMovieYear(String movieString, String movieName) {
-		String yearString = movieString.substring(movieName.length() + 2, movieName.length() + 6);
-		return yearString;
-	}
-
-	private String parseMovieName(String movieString) {
-		String[] split = movieString.trim().split(" \\(.*\\)");
-		return split[0];
-	}
-
-	public MovieCollection<String> getMovieCollection() {
-		return movieCollection;
-	}
-
-	public void setMovieCollection(MovieCollection<String> movieCollection) {
-		this.movieCollection = movieCollection;
 	}
 }
