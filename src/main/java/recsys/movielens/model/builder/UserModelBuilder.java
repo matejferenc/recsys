@@ -8,6 +8,8 @@ import org.apache.mahout.cf.taste.impl.common.IntPrimitiveIterator;
 import org.apache.mahout.cf.taste.model.DataModel;
 import org.apache.mahout.cf.taste.model.Preference;
 import org.apache.mahout.cf.taste.model.PreferenceArray;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import recsys.model.ItemPreference;
 import recsys.model.SetPreference;
@@ -16,6 +18,8 @@ import recsys.movielens.model.movielens.User;
 import recsys.movielens.model.movielens.UserModel;
 
 public class UserModelBuilder {
+	
+	private static final Logger log = LoggerFactory.getLogger(UserModelBuilder.class);
 
 	private final DataModel ratingsDataModel;
 
@@ -32,20 +36,20 @@ public class UserModelBuilder {
 		// cycle all users
 		int preferencesProcessed = 0;
 		while (userIDs.hasNext()) {
-			int userID = userIDs.next();
+			Integer userID = userIDs.next();
 			User user = userModel.getOrCreate(userID);
 			PreferenceArray preferencesFromUser = ratingsDataModel.getPreferencesFromUser(userID);
 			// cycle user's preferences
 			for (Preference preference : preferencesFromUser) {
-				float p = preference.getValue();
-				int itemID = (int) preference.getItemID();
+				Float p = preference.getValue();
+				Integer itemID = preference.getItemID();
 				buildImdbGenresPreferences(user, itemID, p);
 				buildImdbDirectorsPreferences(user, itemID, p);
 				buildImdbActorsPreferences(user, itemID, p);
 				buildImdbActressesPreferences(user, itemID, p);
 //				buildImdbKeywordsPreferences(user, itemID, p);
 				if (preferencesProcessed % 10000 == 0) {
-					System.err.println("processed: " + preferencesProcessed + " preferences");
+					log.info("processed: " + preferencesProcessed + " preferences");
 				}
 				preferencesProcessed++;
 			}
@@ -74,35 +78,35 @@ public class UserModelBuilder {
 		}
 	}
 
-	private void buildImdbGenresPreferences(User user, int itemID, float p) {
+	private void buildImdbGenresPreferences(User user, int itemID, Float p) {
 		Set<Integer> itemImdbGenres = movieLensEnrichedModel.getItemImdbGenres(itemID);
 		for (Integer genreId : itemImdbGenres) {
 			user.getGenrePreferences().addPropertyPreference(genreId, p);
 		}
 	}
 
-	private void buildImdbDirectorsPreferences(User user, int itemID, float p) {
+	private void buildImdbDirectorsPreferences(User user, int itemID, Float p) {
 		Set<Integer> itemImdbDirectors = movieLensEnrichedModel.getItemImdbDirectors(itemID);
 		for (Integer directorId : itemImdbDirectors) {
 			user.getDirectorPreferences().addPropertyPreference(directorId, p);
 		}
 	}
 
-	private void buildImdbActorsPreferences(User user, int itemID, float p) {
+	private void buildImdbActorsPreferences(User user, int itemID, Float p) {
 		Set<Integer> itemImdbActors = movieLensEnrichedModel.getItemImdbActors(itemID);
 		for (Integer actorId : itemImdbActors) {
 			user.getActorPreferences().addPropertyPreference(actorId, p);
 		}
 	}
 
-	private void buildImdbActressesPreferences(User user, int itemID, float p) {
+	private void buildImdbActressesPreferences(User user, int itemID, Float p) {
 		Set<Integer> itemImdbActresses = movieLensEnrichedModel.getItemImdbActresses(itemID);
 		for (Integer actressId : itemImdbActresses) {
 			user.getActressPreferences().addPropertyPreference(actressId, p);
 		}
 	}
 	
-	private void buildImdbKeywordsPreferences(User user, int itemID, float p) {
+	private void buildImdbKeywordsPreferences(User user, int itemID, Float p) {
 		Set<Integer> itemImdbKeywords = movieLensEnrichedModel.getItemImdbKeywords(itemID);
 		for (Integer keywordId : itemImdbKeywords) {
 			user.getKeywordsPreferences().addPropertyPreference(keywordId, p);

@@ -43,6 +43,7 @@ public class MovieLensEnrichedDataModelLoader {
 		log.info("Creating MovieLensEnrichedDataModel for file {}", dataFile);
 		FileLineIterator iterator = new FileLineIterator(dataFile, false);
 		processFile(iterator);
+		iterator.close();
 		Date end = new Date();
 		System.out.println("Processing time: " + (end.getTime() - start.getTime()) / 60 + " seconds");
 	}
@@ -91,7 +92,7 @@ public class MovieLensEnrichedDataModelLoader {
 			movieLensEnrichedModel.addEnrichedMovie(itemTitle, itemID, itemYear, genresSet,
 					imdbGenresSet, imdbDirectorsSet, imdbActorsSet, imdbActressesSet, imdbKeywordsSet);
 		} catch (Exception e) {
-			throw new IllegalStateException("something wrong on this line: " + line, e);
+			throw new IllegalStateException("something is wrong on this line: " + line, e);
 		}
 	}
 

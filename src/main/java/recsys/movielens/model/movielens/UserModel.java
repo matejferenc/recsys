@@ -5,25 +5,25 @@ import java.util.Map;
 
 public class UserModel {
 
-	private Map<Long, User> users;
+	private Map<Integer, User> users;
 
 	public UserModel() {
-		users = new HashMap<Long, User>();
+		users = new HashMap<Integer, User>();
 	}
 
-	public Map<Long, User> getUsers() {
+	public Map<Integer, User> getUsers() {
 		return users;
 	}
 
-	public void setUsers(Map<Long, User> users) {
+	public void setUsers(Map<Integer, User> users) {
 		this.users = users;
 	}
 
-	public User get(long userID) {
+	public User get(Integer userID) {
 		return users.get(userID);
 	}
 
-	public User getOrCreate(long userID) {
+	public User getOrCreate(Integer userID) {
 		if (users.get(userID) == null) {
 			User newUser = new User();
 			users.put(userID, newUser);

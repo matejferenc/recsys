@@ -20,6 +20,7 @@ import org.apache.mahout.cf.taste.model.DataModel;
 import org.apache.mahout.cf.taste.model.PreferenceArray;
 import org.apache.mahout.common.Pair;
 
+import recsys.evaluator.DatasetSplitter;
 import recsys.evaluator.RMSRecommenderFairEvaluator;
 import recsys.evaluator.TauRecommenderFairListEvaluator;
 import recsys.evaluator.WeightedRMSRecommenderFairEvaluator;
@@ -99,9 +100,11 @@ public abstract class AbstractEvaluator {
 			List<Double> evaluated = new ArrayList<>();
 
 			AbstractRecommenderFairEvaluator evaluator = createEvaluator(dataModel, metrics);
+			
+			DatasetSplitter splitter = new DatasetSplitter(dataModel, testingPercentage, evaluationPercentage);
 
-			List<Pair<FastByIDMap<PreferenceArray>, FastByIDMap<PreferenceArray>>> splitDatset = evaluator.splitDatset(testingPercentage, evaluationPercentage);
-			for (Pair<FastByIDMap<PreferenceArray>, FastByIDMap<PreferenceArray>> pair : splitDatset) {
+			while (splitter.hasNext()) {
+				Pair<FastByIDMap<PreferenceArray>, FastByIDMap<PreferenceArray>> pair = splitter.next();
 				FastByIDMap<PreferenceArray> trainingDataset = pair.getFirst();
 				FastByIDMap<PreferenceArray> testDataset = pair.getSecond();
 				double score = evaluator.evaluate(builder, trainingDataset, testDataset);

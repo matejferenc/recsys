@@ -33,12 +33,12 @@ public class MovielensUserSimilarity implements UserSimilarity {
 	}
 
 	@Override
-	public double userSimilarity(long userID1, long userID2) throws TasteException {
+	public double userSimilarity(Integer userID1, Integer userID2) throws TasteException {
 		double similarity = computeSimilarity(userID1, userID2);
 		return similarity;
 	}
 
-	private double computeSimilarity(long userID1, long userID2) {
+	private double computeSimilarity(Integer userID1, Integer userID2) {
 		User user1 = userModel.get(userID1);
 		User user2 = userModel.get(userID2);
 		double genresSimilarity = calculateGenresSimilarity(user1, user2);
@@ -54,30 +54,30 @@ public class MovielensUserSimilarity implements UserSimilarity {
 		return transformedUserSimilarity;
 	}
 
-	private double calculateGenresSimilarity(User user1, User user2) {
+	private float calculateGenresSimilarity(User user1, User user2) {
 		return calculatePropertySetSimilarity(user1.getGenrePreferences(), user2.getGenrePreferences());
 	}
 
-	private double calculateDirectorsSimilarity(User user1, User user2) {
+	private float calculateDirectorsSimilarity(User user1, User user2) {
 		return calculatePropertySetSimilarity(user1.getDirectorPreferences(), user2.getDirectorPreferences());
 	}
 
-	private double calculateActorsSimilarity(User user1, User user2) {
+	private float calculateActorsSimilarity(User user1, User user2) {
 		return calculatePropertySetSimilarity(user1.getActorPreferences(), user2.getActorPreferences());
 	}
 
-	private double calculateActressesSimilarity(User user1, User user2) {
+	private float calculateActressesSimilarity(User user1, User user2) {
 		return calculatePropertySetSimilarity(user1.getActressPreferences(), user2.getActressPreferences());
 	}
 	
-	private double calculateKeywordsSimilarity(User user1, User user2) {
+	private float calculateKeywordsSimilarity(User user1, User user2) {
 		return calculatePropertySetSimilarity(user1.getKeywordsPreferences(), user2.getKeywordsPreferences());
 	}
 
-	private double calculatePropertySetSimilarity(SetPreference set1, SetPreference set2) {
+	private float calculatePropertySetSimilarity(SetPreference set1, SetPreference set2) {
 		Set<Integer> commonPropertyIds = getCommonPropertyIds(set1.getAllPropertyIds(), set2.getAllPropertyIds());
-		List<Double> user1Preferences = new ArrayList<>();
-		List<Double> user2Preferences = new ArrayList<>();
+		List<Float> user1Preferences = new ArrayList<>();
+		List<Float> user2Preferences = new ArrayList<>();
 		for (Integer propertyId : commonPropertyIds) {
 			user1Preferences.add(set1.getPropertyAverage(propertyId));
 			user2Preferences.add(set2.getPropertyAverage(propertyId));
@@ -85,12 +85,12 @@ public class MovielensUserSimilarity implements UserSimilarity {
 		return calculateCommonPropertiesSimilarity(user1Preferences, user2Preferences);
 	}
 
-	private double calculateCommonPropertiesSimilarity(List<Double> user1Preferences, List<Double> user2Preferences) {
-		double nominator = 0;
+	private float calculateCommonPropertiesSimilarity(List<Float> user1Preferences, List<Float> user2Preferences) {
+		float nominator = 0;
 		for (int i = 0; i < user1Preferences.size(); i++) {
-			double propertyPreference1 = user1Preferences.get(i);
-			double propertyPreference2 = user2Preferences.get(i);
-			double abs = Math.abs(propertyPreference1 - propertyPreference2);
+			float propertyPreference1 = user1Preferences.get(i);
+			float propertyPreference2 = user2Preferences.get(i);
+			float abs = Math.abs(propertyPreference1 - propertyPreference2);
 			nominator += abs;
 		}
 		if (user1Preferences.size() == 0) {

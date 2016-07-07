@@ -21,42 +21,32 @@ public class MovieLensEnrichedModel {
 	public void addEnrichedMovie(String itemTitle, int itemID, int itemYear, Set<String> genres,
 			Set<Integer> imdbGenres, Set<Integer> imdbDirectors, Set<Integer> imdbActors, Set<Integer> imdbActresses, Set<Integer> imdbKeywords){
 		movielensDataModel.getItemIDs().add(itemID);
-//		movielensDataModel.getNames().put(itemID, itemTitle);
-//		movielensDataModel.getGenres().put(itemID, genres);
-//		movielensDataModel.getYears().put(itemID, itemYear);
+		movielensDataModel.getNames().put(itemID, itemTitle);
+		movielensDataModel.getGenres().put(itemID, genres);
+		movielensDataModel.getYears().put(itemID, itemYear);
 		
 		Movie<Integer> movie = new Movie<>(imdbGenres, imdbDirectors, imdbActors, imdbActresses, imdbKeywords);
 		movies.put(itemID, movie);
 	}
 	
 	public Set<Integer> getItemImdbGenres(int itemId){
-		Movie<Integer> movie = getMovie(itemId);
-		return movie.getGenres();
+		return movies.get(itemId).getGenres();
 	}
 	
 	public Set<Integer> getItemImdbDirectors(int itemId){
-		Movie<Integer> movie = getMovie(itemId);
-		return movie.getDirectors();
+		return movies.get(itemId).getDirectors();
 	}
 	
 	public Set<Integer> getItemImdbActors(int itemId){
-		Movie<Integer> movie = getMovie(itemId);
-		return movie.getActors();
+		return movies.get(itemId).getActors();
 	}
 	
 	public Set<Integer> getItemImdbActresses(int itemId){
-		Movie<Integer> movie = getMovie(itemId);
-		return movie.getActresses();
+		return movies.get(itemId).getActresses();
 	}
 	
 	public Set<Integer> getItemImdbKeywords(int itemId){
-		Movie<Integer> movie = getMovie(itemId);
-		return movie.getKeywords();
-	}
-	
-	private Movie<Integer> getMovie(int itemId) {
-		Movie<Integer> movie = movies.get(itemId);
-		return movie;
+		return movies.get(itemId).getKeywords();
 	}
 	
 	public MovielensDataModel getMovielensDataModel() {

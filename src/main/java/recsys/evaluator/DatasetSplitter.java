@@ -10,7 +10,6 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
-import org.apache.commons.lang.ArrayUtils;
 import org.apache.mahout.cf.taste.common.TasteException;
 import org.apache.mahout.cf.taste.impl.common.FastByIDMap;
 import org.apache.mahout.cf.taste.impl.common.IntPrimitiveIterator;
@@ -69,7 +68,7 @@ public class DatasetSplitter {
 		FastByIDMap<PreferenceArray> trainingPrefs = new FastByIDMap<PreferenceArray>();
 		FastByIDMap<PreferenceArray> testPrefs = new FastByIDMap<PreferenceArray>();
 		List<Integer> userIDs = getUserIDs();
-		for (int userId: userIDs) {
+		for (Integer userId: userIDs) {
 			if (!userGroup.contains(userId)) {
 				//adding preferences from training set
 				PreferenceArray prefs = dataModel.getPreferencesFromUser(userId);
@@ -97,7 +96,7 @@ public class DatasetSplitter {
 	 * @param lastGroup flag if the evaluation group is the last one. That means we have to return all the remaining preferences
 	 * @throws TasteException
 	 */
-	public Pair<GenericUserPreferenceArray, GenericUserPreferenceArray> splitOneUsersPrefs(int userID, int evaluationGroupId, boolean lastGroup) throws TasteException {
+	public Pair<GenericUserPreferenceArray, GenericUserPreferenceArray> splitOneUsersPrefs(Integer userID, Integer evaluationGroupId, boolean lastGroup) throws TasteException {
 //		if (preferencesSplitted.containsKey(new Pair<Pair<Long, Integer>, Double>(new Pair<Long, Integer>(userID, evaluationGroupId), evaluationPercentage))) {
 //			return preferencesSplitted.get(new Pair<Pair<Long, Integer>, Double>(new Pair<Long, Integer>(userID, evaluationGroupId), evaluationPercentage));
 //		}
@@ -117,9 +116,9 @@ public class DatasetSplitter {
 				testSampleSize = userPreferencesCount - alreadySelectedForUser.size();
 			}
 		}
-		List<Integer> testSample = createSample(Arrays.asList(ArrayUtils.toObject(prefs.getIDs())), testSampleSize, alreadySelectedForUser);
+		List<Integer> testSample = createSample(Arrays.asList(prefs.getIDs()), testSampleSize, alreadySelectedForUser);
 		alreadySelectedForUser.addAll(testSample);
-		for (int itemID: prefs.getIDs()) {
+		for (Integer itemID: prefs.getIDs()) {
 			Preference newPref = new GenericPreference(userID, itemID, dataModel.getPreferenceValue(userID, itemID));
 			if (testSample.contains(itemID)) {
 				if (oneUserTestPrefs == null) {

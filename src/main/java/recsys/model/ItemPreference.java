@@ -18,7 +18,7 @@ public class ItemPreference {
 
 	private float preferenceVariance;
 
-	public void addPreference(float p) {
+	public void addPreference(Float p) {
 		numberOfAddedPreferences++;
 		cumulativePreference += p;
 		preferences.add(p);
@@ -34,7 +34,7 @@ public class ItemPreference {
 		int n = preferences.size();
 		float cummulativeDifferences = 0;
 		for (Float preference : preferences) {
-			float diff = (float) Math.pow(Math.abs(getAveragePreference() - preference), 2);
+			float diff = (float) Math.pow(Math.abs(averagePreference - preference), 2);
 			cummulativeDifferences += diff;
 		}
 		preferenceVariance = cummulativeDifferences / n;

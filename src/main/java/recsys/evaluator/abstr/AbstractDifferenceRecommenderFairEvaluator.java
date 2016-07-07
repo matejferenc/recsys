@@ -32,7 +32,7 @@ public abstract class AbstractDifferenceRecommenderFairEvaluator extends Abstrac
 	protected double getEvaluation(FastByIDMap<PreferenceArray> testPrefs, Recommender recommender) throws TasteException {
 		reset();
 		Collection<Callable<Void>> estimateCallables = Lists.newArrayList();
-		for (Map.Entry<Long, PreferenceArray> entry : testPrefs.entrySet()) {
+		for (Map.Entry<Integer, PreferenceArray> entry : testPrefs.entrySet()) {
 			estimateCallables.add(new PreferenceEstimateCallable(recommender, entry.getKey(), entry.getValue(), noEstimateCounter, estimateCounter));
 		}
 		log.info("Beginning evaluation of {} users", estimateCallables.size());
@@ -44,12 +44,12 @@ public abstract class AbstractDifferenceRecommenderFairEvaluator extends Abstrac
 	public final class PreferenceEstimateCallable implements Callable<Void> {
 
 		private final Recommender recommender;
-		private final long testUserID;
+		private final int testUserID;
 		private final PreferenceArray prefs;
 		private final AtomicInteger noEstimateCounter;
 		private AtomicInteger estimateCounter;
 
-		public PreferenceEstimateCallable(Recommender recommender, long testUserID, PreferenceArray prefs, AtomicInteger noEstimateCounter, AtomicInteger estimateCounter) {
+		public PreferenceEstimateCallable(Recommender recommender, int testUserID, PreferenceArray prefs, AtomicInteger noEstimateCounter, AtomicInteger estimateCounter) {
 			this.recommender = recommender;
 			this.testUserID = testUserID;
 			this.prefs = prefs;
