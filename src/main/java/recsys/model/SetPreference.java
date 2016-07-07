@@ -1,5 +1,6 @@
 package recsys.model;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -20,9 +21,10 @@ public class SetPreference {
 		propertyPreferences = new HashMap<Integer, ItemPreference>();
 	}
 
-	public void addPropertyPreference(int propertyId, double p) {
-		if (propertyPreferences.containsKey(propertyId)) {
-			propertyPreferences.get(propertyId).addPreference(p);
+	public void addPropertyPreference(int propertyId, float p) {
+		ItemPreference itemPreference = propertyPreferences.get(propertyId);
+		if (itemPreference != null) {
+			itemPreference.addPreference(p);
 		} else {
 			ItemPreference newItemPreference = new ItemPreference();
 			propertyPreferences.put(propertyId, newItemPreference);
@@ -56,5 +58,9 @@ public class SetPreference {
 
 	public Set<Integer> getAllPropertyIds() {
 		return propertyPreferences.keySet();
+	}
+	
+	public Collection<ItemPreference> getAllPropertyValues() {
+		return propertyPreferences.values();
 	}
 }

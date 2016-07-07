@@ -1,7 +1,6 @@
 package recsys.movielens.uniter;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Date;
 import java.util.HashSet;
@@ -17,8 +16,8 @@ import recsys.movielens.model.imdb.ImdbActressesDataModel;
 import recsys.movielens.model.imdb.ImdbDirectorsDataModel;
 import recsys.movielens.model.imdb.ImdbGenresDataModel;
 import recsys.movielens.model.imdb.ImdbKeywordsDataModel;
-import recsys.movielens.model.movielens.MovielensDataModelLoader;
 import recsys.movielens.model.movielens.MovielensDataModel;
+import recsys.movielens.model.movielens.MovielensDataModelLoader;
 import recsys.movielens.model.shared.Movie;
 
 public class Uniter {
@@ -141,6 +140,8 @@ public class Uniter {
 		sb.append(createSetString(nameToIdConverter.convertActorsToIds(imdbActors)));
 		sb.append(fieldSeparator);
 		sb.append(createSetString(nameToIdConverter.convertActressesToIds(imdbActresses)));
+		sb.append(fieldSeparator);
+		sb.append(createSetString(nameToIdConverter.convertKeywordsToIds(imdbKeywords)));
 		return sb.toString();
 	}
 

@@ -6,7 +6,7 @@ import java.util.List;
 import org.apache.commons.cli.MissingArgumentException;
 
 import recsys.evaluator.abstr.AbstractEvaluator;
-import recsys.movielens.evaluator.MovieLensEvaluator;
+import recsys.movielens.evaluator.MovielensEvaluator;
 import recsys.notebooks.evaluator.NotebooksEvaluator;
 import recsys.sushi.evaluator.SushiEvaluator;
 
@@ -20,7 +20,7 @@ public class Evaluator {
 		if (argsList.contains("sushi")) {
 			e = new SushiEvaluator(argsList);
 		} else if (argsList.contains("movieLens")) {
-			e = new MovieLensEvaluator(argsList);
+			e = new MovielensEvaluator(argsList);
 		} else if (argsList.contains("notebooks")) {
 			e = new NotebooksEvaluator();
 		} else {

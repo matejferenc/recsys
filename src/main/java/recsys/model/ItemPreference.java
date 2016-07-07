@@ -4,22 +4,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Represents preference of one e.g. genre, director, actor or actress.
- * 
+ * Represents preference of one attribute, e.g. genre, director, actor or actress.
  */
 public class ItemPreference {
 
-	private double averagePreference;
+	private float averagePreference;
 
 	private int numberOfAddedPreferences;
 
-	private double cumulativePreference;
+	private float cumulativePreference;
 
-	private List<Double> preferences = new ArrayList<Double>();
+	private List<Float> preferences = new ArrayList<Float>();
 
-	private double preferenceVariance;
+	private float preferenceVariance;
 
-	public void addPreference(double p) {
+	public void addPreference(float p) {
 		numberOfAddedPreferences++;
 		cumulativePreference += p;
 		preferences.add(p);
@@ -33,19 +32,23 @@ public class ItemPreference {
 
 	private void calculatePreferenceVariance() {
 		int n = preferences.size();
-		double cummulativeDifferences = 0;
-		for (Double preference : preferences) {
-			double diff = Math.pow(Math.abs(getAveragePreference() - preference), 2);
+		float cummulativeDifferences = 0;
+		for (Float preference : preferences) {
+			float diff = (float) Math.pow(Math.abs(getAveragePreference() - preference), 2);
 			cummulativeDifferences += diff;
 		}
 		preferenceVariance = cummulativeDifferences / n;
 	}
+	
+	public void freeReferences() {
+		preferences = null;
+	}
 
-	public double getAveragePreference() {
+	public float getAveragePreference() {
 		return averagePreference;
 	}
 
-	public double getPreferenceVariance() {
+	public float getPreferenceVariance() {
 		return preferenceVariance;
 	}
 

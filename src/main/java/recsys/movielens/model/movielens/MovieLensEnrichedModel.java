@@ -9,7 +9,7 @@ import recsys.movielens.model.shared.Movie;
 
 public class MovieLensEnrichedModel {
 
-	private Map<Long, Movie<Integer>> movies;
+	private Map<Integer, Movie<Integer>> movies;
 	
 	private MovielensDataModel movielensDataModel;
 	
@@ -18,43 +18,43 @@ public class MovieLensEnrichedModel {
 		this.movies = new HashMap<>();
 	}
 	
-	public void addEnrichedMovie(String itemTitle, long itemID, int itemYear, Set<String> genres,
+	public void addEnrichedMovie(String itemTitle, int itemID, int itemYear, Set<String> genres,
 			Set<Integer> imdbGenres, Set<Integer> imdbDirectors, Set<Integer> imdbActors, Set<Integer> imdbActresses, Set<Integer> imdbKeywords){
 		movielensDataModel.getItemIDs().add(itemID);
-		movielensDataModel.getNames().put(itemID, itemTitle);
-		movielensDataModel.getGenres().put(itemID, genres);
-		movielensDataModel.getYears().put(itemID, itemYear);
+//		movielensDataModel.getNames().put(itemID, itemTitle);
+//		movielensDataModel.getGenres().put(itemID, genres);
+//		movielensDataModel.getYears().put(itemID, itemYear);
 		
 		Movie<Integer> movie = new Movie<>(imdbGenres, imdbDirectors, imdbActors, imdbActresses, imdbKeywords);
 		movies.put(itemID, movie);
 	}
 	
-	public Set<Integer> getItemImdbGenres(long itemId){
+	public Set<Integer> getItemImdbGenres(int itemId){
 		Movie<Integer> movie = getMovie(itemId);
 		return movie.getGenres();
 	}
 	
-	public Set<Integer> getItemImdbDirectors(long itemId){
+	public Set<Integer> getItemImdbDirectors(int itemId){
 		Movie<Integer> movie = getMovie(itemId);
 		return movie.getDirectors();
 	}
 	
-	public Set<Integer> getItemImdbActors(long itemId){
+	public Set<Integer> getItemImdbActors(int itemId){
 		Movie<Integer> movie = getMovie(itemId);
 		return movie.getActors();
 	}
 	
-	public Set<Integer> getItemImdbActresses(long itemId){
+	public Set<Integer> getItemImdbActresses(int itemId){
 		Movie<Integer> movie = getMovie(itemId);
 		return movie.getActresses();
 	}
 	
-	public Set<Integer> getItemImdbKeywords(long itemId){
+	public Set<Integer> getItemImdbKeywords(int itemId){
 		Movie<Integer> movie = getMovie(itemId);
 		return movie.getKeywords();
 	}
 	
-	private Movie<Integer> getMovie(long itemId) {
+	private Movie<Integer> getMovie(int itemId) {
 		Movie<Integer> movie = movies.get(itemId);
 		return movie;
 	}
@@ -67,19 +67,19 @@ public class MovieLensEnrichedModel {
 		this.movielensDataModel = movielensDataModel;
 	}
 
-	public List<Long> getIds(){
+	public List<Integer> getIds(){
 		return movielensDataModel.getItemIDs();
 	}
 	
-	public String getItemTitle(long itemId){
+	public String getItemTitle(int itemId){
 		return movielensDataModel.getNames().get(itemId);
 	}
 	
-	public Integer getItemYear(long itemId){
+	public Integer getItemYear(int itemId){
 		return movielensDataModel.getYears().get(itemId);
 	}
 	
-	public Set<String> getItemGenres(long itemId){
+	public Set<String> getItemGenres(int itemId){
 		return movielensDataModel.getGenres().get(itemId);
 	}
 }

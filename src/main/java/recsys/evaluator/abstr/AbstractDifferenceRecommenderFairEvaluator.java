@@ -11,6 +11,7 @@ import org.apache.mahout.cf.taste.common.TasteException;
 import org.apache.mahout.cf.taste.impl.common.FastByIDMap;
 import org.apache.mahout.cf.taste.impl.common.FullRunningAverageAndStdDev;
 import org.apache.mahout.cf.taste.impl.common.RunningAverageAndStdDev;
+import org.apache.mahout.cf.taste.model.DataModel;
 import org.apache.mahout.cf.taste.model.Preference;
 import org.apache.mahout.cf.taste.model.PreferenceArray;
 import org.apache.mahout.cf.taste.recommender.Recommender;
@@ -22,6 +23,10 @@ import com.google.common.collect.Lists;
  */
 public abstract class AbstractDifferenceRecommenderFairEvaluator extends AbstractRecommenderFairEvaluator {
 	
+	protected AbstractDifferenceRecommenderFairEvaluator(DataModel dataModel) {
+		super(dataModel);
+	}
+
 	protected abstract void processOneEstimate(float estimatedPreference, Preference realPref);
 
 	protected double getEvaluation(FastByIDMap<PreferenceArray> testPrefs, Recommender recommender) throws TasteException {
@@ -61,7 +66,7 @@ public abstract class AbstractDifferenceRecommenderFairEvaluator extends Abstrac
 					estimatedPreference = recommender.estimatePreference(testUserID, realPref.getItemID());
 				} catch (NoSuchUserException nsue) {
 					// It's possible that an item exists in the test data but not training data in which case
-					// NSEE will be thrown. Just ignore it and move on.
+					// NSUE will be thrown. Just ignore it and move on.
 					log.info("User exists in test data but not training data: {}", testUserID);
 				} catch (NoSuchItemException nsie) {
 					log.info("Item exists in test data but not training data: {}", realPref.getItemID());
@@ -75,6 +80,7 @@ public abstract class AbstractDifferenceRecommenderFairEvaluator extends Abstrac
 					}
 					estimatedPreference = capEstimatedPreference(estimatedPreference);
 					processOneEstimate(estimatedPreference, realPref);
+					processEasiestAndHardestItems(estimatedPreference, realPref);
 				}
 				if (estimateCounter.get() % 1000 == 0) {
 					log.info("Recommended {} preferences", estimateCounter.get());

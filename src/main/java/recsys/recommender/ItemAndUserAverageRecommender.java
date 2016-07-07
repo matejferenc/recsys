@@ -112,7 +112,7 @@ public final class ItemAndUserAverageRecommender extends AbstractRecommender {
       DataModel dataModel = getDataModel();
       LongPrimitiveIterator it = dataModel.getUserIDs();
       while (it.hasNext()) {
-        long userID = it.nextLong();
+        long userID = it.nextInt();
         PreferenceArray prefs = dataModel.getPreferencesFromUser(userID);
         int size = prefs.length();
         for (int i = 0; i < size; i++) {

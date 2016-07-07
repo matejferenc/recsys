@@ -14,12 +14,15 @@ public class NameToIdConverter {
 	private Map<String, Long> actorIdMap;
 
 	private Map<String, Long> actressIdMap;
+	
+	private Map<String, Long> keywordsIdMap;
 
 	public NameToIdConverter() {
 		genreIdMap = new HashMap<String, Long>();
 		directorIdMap = new HashMap<String, Long>();
 		actorIdMap = new HashMap<String, Long>();
 		actressIdMap = new HashMap<String, Long>();
+		keywordsIdMap = new HashMap<String, Long>();
 	}
 
 	public long convertGenre(String name) {
@@ -36,6 +39,10 @@ public class NameToIdConverter {
 
 	public long convertActress(String name) {
 		return convertInternal(actressIdMap, name);
+	}
+	
+	public long convertKeyword(String name) {
+		return convertInternal(keywordsIdMap, name);
 	}
 
 	private long convertInternal(Map<String, Long> textToIdMap, String text) {
@@ -76,6 +83,14 @@ public class NameToIdConverter {
 		Set<Long> ids = new HashSet<Long>();
 		for (String actress : actresses) {
 			ids.add(convertActress(actress));
+		}
+		return ids;
+	}
+	
+	public Set<Long> convertKeywordsToIds(Set<String> keywords) {
+		Set<Long> ids = new HashSet<Long>();
+		for (String keyword : keywords) {
+			ids.add(convertKeyword(keyword));
 		}
 		return ids;
 	}

@@ -18,6 +18,7 @@ import recsys.movielens.dataset.MovieLensEnrichedModelDataset;
 import recsys.movielens.dataset.Movielens1MDataset;
 import recsys.movielens.model.movielens.MovieLensEnrichedModel;
 import recsys.movielens.recommender.builder.MovieLensContentBasedRecommenderBuilder;
+import recsys.movielens.similarity.MovielensUserSimilarityFunction;
 import recsys.movielens.similarity.builder.MovieLensItemSimilarityBuilder;
 import recsys.movielens.similarity.builder.MovieLensUserSimilarityBuilder;
 import recsys.recommender.builder.ItemAndUserAverageRecommenderBuilder;
@@ -34,17 +35,17 @@ import recsys.similarity.builder.PearsonCorrelationItemSimilarityBuilder;
 import recsys.similarity.builder.PearsonCorrelationUserSimilarityBuilder;
 import recsys.similarity.builder.UserSimilarityBuilder;
 
-public class MovieLensEvaluator extends AbstractEvaluator {
+public class MovielensEvaluator extends AbstractEvaluator {
 
 	private List<String> argsList;
 
-	public MovieLensEvaluator(List<String> argsList) {
+	public MovielensEvaluator(List<String> argsList) {
 		this.argsList = argsList;
 	}
 	
 	public static void main(String[] args) throws Exception {
 		List<String> argsList = Arrays.asList(args);
-		MovieLensEvaluator e = new MovieLensEvaluator(argsList);
+		MovielensEvaluator e = new MovielensEvaluator(argsList);
 		e.evaluate();
 	}
 
@@ -64,7 +65,8 @@ public class MovieLensEvaluator extends AbstractEvaluator {
 		List<RecommenderBuilder> builders = new ArrayList<>();
 		
 		if (includeAlgorithms.contains(IncludeAlgorithms.MOVIE_LENS_USER_SIMILARITY)) {
-			UserSimilarityBuilder movieLensUserSimilarityBuilder = new MovieLensUserSimilarityBuilder(movieLensEnrichedModel);
+			MovielensUserSimilarityFunction movielensUserSimilarityFunction = new MovielensUserSimilarityFunction(0.2, 0.2, 0.2, 0.2, 0.2);
+			UserSimilarityBuilder movieLensUserSimilarityBuilder = new MovieLensUserSimilarityBuilder(movieLensEnrichedModel, movielensUserSimilarityFunction);
 			builders.add(new UserBasedRecommenderBuilder(movieLensUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(5)));
 			builders.add(new UserBasedRecommenderBuilder(movieLensUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(10)));
 			builders.add(new UserBasedRecommenderBuilder(movieLensUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(15)));

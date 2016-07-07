@@ -11,12 +11,15 @@ public class User {
 	private SetPreference actorPreferences;
 
 	private SetPreference actressPreferences;
+	
+	private SetPreference keywordsPreferences;
 
 	public User() {
 		genrePreferences = new SetPreference();
 		directorPreferences = new SetPreference();
 		actorPreferences = new SetPreference();
 		actressPreferences = new SetPreference();
+		keywordsPreferences = new SetPreference();
 	}
 
 	public SetPreference getGenrePreferences() {
@@ -33,6 +36,10 @@ public class User {
 
 	public SetPreference getActressPreferences() {
 		return actressPreferences;
+	}
+	
+	public SetPreference getKeywordsPreferences() {
+		return keywordsPreferences;
 	}
 
 }

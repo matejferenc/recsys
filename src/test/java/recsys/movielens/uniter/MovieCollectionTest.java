@@ -39,9 +39,18 @@ public class MovieCollectionTest {
 		assertMovieGenreFound("Blood In, Blood Out (a.k.a. Bound by Honor)", 1993);
 		assertMovieGenreFound("Operation Condor (Feiying gaiwak)", 1990);
 		assertMovieGenreFound("Fright Night Part II", 1989);
+		assertMovieGenreFound("Jack and Sarah", 1995);//try fix ampersand
+		assertMovieGenreFound("Fun and Fancy Free", 1947);
+		assertMovieGenreFound("Solar Crisis", 1993);//try fixing years by +3
+		assertMovieGenreFound("Jerry & Tom", 1998);
+		assertMovieGenreFound("Adventures of Rocky and Bullwinkle, The", 2000);
+		assertMovieGenreFound("Ready to Wear (Pret-A-Porter)", 1994);
+		assertMovieGenreFound("Me, Myself and Irene", 2000);
+		assertMovieGenreFound("Up Close and Personal", 1996);
 		assertMovieGenreFound("Naked Gun 2 1/2: The Smell of Fear, The", 1991);
 		assertMovieGenreFound("8 1/2 Women", 1999);
 		assertMovieGenreFound("8 1/2", 1963);
+		assertMovieGenreFound("Fast, Cheap & Out of Control", 1997);
 	}
 	
 	@Test
@@ -62,6 +71,16 @@ public class MovieCollectionTest {
 		assertEquals("Underneath, The", MovieCollection.removeCommasNotBeforeArticle("Underneath, The"));
 		assertEquals("Horseman on the Roof, The (Hussard sur le toit, Le)", MovieCollection.removeCommasNotBeforeArticle("Horseman on the Roof, The (Hussard sur le toit, Le)"));
 		assertEquals("I Worst of All (Yo la peor de todas)", MovieCollection.removeCommasNotBeforeArticle("I, Worst of All (Yo, la peor de todas)"));;
+	}
+	
+	@Test
+	public void testStandardizingName() {
+		assertStandardized("jack and sarah", "Jack and Sarah");
+		assertStandardized("blood in blood out (bound by honor)", "Blood In, Blood Out (a.k.a. Bound by Honor)");
+	}
+
+	private void assertStandardized(String expected, String original) {
+		assertEquals(expected, MovieCollection.standardizeName(original));
 	}
 	
 }

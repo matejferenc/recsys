@@ -29,26 +29,26 @@ public class ContentBasedMovieGenreRecommender extends AbstractRecommender {
 	}
 
 	@Override
-	public List<RecommendedItem> recommend(long userID, int howMany, IDRescorer rescorer) throws TasteException {
+	public List<RecommendedItem> recommend(int userID, int howMany, IDRescorer rescorer) throws TasteException {
 		throw new NotImplementedException("not implemented yet - recommend(userID, howMany, rescorer)");
 	}
 
 	@Override
-	public float estimatePreference(long userID, long itemID) throws TasteException {
+	public float estimatePreference(int userID, int itemID) throws TasteException {
 		Set<String> itemGenres = genresModel.getGenres(itemID);
 		DataModel model = getDataModel();
 		FastIDSet itemIDsFromUser = model.getItemIDsFromUser(userID);
-		List<Long> itemsWithAtLeastOneSameGenre = new ArrayList<Long>();
+		List<Integer> itemsWithAtLeastOneSameGenre = new ArrayList<Integer>();
 		List<Float> similarities = getItemsWithAtLeastOneSameGenre(itemIDsFromUser, itemGenres, itemsWithAtLeastOneSameGenre);
 		float averageRating = calculateAverageRating(itemsWithAtLeastOneSameGenre, userID, similarities);
 		return averageRating;
 	}
 
-	private float calculateAverageRating(List<Long> itemsWithAtLeastOneSameGenre, Long userID, List<Float> similarities) {
+	private float calculateAverageRating(List<Integer> itemsWithAtLeastOneSameGenre, int userID, List<Float> similarities) {
 		Float sumOfRatings = 0f;
 		Float sumOfSimilarities = 0f;
 		int i = 0;
-		for (Long itemID : itemsWithAtLeastOneSameGenre) {
+		for (int itemID : itemsWithAtLeastOneSameGenre) {
 			try {
 				float similarity = similarities.get(i);
 				Float preferenceValue = getDataModel().getPreferenceValue(userID, itemID);
@@ -63,9 +63,9 @@ public class ContentBasedMovieGenreRecommender extends AbstractRecommender {
 		return sumOfRatings / sumOfSimilarities;
 	}
 
-	private List<Float> getItemsWithAtLeastOneSameGenre(FastIDSet itemIDsFromUser, Set<String> itemGenres, List<Long> itemsWithSameGenre) throws TasteException {
+	private List<Float> getItemsWithAtLeastOneSameGenre(FastIDSet itemIDsFromUser, Set<String> itemGenres, List<Integer> itemsWithSameGenre) throws TasteException {
 		List<Float> itemsSimilarity = new ArrayList<Float>();
-		for (Long itemIDFromUser : itemIDsFromUser) {
+		for (int itemIDFromUser : itemIDsFromUser) {
 			Set<String> genres = genresModel.getGenres(itemIDFromUser);
 			if (genresModel.intersects(itemGenres, genres)) {
 				itemsWithSameGenre.add(itemIDFromUser);

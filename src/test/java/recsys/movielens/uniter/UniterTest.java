@@ -3,6 +3,9 @@ package recsys.movielens.uniter;
 import static org.junit.Assert.*;
 import org.junit.Test;
 
+/**
+ * Regression test for keeping already successfully matched movies in the set of matched movies.
+ */
 public class UniterTest {
 
 	@Test
@@ -10,22 +13,21 @@ public class UniterTest {
 		Uniter uniter = new Uniter();
 		uniter.createMovielensDataModel();
 		
-		
 		uniter.uniteGenres();
-		assertEquals(3833, uniter.moviesFound);
-		assertEquals(50, uniter.moviesNotFound);
+		assertEquals(3855, uniter.moviesFound);
+		assertEquals(28, uniter.moviesNotFound);
 		
 		uniter.uniteDirectors();
-		assertEquals(3836, uniter.moviesFound);
-		assertEquals(47, uniter.moviesNotFound);
+		assertEquals(3856, uniter.moviesFound);
+		assertEquals(27, uniter.moviesNotFound);
 		
 		uniter.uniteActors();
-		assertEquals(3823, uniter.moviesFound);
-		assertEquals(60, uniter.moviesNotFound);
+		assertEquals(3843, uniter.moviesFound);
+		assertEquals(40, uniter.moviesNotFound);
 		
 		uniter.uniteActresses();
-		assertEquals(3789, uniter.moviesFound);
-		assertEquals(94, uniter.moviesNotFound);
+		assertEquals(3809, uniter.moviesFound);
+		assertEquals(74, uniter.moviesNotFound);
 		
 		uniter.uniteKeywords();
 		assertEquals(3824, uniter.moviesFound);

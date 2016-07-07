@@ -93,7 +93,7 @@ public abstract class CrossValidationRecommenderEvaluator implements Recommender
 
 		LongPrimitiveIterator it = dataModel.getUserIDs();
 		while (it.hasNext()) {
-			long userID = it.nextLong();
+			long userID = it.nextInt();
 			if (random.nextDouble() < evaluationPercentage) {
 				splitOneUsersPrefs(trainingPercentage, trainingPrefs, testPrefs, userID, dataModel);
 			}

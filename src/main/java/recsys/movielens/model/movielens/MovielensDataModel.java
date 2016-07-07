@@ -8,7 +8,7 @@ import org.apache.mahout.cf.taste.impl.common.FastByIDMap;
 
 public class MovielensDataModel {
 
-	private List<Long> itemIDs;
+	private List<Integer> itemIDs;
 
 	private FastByIDMap<Set<String>> genres;
 
@@ -21,7 +21,7 @@ public class MovielensDataModel {
 		genres = new FastByIDMap<Set<String>>();
 		names = new FastByIDMap<String>();
 		years = new FastByIDMap<Integer>();
-		setItemIDs(new ArrayList<Long>());
+		setItemIDs(new ArrayList<Integer>());
 	}
 
 	public Set<String> getGenres(long itemID) {
@@ -48,11 +48,11 @@ public class MovielensDataModel {
 		this.names = names;
 	}
 
-	public List<Long> getItemIDs() {
+	public List<Integer> getItemIDs() {
 		return itemIDs;
 	}
 
-	public void setItemIDs(List<Long> itemIDs) {
+	public void setItemIDs(List<Integer> itemIDs) {
 		this.itemIDs = itemIDs;
 	}
 

@@ -71,7 +71,7 @@ public class MovieLensEnrichedDataModelLoader {
 		try {
 			Iterator<String> tokens = delimiterPattern.split(line).iterator();
 			String itemIDString = tokens.next();
-			long itemID = Long.parseLong(itemIDString);
+			int itemID = Integer.parseInt(itemIDString);
 			String itemTitle = tokens.next();
 			String itemYearString = tokens.next();
 			Integer itemYear = Integer.parseInt(itemYearString);

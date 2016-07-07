@@ -1,9 +1,14 @@
 package recsys.evaluator;
 
+import java.util.List;
+
 import org.apache.mahout.cf.taste.common.TasteException;
 import org.apache.mahout.cf.taste.eval.DataModelBuilder;
 import org.apache.mahout.cf.taste.eval.RecommenderBuilder;
+import org.apache.mahout.cf.taste.impl.common.FastByIDMap;
 import org.apache.mahout.cf.taste.model.DataModel;
+import org.apache.mahout.cf.taste.model.PreferenceArray;
+import org.apache.mahout.common.Pair;
 
 /**
  * <p>
@@ -47,6 +52,13 @@ public interface RecommenderFairEvaluator {
 	 * @throws TasteException
 	 *             if an error occurs while accessing the {@link DataModel}
 	 */
-	double evaluate(RecommenderBuilder recommenderBuilder, DataModel dataModel, double trainingPercentage, double evaluationPercentage) throws TasteException;
+//	double evaluate(RecommenderBuilder recommenderBuilder, DataModel dataModel, double trainingPercentage, double evaluationPercentage) throws TasteException;
 
+	
+//	double evaluate(RecommenderBuilder recommenderBuilder) throws TasteException;
+	
+	List<Pair<FastByIDMap<PreferenceArray>, FastByIDMap<PreferenceArray>>> splitDatset(double testingPercentage, double evaluationPercentage) throws TasteException;
+
+
+	double evaluate(RecommenderBuilder recommenderBuilder, FastByIDMap<PreferenceArray> trainingPrefs, FastByIDMap<PreferenceArray> testPrefs) throws TasteException;
 }

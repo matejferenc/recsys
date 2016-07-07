@@ -61,9 +61,6 @@ public class MovielensDataModelLoader {
 	 * processing of one line
 	 */
 	protected void processLine(String line) {
-		if (line.equals("3309::Dog's Life, A (1920)::Comedy")) {
-			boolean stop = true;
-		}
 		// Ignore empty lines and comments
 		if (line.isEmpty() || line.charAt(0) == COMMENT_CHAR) {
 			return;

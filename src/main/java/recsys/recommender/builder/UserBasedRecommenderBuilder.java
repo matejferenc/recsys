@@ -15,7 +15,6 @@ public class UserBasedRecommenderBuilder implements RecommenderBuilder {
 
 	private UserSimilarityBuilder userSimilarityBuilder;
 	private UserNeighborhoodBuilder neighborhoodBuilder;
-
 	
 	private String neighborhoodName;
 	private String userSimilarityName;
