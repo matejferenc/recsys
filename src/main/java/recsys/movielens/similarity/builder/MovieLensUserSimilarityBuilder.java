@@ -28,6 +28,7 @@ public class MovieLensUserSimilarityBuilder implements UserSimilarityBuilder {
 		UserModelBuilder userModelBuilder = new UserModelBuilder(dataModel, movieLensEnrichedModel);
 		UserModel userModel = userModelBuilder.build();
 		return new CachingUserSimilarity(new MovielensUserSimilarity(userModel, movielensUserSimilarityFunction), Integer.MAX_VALUE);
+//		return new MovielensUserSimilarity(userModel, movielensUserSimilarityFunction);
 	}
 
 }

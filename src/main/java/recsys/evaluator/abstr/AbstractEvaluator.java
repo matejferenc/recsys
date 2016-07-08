@@ -29,7 +29,7 @@ public abstract class AbstractEvaluator {
 
 	public static final double testingPercentage = 0.25;
 	public static final double evaluationPercentage = 0.3333;
-	private static final NumberFormat formatter = new DecimalFormat("#0.000");
+	protected static final NumberFormat formatter = new DecimalFormat("#0.000");
 
 	public abstract void evaluate() throws Exception;
 
@@ -235,7 +235,7 @@ public abstract class AbstractEvaluator {
 		return list;
 	}
 
-	private AbstractRecommenderFairEvaluator createEvaluator(DataModel dataModel, IncludeMetrics evaluator) throws MissingArgumentException {
+	protected AbstractRecommenderFairEvaluator createEvaluator(DataModel dataModel, IncludeMetrics evaluator) throws MissingArgumentException {
 		AbstractRecommenderFairEvaluator e;
 		if (evaluator == IncludeMetrics.WEIGHTED_RMSE) {
 			e = new WeightedRMSRecommenderFairEvaluator(dataModel, 5, 1);

@@ -198,7 +198,7 @@ public class DatasetSplitter {
 	}
 
 	public boolean hasNext() {
-		return returnedGroupsCount < totalGroups;
+		return returnedGroupsCount < getTotalGroups();
 	}
 	
 	public Pair<FastByIDMap<PreferenceArray>, FastByIDMap<PreferenceArray>> next() throws TasteException {
@@ -227,6 +227,10 @@ public class DatasetSplitter {
 			result.add(next);
 		}
 		return result;
+	}
+
+	public int getTotalGroups() {
+		return totalGroups;
 	}
 	
 }
