@@ -19,7 +19,7 @@ import org.apache.mahout.cf.taste.common.TasteException;
 import org.apache.mahout.cf.taste.eval.RecommenderBuilder;
 import org.apache.mahout.cf.taste.impl.common.FastByIDMap;
 import org.apache.mahout.cf.taste.impl.common.FullRunningAverageAndStdDev;
-import org.apache.mahout.cf.taste.impl.common.LongPrimitiveIterator;
+import org.apache.mahout.cf.taste.impl.common.IntPrimitiveIterator;
 import org.apache.mahout.cf.taste.impl.common.RunningAverageAndStdDev;
 import org.apache.mahout.cf.taste.impl.eval.StatsCallable;
 import org.apache.mahout.cf.taste.impl.model.GenericDataModel;
@@ -58,7 +58,7 @@ public abstract class AbstractDifferenceRecommenderCrossEvaluator implements Rec
 	}
 
 	@Override
-	public List<Double> evaluate(RecommenderBuilder recommenderBuilder, DataModel dataModel, double trainingPercentage) throws TasteException {
+	public List<Double> evaluate(RecommenderBuilder recommenderBuilder, DataModel dataModel, Double trainingPercentage) throws TasteException {
 		this.dataModel = dataModel;
 		Preconditions.checkNotNull(recommenderBuilder);
 		Preconditions.checkNotNull(dataModel);
@@ -74,7 +74,7 @@ public abstract class AbstractDifferenceRecommenderCrossEvaluator implements Rec
 		int usersInOnePart = numUsers / numParts;
 		int rest = numUsers - usersInOnePart * numParts;
 
-		List<List<Long>> userPartitions = partitionUsers(usersInOnePart, rest);
+		List<List<Integer>> userPartitions = partitionUsers(usersInOnePart, rest);
 
 		for (int i = 0; i < numParts; i++) {
 			FastByIDMap<PreferenceArray> trainingPrefs = new FastByIDMap<PreferenceArray>();
@@ -83,7 +83,7 @@ public abstract class AbstractDifferenceRecommenderCrossEvaluator implements Rec
 
 			DataModel trainingModel = new GenericDataModel(trainingPrefs);
 			Recommender recommender = recommenderBuilder.buildRecommender(trainingModel);
-			double result = getEvaluation(testPrefs, recommender);
+			Double result = getEvaluation(testPrefs, recommender);
 			log.info("Evaluation result: {}", result);
 			results.add(result);
 		}
@@ -101,40 +101,40 @@ public abstract class AbstractDifferenceRecommenderCrossEvaluator implements Rec
 		log.info("Evaluation results: {}", resString);
 	}
 
-	private void createDataModel(List<List<Long>> userPartitions, int i, FastByIDMap<PreferenceArray> trainingPrefs, FastByIDMap<PreferenceArray> testPrefs, double trainingPercentage) throws TasteException {
-		for (List<Long> list : userPartitions) {
+	private void createDataModel(List<List<Integer>> userPartitions, int i, FastByIDMap<PreferenceArray> trainingPrefs, FastByIDMap<PreferenceArray> testPrefs, Double trainingPercentage) throws TasteException {
+		for (List<Integer> list : userPartitions) {
 			if (userPartitions.get(i) == list) {
-				for (Long userID : list) {
+				for (Integer userID : list) {
 					splitOneUsersPrefs(trainingPercentage, trainingPrefs, testPrefs, userID);
 				}
 			} else {
-				for (Long userID : list) {
+				for (Integer userID : list) {
 					trainingPrefs.put(userID, dataModel.getPreferencesFromUser(userID));
 				}
 			}
 		}
 	}
 
-	private List<List<Long>> partitionUsers(int usersInOnePart, int rest) throws TasteException {
-		List<List<Long>> userPartitions = new ArrayList<List<Long>>();
-		userPartitions.add(new ArrayList<Long>());
-		LongPrimitiveIterator userIDs = dataModel.getUserIDs();
+	private List<List<Integer>> partitionUsers(int usersInOnePart, int rest) throws TasteException {
+		List<List<Integer>> userPartitions = new ArrayList<List<Integer>>();
+		userPartitions.add(new ArrayList<Integer>());
+		IntPrimitiveIterator userIDs = dataModel.getUserIDs();
 		int i = 0;
 		int actualPart = 0;
 		while (userIDs.hasNext()) {
 			if (i >= usersInOnePart + (actualPart < rest ? 1 : 0)) {
 				actualPart++;
 				i = 0;
-				userPartitions.add(new ArrayList<Long>());
+				userPartitions.add(new ArrayList<Integer>());
 			}
 			i++;
-			Long userID = userIDs.next();
+			Integer userID = userIDs.next();
 			userPartitions.get(actualPart).add(userID);
 		}
 		return userPartitions;
 	}
 
-	private void splitOneUsersPrefs(double trainingPercentage, FastByIDMap<PreferenceArray> trainingPrefs, FastByIDMap<PreferenceArray> testPrefs, long userID) throws TasteException {
+	private void splitOneUsersPrefs(Double trainingPercentage, FastByIDMap<PreferenceArray> trainingPrefs, FastByIDMap<PreferenceArray> testPrefs, Integer userID) throws TasteException {
 		List<Preference> oneUserTrainingPrefs = null;
 		List<Preference> oneUserTestPrefs = null;
 		PreferenceArray prefs = dataModel.getPreferencesFromUser(userID);
@@ -175,22 +175,22 @@ public abstract class AbstractDifferenceRecommenderCrossEvaluator implements Rec
 		return results;
 	}
 
-	private float capEstimatedPreference(float estimate) {
-		float maxPreference = dataModel.getMaxPreference();
+	private Double capEstimatedPreference(Double estimate) {
+		Double maxPreference = dataModel.getMaxPreference();
 		if (estimate > maxPreference) {
 			return maxPreference;
 		}
-		float minPreference = dataModel.getMinPreference();
+		Double minPreference = dataModel.getMinPreference();
 		if (estimate < minPreference) {
 			return minPreference;
 		}
 		return estimate;
 	}
 
-	private double getEvaluation(FastByIDMap<PreferenceArray> testPrefs, Recommender recommender) throws TasteException {
+	private Double getEvaluation(FastByIDMap<PreferenceArray> testPrefs, Recommender recommender) throws TasteException {
 		reset();
 		Collection<Callable<Void>> estimateCallables = Lists.newArrayList();
-		for (Map.Entry<Long, PreferenceArray> entry : testPrefs.entrySet()) {
+		for (Map.Entry<Integer, PreferenceArray> entry : testPrefs.entrySet()) {
 			estimateCallables.add(new PreferenceEstimateCallable(recommender, entry.getKey(), entry.getValue(), noEstimateCounter, estimateCounter));
 		}
 		log.info("Beginning evaluation of {} users", estimateCallables.size());
@@ -237,19 +237,19 @@ public abstract class AbstractDifferenceRecommenderCrossEvaluator implements Rec
 
 	protected abstract void reset();
 
-	protected abstract void processOneEstimate(float estimatedPreference, Preference realPref);
+	protected abstract void processOneEstimate(Double estimatedPreference, Preference realPref);
 
-	protected abstract double computeFinalEvaluation();
+	protected abstract Double computeFinalEvaluation();
 
 	public final class PreferenceEstimateCallable implements Callable<Void> {
 
 		private final Recommender recommender;
-		private final long testUserID;
+		private final Integer testUserID;
 		private final PreferenceArray prefs;
 		private final AtomicInteger noEstimateCounter;
 		private AtomicInteger estimateCounter;
 
-		public PreferenceEstimateCallable(Recommender recommender, long testUserID, PreferenceArray prefs, AtomicInteger noEstimateCounter, AtomicInteger estimateCounter) {
+		public PreferenceEstimateCallable(Recommender recommender, Integer testUserID, PreferenceArray prefs, AtomicInteger noEstimateCounter, AtomicInteger estimateCounter) {
 			this.recommender = recommender;
 			this.testUserID = testUserID;
 			this.prefs = prefs;
@@ -260,7 +260,7 @@ public abstract class AbstractDifferenceRecommenderCrossEvaluator implements Rec
 		@Override
 		public Void call() throws TasteException {
 			for (Preference realPref : prefs) {
-				float estimatedPreference = Float.NaN;
+				Double estimatedPreference = Double.NaN;
 				try {
 					// only takes relevant neighbors into account:
 					estimatedPreference = recommender.estimatePreference(testUserID, realPref.getItemID());
@@ -271,7 +271,7 @@ public abstract class AbstractDifferenceRecommenderCrossEvaluator implements Rec
 				} catch (NoSuchItemException nsie) {
 					log.info("Item exists in test data but not training data: {}", realPref.getItemID());
 				}
-				if (Float.isNaN(estimatedPreference)) {
+				if (Double.isNaN(estimatedPreference)) {
 					noEstimateCounter.incrementAndGet();
 				} else {
 					int counter = estimateCounter.incrementAndGet();

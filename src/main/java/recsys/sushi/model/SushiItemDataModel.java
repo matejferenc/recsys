@@ -10,7 +10,7 @@ import java.util.Map;
 public class SushiItemDataModel {
 
 	// price has values from interval [0,5]
-	public static final double MAX_PRICE = 5;
+	public static final Double MAX_PRICE = 5d;
 
 	// oiliness has values from interval [0,4]
 	public static int MAX_OILINESS = 4;
@@ -21,7 +21,7 @@ public class SushiItemDataModel {
 		sushis = new HashMap<>();
 	}
 
-	public SushiPiece getSushiPiece(int itemID) {
+	public SushiPiece getSushiPiece(Integer itemID) {
 		return sushis.get(itemID);
 	}
 

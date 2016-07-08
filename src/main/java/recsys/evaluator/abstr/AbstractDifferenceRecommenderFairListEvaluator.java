@@ -13,6 +13,7 @@ import org.apache.mahout.cf.taste.common.TasteException;
 import org.apache.mahout.cf.taste.impl.common.FastByIDMap;
 import org.apache.mahout.cf.taste.impl.common.FullRunningAverageAndStdDev;
 import org.apache.mahout.cf.taste.impl.common.RunningAverageAndStdDev;
+import org.apache.mahout.cf.taste.model.DataModel;
 import org.apache.mahout.cf.taste.model.Preference;
 import org.apache.mahout.cf.taste.model.PreferenceArray;
 import org.apache.mahout.cf.taste.recommender.Recommender;
@@ -24,12 +25,16 @@ import com.google.common.collect.Lists;
  */
 public abstract class AbstractDifferenceRecommenderFairListEvaluator extends AbstractRecommenderFairEvaluator {
 
-	protected abstract void processOneEstimateList(List<Float> estimated, List<Float> real);
+	protected AbstractDifferenceRecommenderFairListEvaluator(DataModel dataModel) {
+		super(dataModel);
+	}
+
+	protected abstract void processOneEstimateList(List<Double> estimated, List<Double> real);
 	
 	protected double getEvaluation(FastByIDMap<PreferenceArray> testPrefs, Recommender recommender) throws TasteException {
 		reset();
 		Collection<Callable<Void>> estimateCallables = Lists.newArrayList();
-		for (Map.Entry<Long, PreferenceArray> entry : testPrefs.entrySet()) {
+		for (Map.Entry<Integer, PreferenceArray> entry : testPrefs.entrySet()) {
 			estimateCallables.add(new PreferenceEstimateCallable(recommender, entry.getKey(), entry.getValue(), noEstimateCounter, estimateCounter));
 		}
 		log.info("Beginning evaluation of {} users", estimateCallables.size());
@@ -41,12 +46,12 @@ public abstract class AbstractDifferenceRecommenderFairListEvaluator extends Abs
 	public final class PreferenceEstimateCallable implements Callable<Void> {
 
 		private final Recommender recommender;
-		private final long testUserID;
+		private final Integer testUserID;
 		private final PreferenceArray prefs;
 		private final AtomicInteger noEstimateCounter;
 		private AtomicInteger estimateCounter;
 
-		public PreferenceEstimateCallable(Recommender recommender, long testUserID, PreferenceArray prefs, AtomicInteger noEstimateCounter, AtomicInteger estimateCounter) {
+		public PreferenceEstimateCallable(Recommender recommender, Integer testUserID, PreferenceArray prefs, AtomicInteger noEstimateCounter, AtomicInteger estimateCounter) {
 			this.recommender = recommender;
 			this.testUserID = testUserID;
 			this.prefs = prefs;
@@ -56,10 +61,10 @@ public abstract class AbstractDifferenceRecommenderFairListEvaluator extends Abs
 
 		@Override
 		public Void call() throws TasteException {
-			List<Float> estimated = new ArrayList<>();
-			List<Float> real = new ArrayList<>();
+			List<Double> estimated = new ArrayList<>();
+			List<Double> real = new ArrayList<>();
 			for (Preference realPref : prefs) {
-				float estimatedPreference = Float.NaN;
+				double estimatedPreference = Double.NaN;
 				try {
 					estimatedPreference = recommender.estimatePreference(testUserID, realPref.getItemID());
 				} catch (NoSuchUserException nsue) {
@@ -69,7 +74,7 @@ public abstract class AbstractDifferenceRecommenderFairListEvaluator extends Abs
 				} catch (NoSuchItemException nsie) {
 					log.info("Item exists in test data but not training data: {}", realPref.getItemID());
 				}
-				if (Float.isNaN(estimatedPreference)) {
+				if (Double.isNaN(estimatedPreference)) {
 					noEstimateCounter.incrementAndGet();
 				} else {
 					int counter = estimateCounter.incrementAndGet();

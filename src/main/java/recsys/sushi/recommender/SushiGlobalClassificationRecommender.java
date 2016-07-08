@@ -19,11 +19,11 @@ public abstract class SushiGlobalClassificationRecommender extends SushiClassifi
 	}
 
 	@Override
-	public float estimatePreference(long userID, long itemID) throws TasteException {
+	public Double estimatePreference(Integer userID, Integer itemID) throws TasteException {
 		try {
-			double globalResult = getGlobalResult(userID, itemID);
+			Double globalResult = getGlobalResult(userID, itemID);
 
-			return (float) globalResult;
+			return (double) globalResult;
 		} catch (Exception e) {
 			throw new TasteException(e);
 		}

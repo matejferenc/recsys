@@ -5,8 +5,8 @@ import java.util.Properties;
 
 public abstract class RS {
 
-	private long startTime;
-	private long endTime;
+	private Long startTime;
+	private Long endTime;
 	protected Properties prop;
 	
 	public void run() throws Exception{

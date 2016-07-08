@@ -7,88 +7,88 @@ import java.util.Set;
 
 public class NameToIdConverter {
 
-	private Map<String, Long> genreIdMap;
+	private Map<String, Integer> genreIdMap;
 
-	private Map<String, Long> directorIdMap;
+	private Map<String, Integer> directorIdMap;
 
-	private Map<String, Long> actorIdMap;
+	private Map<String, Integer> actorIdMap;
 
-	private Map<String, Long> actressIdMap;
+	private Map<String, Integer> actressIdMap;
 	
-	private Map<String, Long> keywordsIdMap;
+	private Map<String, Integer> keywordsIdMap;
 
 	public NameToIdConverter() {
-		genreIdMap = new HashMap<String, Long>();
-		directorIdMap = new HashMap<String, Long>();
-		actorIdMap = new HashMap<String, Long>();
-		actressIdMap = new HashMap<String, Long>();
-		keywordsIdMap = new HashMap<String, Long>();
+		genreIdMap = new HashMap<String, Integer>();
+		directorIdMap = new HashMap<String, Integer>();
+		actorIdMap = new HashMap<String, Integer>();
+		actressIdMap = new HashMap<String, Integer>();
+		keywordsIdMap = new HashMap<String, Integer>();
 	}
 
-	public long convertGenre(String name) {
+	public Integer convertGenre(String name) {
 		return convertInternal(genreIdMap, name);
 	}
 
-	public long convertDirector(String name) {
+	public Integer convertDirector(String name) {
 		return convertInternal(directorIdMap, name);
 	}
 
-	public long convertActor(String name) {
+	public Integer convertActor(String name) {
 		return convertInternal(actorIdMap, name);
 	}
 
-	public long convertActress(String name) {
+	public Integer convertActress(String name) {
 		return convertInternal(actressIdMap, name);
 	}
 	
-	public long convertKeyword(String name) {
+	public Integer convertKeyword(String name) {
 		return convertInternal(keywordsIdMap, name);
 	}
 
-	private long convertInternal(Map<String, Long> textToIdMap, String text) {
+	private Integer convertInternal(Map<String, Integer> textToIdMap, String text) {
 		if (textToIdMap.containsKey(text)) {
 			return textToIdMap.get(text);
 		} else {
-			long newTextId = textToIdMap.size();
+			Integer newTextId = textToIdMap.size();
 			textToIdMap.put(text, newTextId);
 			return newTextId;
 		}
 	}
 
-	public Set<Long> convertGenresToIds(Set<String> genres) {
-		Set<Long> ids = new HashSet<Long>();
+	public Set<Integer> convertGenresToIds(Set<String> genres) {
+		Set<Integer> ids = new HashSet<Integer>();
 		for (String genre : genres) {
 			ids.add(convertGenre(genre));
 		}
 		return ids;
 	}
 	
-	public Set<Long> convertDirectorsToIds(Set<String> directors) {
-		Set<Long> ids = new HashSet<Long>();
+	public Set<Integer> convertDirectorsToIds(Set<String> directors) {
+		Set<Integer> ids = new HashSet<Integer>();
 		for (String director : directors) {
 			ids.add(convertDirector(director));
 		}
 		return ids;
 	}
 	
-	public Set<Long> convertActorsToIds(Set<String> actors) {
-		Set<Long> ids = new HashSet<Long>();
+	public Set<Integer> convertActorsToIds(Set<String> actors) {
+		Set<Integer> ids = new HashSet<Integer>();
 		for (String actor : actors) {
 			ids.add(convertActor(actor));
 		}
 		return ids;
 	}
 	
-	public Set<Long> convertActressesToIds(Set<String> actresses) {
-		Set<Long> ids = new HashSet<Long>();
+	public Set<Integer> convertActressesToIds(Set<String> actresses) {
+		Set<Integer> ids = new HashSet<Integer>();
 		for (String actress : actresses) {
 			ids.add(convertActress(actress));
 		}
 		return ids;
 	}
 	
-	public Set<Long> convertKeywordsToIds(Set<String> keywords) {
-		Set<Long> ids = new HashSet<Long>();
+	public Set<Integer> convertKeywordsToIds(Set<String> keywords) {
+		Set<Integer> ids = new HashSet<Integer>();
 		for (String keyword : keywords) {
 			ids.add(convertKeyword(keyword));
 		}

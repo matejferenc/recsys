@@ -44,13 +44,13 @@ public class DatasetSplitter {
 	
 	private Map<Integer, Set<Integer>> alreadySelectedItems;
 
-	private double evaluationPercentage;
+	private Double evaluationPercentage;
 
 	private List<List<Integer>> userGroups;
 	
 	private Map<Pair<Double, Integer>, List<List<Integer>>> usersSplitted;
 
-	public DatasetSplitter(DataModel dataModel, double testingPercentage, double evaluationPercentage) throws TasteException {
+	public DatasetSplitter(DataModel dataModel, Double testingPercentage, Double evaluationPercentage) throws TasteException {
 		this.dataModel = dataModel;
 		this.evaluationPercentage = evaluationPercentage;
 		Preconditions.checkArgument(testingPercentage >= 0.0 && testingPercentage <= 1.0, "Invalid testingPercentage: " + testingPercentage + ". Must be: 0.0 <= testingPercentage <= 1.0");
@@ -58,7 +58,7 @@ public class DatasetSplitter {
 		evaluationGroupsCount = (int) Math.floor(1 / (evaluationPercentage));
 		totalGroups = userGroupsCount * evaluationGroupsCount;
 		returnedGroupsCount = 0;
-		random = RandomUtils.getRandom(0L);
+		random = RandomUtils.getRandom(0);
 		alreadySelectedItems = new HashMap<Integer, Set<Integer>>();
 		usersSplitted = new HashMap<Pair<Double,Integer>, List<List<Integer>>>();
 		userGroups = splitUsers(testingPercentage);
@@ -97,8 +97,8 @@ public class DatasetSplitter {
 	 * @throws TasteException
 	 */
 	public Pair<GenericUserPreferenceArray, GenericUserPreferenceArray> splitOneUsersPrefs(Integer userID, Integer evaluationGroupId, boolean lastGroup) throws TasteException {
-//		if (preferencesSplitted.containsKey(new Pair<Pair<Long, Integer>, Double>(new Pair<Long, Integer>(userID, evaluationGroupId), evaluationPercentage))) {
-//			return preferencesSplitted.get(new Pair<Pair<Long, Integer>, Double>(new Pair<Long, Integer>(userID, evaluationGroupId), evaluationPercentage));
+//		if (preferencesSplitted.containsKey(new Pair<Pair<Integer, Integer>, Double>(new Pair<Integer, Integer>(userID, evaluationGroupId), evaluationPercentage))) {
+//			return preferencesSplitted.get(new Pair<Pair<Integer, Integer>, Double>(new Pair<Integer, Integer>(userID, evaluationGroupId), evaluationPercentage));
 //		}
 		GenericUserPreferenceArray trainingPrefs = null;
 		GenericUserPreferenceArray testPrefs = null;
@@ -143,7 +143,7 @@ public class DatasetSplitter {
 		return result;
 	}
 	
-	public List<List<Integer>> splitUsers(double testingPercentage) throws TasteException {
+	public List<List<Integer>> splitUsers(Double testingPercentage) throws TasteException {
 		List<Integer> userIDs = getUserIDs();
 		int numUsers = dataModel.getNumUsers();
 		if (usersSplitted.containsKey(new Pair<Double, Integer>(testingPercentage, numUsers))) {

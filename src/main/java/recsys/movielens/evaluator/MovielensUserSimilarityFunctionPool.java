@@ -13,16 +13,16 @@ public class MovielensUserSimilarityFunctionPool extends ArrayList<MovielensUser
 
 	public void generateRandom(int populationSize) {
 		for (int i = 0; i < populationSize; i++) {
-			double genresCoefficient = 0.2 * (1 + Math.random());
-			double directorsCoefficient = 0.2 * (1 + Math.random());
-			double actorsCoefficient = 0.2 * (1 + Math.random());
-			double actressesCoefficient = 0.2 * (1 + Math.random());
-			double keywordsCoefficient = 0.2 * (1 + Math.random());
+			Double genresCoefficient = (double) (0.2 * (1 + Math.random()));
+			Double directorsCoefficient = (double) (0.2 * (1 + Math.random()));
+			Double actorsCoefficient = (double) (0.2 * (1 + Math.random()));
+			Double actressesCoefficient = (double) (0.2 * (1 + Math.random()));
+			Double keywordsCoefficient = (double) (0.2 * (1 + Math.random()));
 			this.add(new MovielensUserSimilarityFunction(genresCoefficient, directorsCoefficient, actorsCoefficient, actressesCoefficient, keywordsCoefficient));
 		}
 	}
 
-	public void registerScore(double averageScore) {
+	public void registerScore(Double averageScore) {
 		scores.add(averageScore);
 	}
 

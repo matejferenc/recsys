@@ -129,7 +129,7 @@ public class MovieCollection<T> {
 		movielensToIMDbDictionary.put(pair("A Chef in Love", 1996), pair("Shekvarebuli kulinaris ataserti retsepti", 1996));
 		movielensToIMDbDictionary.put(pair("Prisoner of the Mountains (Kavkazsky Plennik)", 1996), pair("Kavkazskiy plennik", 1996));
 		movielensToIMDbDictionary.put(pair("Kolya", 1996), pair("Kolja", 1996));
-		movielensToIMDbDictionary.put(pair("Raise the Red Lantern", 1991), pair("Da hong deng long gao gao gua", 1991));
+		movielensToIMDbDictionary.put(pair("Raise the Red Lantern", 1991), pair("Da hong deng Integer gao gao gua", 1991));
 		movielensToIMDbDictionary.put(pair("Once Upon a Time in the West", 1969), pair("C'era una volta il West", 1968));
 		movielensToIMDbDictionary.put(pair("Good, The Bad and The Ugly, The", 1966), pair("Il buono, il brutto, il cattivo.", 1966));
 		movielensToIMDbDictionary.put(pair("Tie Me Up! Tie Me Down!", 1990), pair("Átame!", 1989));
@@ -164,7 +164,7 @@ public class MovieCollection<T> {
 		movielensToIMDbDictionary2.put(pair("Jackie Chan's First Strike", 1996), pair("Ging chat goo si 4: Ji gaan daan yam mo", 1996));
 		movielensToIMDbDictionary.put(pair("Harmonists, The", 1997), pair("Comedian Harmonists", 1997));
 		movielensToIMDbDictionary.put(pair("Children of the Corn III", 1994), pair("Children of the Corn III: Urban Harvest", 1995));
-		movielensToIMDbDictionary.put(pair("Twin Dragons (Shuang long hui)", 1992), pair("Seong lung wui", 1992));
+		movielensToIMDbDictionary.put(pair("Twin Dragons (Shuang Integer hui)", 1992), pair("Seong lung wui", 1992));
 		movielensToIMDbDictionary.put(pair("Howling II: Your Sister Is a Werewolf", 1985), pair("Howling II: Stirba - Werewolf Bitch", 1985));
 		movielensToIMDbDictionary.put(pair("Eternity and a Day (Mia eoniotita ke mia mera )", 1998), pair("Mia aioniotita kai mia mera", 1998));
 		movielensToIMDbDictionary.put(pair("Twice Upon a Yesterday", 1998), pair("The Man with Rain in His Shoes", 1998));
@@ -177,7 +177,7 @@ public class MovieCollection<T> {
 		movielensToIMDbDictionary.put(pair("Adventures of Milo and Otis, The", 1986), pair("Koneko monogatari", 1986));
 		movielensToIMDbDictionary.put(pair("Don't Look in the Basement!", 1973), pair("The Forgotten", 1973));
 		movielensToIMDbDictionary.put(pair("Operation Condor (Feiying gaiwak)", 1990), pair("Fei ying gai wak", 1991));
-		movielensToIMDbDictionary.put(pair("Operation Condor 2 (Longxiong hudi)", 1990), pair("Lung hing foo dai", 1990));
+		movielensToIMDbDictionary.put(pair("Operation Condor 2 (Integerxiong hudi)", 1990), pair("Lung hing foo dai", 1990));
 		movielensToIMDbDictionary.put(pair("Sanjuro", 1962), pair("Tsubaki Sanjûrô", 1962));
 		movielensToIMDbDictionary.put(pair("Fistful of Dollars, A", 1964), pair("Per un pugno di dollari", 1964));
 		movielensToIMDbDictionary.put(pair("Hard 8 (a.k.a. Sydney, a.k.a. Hard Eight)", 1996), pair("Sydney", 1996));

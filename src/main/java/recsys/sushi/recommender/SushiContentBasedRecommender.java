@@ -42,67 +42,67 @@ public class SushiContentBasedRecommender implements Recommender {
 	}
 
 	@Override
-	public List<RecommendedItem> recommend(long userID, int howMany) throws TasteException {
+	public List<RecommendedItem> recommend(Integer userID, int howMany) throws TasteException {
 		return null;
 	}
 
 	@Override
-	public List<RecommendedItem> recommend(long userID, int howMany, IDRescorer rescorer) throws TasteException {
+	public List<RecommendedItem> recommend(Integer userID, int howMany, IDRescorer rescorer) throws TasteException {
 		return null;
 	}
 
 	@Override
-	public float estimatePreference(long userID, long itemID) throws TasteException {
+	public Double estimatePreference(Integer userID, Integer itemID) throws TasteException {
 		SushiUser user = userModel.get((int) userID);
-		double styleRating = calculateStyleRating(user, (int) itemID);
-		double majorGroupRating = calculateMajorGroupRating(user, (int) itemID);
-		double minorGroupRating = calculateMinorGroupRating(user, (int) itemID);
-		double oilinessRating = calculateOilinessRating(user, (int) itemID);
-		double priceRating = calculatePriceRating(user, (int) itemID);
+		Double styleRating = calculateStyleRating(user, (int) itemID);
+		Double majorGroupRating = calculateMajorGroupRating(user, (int) itemID);
+		Double minorGroupRating = calculateMinorGroupRating(user, (int) itemID);
+		Double oilinessRating = calculateOilinessRating(user, (int) itemID);
+		Double priceRating = calculatePriceRating(user, (int) itemID);
 
 		int nonZeroRatingCount = getNonZeroRatingCount(styleRating, majorGroupRating, minorGroupRating, oilinessRating, priceRating);
-		return (float) ((styleRating + majorGroupRating + minorGroupRating) / nonZeroRatingCount);
+		return (double) ((styleRating + majorGroupRating + minorGroupRating) / nonZeroRatingCount);
 	}
 
-	private int getNonZeroRatingCount(double styleRating, double majorGroupRating, double minorGroupRating, double oilinessRating, double priceRating) {
+	private int getNonZeroRatingCount(Double styleRating, Double majorGroupRating, Double minorGroupRating, Double oilinessRating, Double priceRating) {
 		return isNonZero(styleRating) + isNonZero(majorGroupRating) + isNonZero(minorGroupRating) + isNonZero(oilinessRating) + isNonZero(priceRating);
 	}
 
-	private int isNonZero(double rating) {
+	private int isNonZero(Double rating) {
 		return Math.abs(rating) < 0.001 ? 0 : 1;
 	}
 
-	private double calculateMinorGroupRating(SushiUser user, int itemID) {
+	private Double calculateMinorGroupRating(SushiUser user, int itemID) {
 		SushiPiece sushiPiece = sushiDataModel.getSushiPiece(itemID);
 		return calculatePreference(sushiPiece.getStyle(), user.getMinorGroupPreferences());
 	}
 
-	private double calculateMajorGroupRating(SushiUser user, int itemID) {
+	private Double calculateMajorGroupRating(SushiUser user, int itemID) {
 		SushiPiece sushiPiece = sushiDataModel.getSushiPiece(itemID);
 		return calculatePreference(sushiPiece.getStyle(), user.getMajorGroupPreferences());
 	}
 
-	private double calculateStyleRating(SushiUser user, int itemID) {
+	private Double calculateStyleRating(SushiUser user, int itemID) {
 		SushiPiece sushiPiece = sushiDataModel.getSushiPiece(itemID);
 		return calculatePreference(sushiPiece.getStyle(), user.getStylePreferences());
 	}
 	
-	private double calculateOilinessRating(SushiUser user, int itemID) {
+	private Double calculateOilinessRating(SushiUser user, int itemID) {
 		SushiPiece sushiPiece = sushiDataModel.getSushiPiece(itemID);
 		return calculatePreference(sushiPiece.getOiliness(), user.getOilinessPreferences());
 	}
 
-	private double calculatePriceRating(SushiUser user, int itemID) {
+	private Double calculatePriceRating(SushiUser user, int itemID) {
 		SushiPiece sushiPiece = sushiDataModel.getSushiPiece(itemID);
 		return calculatePreference(sushiPiece.getPrice(), user.getPricePreferences());
 	}
 
-	private double calculatePreference(int itemAttribute, SetPreference attributePreferences) {
+	private Double calculatePreference(int itemAttribute, SetPreference attributePreferences) {
 		Set<Integer> allPropertyIds = attributePreferences.getAllPropertyIds();
 		if (allPropertyIds.contains(itemAttribute)) {
 			return attributePreferences.getPropertyAverage(itemAttribute);
 		} else {
-			return 0;
+			return 0d;
 		}
 	}
 	
@@ -112,10 +112,10 @@ public class SushiContentBasedRecommender implements Recommender {
 	 * @param attributePreferences
 	 * @return
 	 */
-	private double calculatePreference(double itemValue, NumericPreference attributePreferences) {
-		double difference = Math.abs(attributePreferences.getPreferredValue() - itemValue);
+	private Double calculatePreference(Double itemValue, NumericPreference attributePreferences) {
+		Double difference = Math.abs(attributePreferences.getPreferredValue() - itemValue);
 		if (difference > attributePreferences.getVariance()) {
-			return 0;
+			return 0d;
 		} else {
 			return 1 - (1/attributePreferences.getVariance()) * difference;
 		}
@@ -123,14 +123,14 @@ public class SushiContentBasedRecommender implements Recommender {
 	}
 
 	@Override
-	public void setPreference(long userID, long itemID, float value) throws TasteException {
-		Preconditions.checkArgument(!Float.isNaN(value), "NaN value");
+	public void setPreference(Integer userID, Integer itemID, Double value) throws TasteException {
+		Preconditions.checkArgument(!Double.isNaN(value), "NaN value");
 		log.debug("Setting preference for user {}, item {}", userID, itemID);
 		dataModel.setPreference(userID, itemID, value);
 	}
 
 	@Override
-	public void removePreference(long userID, long itemID) throws TasteException {
+	public void removePreference(Integer userID, Integer itemID) throws TasteException {
 		log.debug("Remove preference for user '{}', item '{}'", userID, itemID);
 		dataModel.removePreference(userID, itemID);
 	}

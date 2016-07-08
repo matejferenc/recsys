@@ -29,13 +29,13 @@ public abstract class SushiAndUserClassificationRecommender extends SushiClassif
 	}
 
 	@Override
-	public float estimatePreference(long userID, long itemID) throws TasteException {
+	public Double estimatePreference(Integer userID, Integer itemID) throws TasteException {
 		try {
-			double globalResult = getGlobalResult(userID, itemID);
+			Double globalResult = getGlobalResult(userID, itemID);
 
-			double localResult = getLocalResult(userID, itemID);
+			Double localResult = getLocalResult(userID, itemID);
 
-			return (float) (globalResult + localResult) / 2;
+			return (double) (globalResult + localResult) / 2;
 		} catch (Exception e) {
 			throw new TasteException(e);
 		}
@@ -63,7 +63,7 @@ public abstract class SushiAndUserClassificationRecommender extends SushiClassif
 	@Override
 	protected FastVector createAttributes() {
 		FastVector attributes = super.createAttributes();
-		// Declare a nominal attribute along with its values
+		// Declare a nominal attribute aInteger with its values
 		FastVector gender = new FastVector(2);
 		gender.addElement("0");
 		gender.addElement("1");

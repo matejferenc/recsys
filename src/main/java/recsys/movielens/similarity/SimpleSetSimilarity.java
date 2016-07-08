@@ -25,13 +25,13 @@ public class SimpleSetSimilarity implements SetSimilarity {
 	 * similarity(S1,S2) = 0.5
 	 */
 	@Override
-	public Float getSimilarity(Set<String> set1, Set<String> set2) {
+	public Double getSimilarity(Set<String> set1, Set<String> set2) {
 		int intersectionSize = 0;
 		for (String item : set2) {
 			if (set1.contains(item))
 				intersectionSize++;
 		}
-		return ((float) intersectionSize) * 2 / (set1.size() + set2.size());
+		return ((double) intersectionSize) * 2 / (set1.size() + set2.size());
 	}
 
 }

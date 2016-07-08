@@ -12,11 +12,11 @@ public class SushiPiece {
 	
 	private int minorGroup;
 	
-	private double oiliness;
+	private Double oiliness;
 	
-	private double eatingFrequency;
+	private Double eatingFrequency;
 	
-	public SushiPiece(int style, int majorGroup, int minorGroup, double oiliness, double eatingFrequency, double price, double sellingFrequency) {
+	public SushiPiece(int style, int majorGroup, int minorGroup, Double oiliness, Double eatingFrequency, Double price, Double sellingFrequency) {
 		super();
 		this.style = style;
 		this.majorGroup = majorGroup;
@@ -27,9 +27,9 @@ public class SushiPiece {
 		this.sellingFrequency = sellingFrequency;
 	}
 
-	private double price;
+	private Double price;
 	
-	private double sellingFrequency;
+	private Double sellingFrequency;
 
 	public int getStyle() {
 		return style;
@@ -55,35 +55,35 @@ public class SushiPiece {
 		this.minorGroup = minorGroup;
 	}
 
-	public double getOiliness() {
+	public Double getOiliness() {
 		return oiliness;
 	}
 
-	public void setOiliness(double oiliness) {
+	public void setOiliness(Double oiliness) {
 		this.oiliness = oiliness;
 	}
 
-	public double getEatingFrequency() {
+	public Double getEatingFrequency() {
 		return eatingFrequency;
 	}
 
-	public void setEatingFrequency(double eatingFrequency) {
+	public void setEatingFrequency(Double eatingFrequency) {
 		this.eatingFrequency = eatingFrequency;
 	}
 
-	public double getPrice() {
+	public Double getPrice() {
 		return price;
 	}
 
-	public void setPrice(double price) {
+	public void setPrice(Double price) {
 		this.price = price;
 	}
 
-	public double getSellingFrequency() {
+	public Double getSellingFrequency() {
 		return sellingFrequency;
 	}
 
-	public void setSellingFrequency(double sellingFrequency) {
+	public void setSellingFrequency(Double sellingFrequency) {
 		this.sellingFrequency = sellingFrequency;
 	}
 }

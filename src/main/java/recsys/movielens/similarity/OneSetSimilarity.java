@@ -17,8 +17,8 @@ public class OneSetSimilarity implements SetSimilarity {
 	 * similarity(S1,S2) = 1
 	 */
 	@Override
-	public Float getSimilarity(Set<String> set1, Set<String> set2) {
-		return 1f;
+	public Double getSimilarity(Set<String> set1, Set<String> set2) {
+		return 1d;
 	}
 
 }

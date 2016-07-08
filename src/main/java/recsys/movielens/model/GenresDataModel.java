@@ -78,7 +78,7 @@ public class GenresDataModel {
 		String itemTitleString = tokens.next();
 		String genresString = tokens.next();
 
-		long itemID = readItemIDFromString(itemIDString);
+		Integer itemID = readItemIDFromString(itemIDString);
 
 		List<String> genresList = readGenresFromString(genresString);
 		Set<String> genresSet = new HashSet<String>(genresList);
@@ -93,11 +93,11 @@ public class GenresDataModel {
 		return Arrays.asList(split);
 	}
 
-	protected long readItemIDFromString(String value) {
-		return Long.parseLong(value);
+	protected Integer readItemIDFromString(String value) {
+		return Integer.parseInt(value);
 	}
 
-	public Set<String> getGenres(long itemID) {
+	public Set<String> getGenres(Integer itemID) {
 		return data.get(itemID);
 	}
 

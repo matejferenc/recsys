@@ -19,7 +19,7 @@ public class SushiDataset {
 		String path = prop.getProperty("sushi3b-5000-10-score");
 		
 		File dataFile = new File(path);
-		DataModel model = new MatrixDataModel(dataFile, " ", -1);
+		DataModel model = new MatrixDataModel(dataFile, " ", -1f);
 
 		return model;
 	}

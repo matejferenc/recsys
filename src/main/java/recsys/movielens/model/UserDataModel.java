@@ -66,16 +66,16 @@ public class UserDataModel {
 		String ageCategoryString = tokens.next();
 		String occupationString = tokens.next();
 
-		long itemID = readItemIDFromString(itemIDString);
+		Integer itemID = readItemIDFromString(itemIDString);
 
 		data.put(itemID, new UserData(sex, ageCategoryString, occupationString));
 	}
 
-	protected long readItemIDFromString(String value) {
-		return Long.parseLong(value);
+	protected Integer readItemIDFromString(String value) {
+		return Integer.parseInt(value);
 	}
 
-	UserData getUserData(long itemID) {
+	UserData getUserData(Integer itemID) {
 		return data.get(itemID);
 	}
 

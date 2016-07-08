@@ -70,7 +70,7 @@ public class GenresDataModel {
 		String itemIDString = tokens.next();
 		String genreString = tokens.next();
 
-		long itemID = readItemIDFromString(itemIDString);
+		Integer itemID = readItemIDFromString(itemIDString);
 
 		Set<String> genresSet = new HashSet<String>(Arrays.asList(genreString));
 		if (data.containsKey(itemID))
@@ -79,11 +79,11 @@ public class GenresDataModel {
 			data.put(itemID, genresSet);
 	}
 
-	protected long readItemIDFromString(String value) {
-		return Long.parseLong(value);
+	protected Integer readItemIDFromString(String value) {
+		return Integer.parseInt(value);
 	}
 
-	Set<String> getGenres(long itemID) {
+	Set<String> getGenres(Integer itemID) {
 		return data.get(itemID);
 	}
 

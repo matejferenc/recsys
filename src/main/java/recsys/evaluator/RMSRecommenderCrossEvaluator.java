@@ -23,14 +23,14 @@ public final class RMSRecommenderCrossEvaluator extends AbstractDifferenceRecomm
   }
   
   @Override
-  protected void processOneEstimate(float estimatedPreference, Preference realPref) {
-    double diff = realPref.getValue() - estimatedPreference;
+  protected void processOneEstimate(Double estimatedPreference, Preference realPref) {
+    Double diff = realPref.getValue() - estimatedPreference;
     average.addDatum(diff * diff);
   }
   
   @Override
-  protected double computeFinalEvaluation() {
-    return Math.sqrt(average.getAverage());
+  protected Double computeFinalEvaluation() {
+    return (double) Math.sqrt(average.getAverage());
   }
   
   @Override

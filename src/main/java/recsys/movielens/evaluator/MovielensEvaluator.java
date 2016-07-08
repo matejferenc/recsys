@@ -152,38 +152,38 @@ public class MovielensEvaluator extends AbstractEvaluator {
 		}
 		
 		if (includeAlgorithms.contains(IncludeAlgorithms.SVD_ASWLR)) {
-			builders.add(new SvdRecommenderBuilder(new ALSWRFactorizer(dataModel, 1, 0.001, 10)));
-			builders.add(new SvdRecommenderBuilder(new ALSWRFactorizer(dataModel, 2, 0.001, 10)));
-			builders.add(new SvdRecommenderBuilder(new ALSWRFactorizer(dataModel, 3, 0.001, 10)));
-			builders.add(new SvdRecommenderBuilder(new ALSWRFactorizer(dataModel, 4, 0.001, 10)));
-			builders.add(new SvdRecommenderBuilder(new ALSWRFactorizer(dataModel, 5, 0.001, 10)));
-			builders.add(new SvdRecommenderBuilder(new ALSWRFactorizer(dataModel, 6, 0.001, 10)));
-			builders.add(new SvdRecommenderBuilder(new ALSWRFactorizer(dataModel, 7, 0.001, 10)));
-			builders.add(new SvdRecommenderBuilder(new ALSWRFactorizer(dataModel, 8, 0.001, 10)));
-			builders.add(new SvdRecommenderBuilder(new ALSWRFactorizer(dataModel, 9, 0.001, 10)));
-			builders.add(new SvdRecommenderBuilder(new ALSWRFactorizer(dataModel, 10, 0.001, 10)));
+			builders.add(new SvdRecommenderBuilder(new ALSWRFactorizer(dataModel, 1, 0.001f, 10)));
+			builders.add(new SvdRecommenderBuilder(new ALSWRFactorizer(dataModel, 2, 0.001f, 10)));
+			builders.add(new SvdRecommenderBuilder(new ALSWRFactorizer(dataModel, 3, 0.001f, 10)));
+			builders.add(new SvdRecommenderBuilder(new ALSWRFactorizer(dataModel, 4, 0.001f, 10)));
+			builders.add(new SvdRecommenderBuilder(new ALSWRFactorizer(dataModel, 5, 0.001f, 10)));
+			builders.add(new SvdRecommenderBuilder(new ALSWRFactorizer(dataModel, 6, 0.001f, 10)));
+			builders.add(new SvdRecommenderBuilder(new ALSWRFactorizer(dataModel, 7, 0.001f, 10)));
+			builders.add(new SvdRecommenderBuilder(new ALSWRFactorizer(dataModel, 8, 0.001f, 10)));
+			builders.add(new SvdRecommenderBuilder(new ALSWRFactorizer(dataModel, 9, 0.001f, 10)));
+			builders.add(new SvdRecommenderBuilder(new ALSWRFactorizer(dataModel, 10, 0.001f, 10)));
 			
-			builders.add(new SvdRecommenderBuilder(new ALSWRFactorizer(dataModel, 10, 0.001, 1)));
-			builders.add(new SvdRecommenderBuilder(new ALSWRFactorizer(dataModel, 10, 0.001, 2)));
-			builders.add(new SvdRecommenderBuilder(new ALSWRFactorizer(dataModel, 10, 0.001, 3)));
-			builders.add(new SvdRecommenderBuilder(new ALSWRFactorizer(dataModel, 10, 0.001, 4)));
-			builders.add(new SvdRecommenderBuilder(new ALSWRFactorizer(dataModel, 10, 0.001, 5)));
-			builders.add(new SvdRecommenderBuilder(new ALSWRFactorizer(dataModel, 10, 0.001, 6)));
-			builders.add(new SvdRecommenderBuilder(new ALSWRFactorizer(dataModel, 10, 0.001, 7)));
-			builders.add(new SvdRecommenderBuilder(new ALSWRFactorizer(dataModel, 10, 0.001, 8)));
-			builders.add(new SvdRecommenderBuilder(new ALSWRFactorizer(dataModel, 10, 0.001, 9)));
-			builders.add(new SvdRecommenderBuilder(new ALSWRFactorizer(dataModel, 10, 0.001, 10)));
+			builders.add(new SvdRecommenderBuilder(new ALSWRFactorizer(dataModel, 10, 0.001f, 1)));
+			builders.add(new SvdRecommenderBuilder(new ALSWRFactorizer(dataModel, 10, 0.001f, 2)));
+			builders.add(new SvdRecommenderBuilder(new ALSWRFactorizer(dataModel, 10, 0.001f, 3)));
+			builders.add(new SvdRecommenderBuilder(new ALSWRFactorizer(dataModel, 10, 0.001f, 4)));
+			builders.add(new SvdRecommenderBuilder(new ALSWRFactorizer(dataModel, 10, 0.001f, 5)));
+			builders.add(new SvdRecommenderBuilder(new ALSWRFactorizer(dataModel, 10, 0.001f, 6)));
+			builders.add(new SvdRecommenderBuilder(new ALSWRFactorizer(dataModel, 10, 0.001f, 7)));
+			builders.add(new SvdRecommenderBuilder(new ALSWRFactorizer(dataModel, 10, 0.001f, 8)));
+			builders.add(new SvdRecommenderBuilder(new ALSWRFactorizer(dataModel, 10, 0.001f, 9)));
+			builders.add(new SvdRecommenderBuilder(new ALSWRFactorizer(dataModel, 10, 0.001f, 10)));
 			
-			builders.add(new SvdRecommenderBuilder(new ALSWRFactorizer(dataModel, 1, 0.001, 1)));
-			builders.add(new SvdRecommenderBuilder(new ALSWRFactorizer(dataModel, 2, 0.001, 2)));
-			builders.add(new SvdRecommenderBuilder(new ALSWRFactorizer(dataModel, 3, 0.001, 3)));
-			builders.add(new SvdRecommenderBuilder(new ALSWRFactorizer(dataModel, 4, 0.001, 4)));
-			builders.add(new SvdRecommenderBuilder(new ALSWRFactorizer(dataModel, 5, 0.001, 5)));
-			builders.add(new SvdRecommenderBuilder(new ALSWRFactorizer(dataModel, 6, 0.001, 6)));
-			builders.add(new SvdRecommenderBuilder(new ALSWRFactorizer(dataModel, 7, 0.001, 7)));
-			builders.add(new SvdRecommenderBuilder(new ALSWRFactorizer(dataModel, 8, 0.001, 8)));
-			builders.add(new SvdRecommenderBuilder(new ALSWRFactorizer(dataModel, 9, 0.001, 9)));
-			builders.add(new SvdRecommenderBuilder(new ALSWRFactorizer(dataModel, 10, 0.001, 10)));
+			builders.add(new SvdRecommenderBuilder(new ALSWRFactorizer(dataModel, 1, 0.001f, 1)));
+			builders.add(new SvdRecommenderBuilder(new ALSWRFactorizer(dataModel, 2, 0.001f, 2)));
+			builders.add(new SvdRecommenderBuilder(new ALSWRFactorizer(dataModel, 3, 0.001f, 3)));
+			builders.add(new SvdRecommenderBuilder(new ALSWRFactorizer(dataModel, 4, 0.001f, 4)));
+			builders.add(new SvdRecommenderBuilder(new ALSWRFactorizer(dataModel, 5, 0.001f, 5)));
+			builders.add(new SvdRecommenderBuilder(new ALSWRFactorizer(dataModel, 6, 0.001f, 6)));
+			builders.add(new SvdRecommenderBuilder(new ALSWRFactorizer(dataModel, 7, 0.001f, 7)));
+			builders.add(new SvdRecommenderBuilder(new ALSWRFactorizer(dataModel, 8, 0.001f, 8)));
+			builders.add(new SvdRecommenderBuilder(new ALSWRFactorizer(dataModel, 9, 0.001f, 9)));
+			builders.add(new SvdRecommenderBuilder(new ALSWRFactorizer(dataModel, 10, 0.001f, 10)));
 			
 		}
 		

@@ -4,13 +4,13 @@ import java.util.Random;
 
 public class MovielensUserSimilarityFunction {
 	
-	private final double genresCoefficient;
-	private final double directorsCoefficient;
-	private final double actorsCoefficient;
-	private final double actressesCoefficient;
-	private final double keywordsCoefficient;
+	private final Double genresCoefficient;
+	private final Double directorsCoefficient;
+	private final Double actorsCoefficient;
+	private final Double actressesCoefficient;
+	private final Double keywordsCoefficient;
 
-	public MovielensUserSimilarityFunction(double genresCoefficient, double directorsCoefficient, double actorsCoefficient, double actressesCoefficient, double keywordsCoefficient) {
+	public MovielensUserSimilarityFunction(Double genresCoefficient, Double directorsCoefficient, Double actorsCoefficient, Double actressesCoefficient, Double keywordsCoefficient) {
 		this.genresCoefficient = genresCoefficient;
 		this.directorsCoefficient = directorsCoefficient;
 		this.actorsCoefficient = actorsCoefficient;
@@ -18,7 +18,7 @@ public class MovielensUserSimilarityFunction {
 		this.keywordsCoefficient = keywordsCoefficient;
 	}
 	
-	public double calculateSimilarity(double genresSimilarity, double directorsSimilarity, double actorsSimilarity, double actressesSimilarity, double keywordsSimilarity) {
+	public Double calculateSimilarity(Double genresSimilarity, Double directorsSimilarity, Double actorsSimilarity, Double actressesSimilarity, Double keywordsSimilarity) {
 		return genresCoefficient * genresSimilarity +
 				directorsCoefficient * directorsSimilarity +
 				actorsCoefficient * actorsSimilarity +
@@ -27,21 +27,21 @@ public class MovielensUserSimilarityFunction {
 	}
 	
 	public MovielensUserSimilarityFunction mutate() {
-		double genresCoefficient = this.genresCoefficient * (Math.random() + 0.5);
-		double directorsCoefficient = this.directorsCoefficient * (Math.random() + 0.5);
-		double actorsCoefficient = this.actorsCoefficient * (Math.random() + 0.5);
-		double actressesCoefficient = this.actressesCoefficient * (Math.random() + 0.5);
-		double keywordsCoefficient = this.keywordsCoefficient * (Math.random() + 0.5);
+		Double genresCoefficient = (double) (this.genresCoefficient * (Math.random() + 0.5));
+		Double directorsCoefficient = (double) (this.directorsCoefficient * (Math.random() + 0.5));
+		Double actorsCoefficient = (double) (this.actorsCoefficient * (Math.random() + 0.5));
+		Double actressesCoefficient = (double) (this.actressesCoefficient * (Math.random() + 0.5));
+		Double keywordsCoefficient = (double) (this.keywordsCoefficient * (Math.random() + 0.5));
 		return new MovielensUserSimilarityFunction(genresCoefficient, directorsCoefficient, actorsCoefficient, actressesCoefficient, keywordsCoefficient);
 	}
 	
 	public MovielensUserSimilarityFunction crossover(MovielensUserSimilarityFunction other) {
 		Random random = new Random();
-		double genresCoefficient = random.nextBoolean() ? this.genresCoefficient : other.genresCoefficient;
-		double directorsCoefficient = random.nextBoolean() ? this.directorsCoefficient : other.directorsCoefficient;
-		double actorsCoefficient = random.nextBoolean() ? this.actorsCoefficient : other.actorsCoefficient;
-		double actressesCoefficient = random.nextBoolean() ? this.actressesCoefficient : other.actressesCoefficient;
-		double keywordsCoefficient = random.nextBoolean() ? this.keywordsCoefficient : other.keywordsCoefficient;
+		Double genresCoefficient = random.nextBoolean() ? this.genresCoefficient : other.genresCoefficient;
+		Double directorsCoefficient = random.nextBoolean() ? this.directorsCoefficient : other.directorsCoefficient;
+		Double actorsCoefficient = random.nextBoolean() ? this.actorsCoefficient : other.actorsCoefficient;
+		Double actressesCoefficient = random.nextBoolean() ? this.actressesCoefficient : other.actressesCoefficient;
+		Double keywordsCoefficient = random.nextBoolean() ? this.keywordsCoefficient : other.keywordsCoefficient;
 		return new MovielensUserSimilarityFunction(genresCoefficient, directorsCoefficient, actorsCoefficient, actressesCoefficient, keywordsCoefficient);
 	}
 

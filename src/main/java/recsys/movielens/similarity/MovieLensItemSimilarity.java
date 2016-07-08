@@ -23,29 +23,29 @@ public class MovieLensItemSimilarity implements ItemSimilarity {
 	}
 
 	@Override
-	public double itemSimilarity(long itemID1, long itemID2) throws TasteException {
-		double similarity = calculateGenresSimilarity(itemID1, itemID2) + calculateDirectorsSimilarity(itemID1, itemID2) +
+	public double itemSimilarity(Integer itemID1, Integer itemID2) throws TasteException {
+		Double similarity = calculateGenresSimilarity(itemID1, itemID2) + calculateDirectorsSimilarity(itemID1, itemID2) +
 				calculateActorsSimilarity(itemID1, itemID2) + calculateActressesSimilarity(itemID1, itemID2);
 		return similarity / 4;
 	}
 	
-	private double calculateGenresSimilarity(long itemID1, long itemID2) {
+	private Double calculateGenresSimilarity(Integer itemID1, Integer itemID2) {
 		return calculatePropertySetSimilarity(movieLensModel.getItemGenres(itemID1), movieLensModel.getItemGenres(itemID2));
 	}
 
-	private double calculateDirectorsSimilarity(long itemID1, long itemID2) {
+	private Double calculateDirectorsSimilarity(Integer itemID1, Integer itemID2) {
 		return calculatePropertySetSimilarity(movieLensModel.getItemImdbDirectors(itemID1), movieLensModel.getItemImdbDirectors(itemID2));
 	}
 
-	private double calculateActorsSimilarity(long itemID1, long itemID2) {
+	private Double calculateActorsSimilarity(Integer itemID1, Integer itemID2) {
 		return calculatePropertySetSimilarity(movieLensModel.getItemImdbActors(itemID1), movieLensModel.getItemImdbActors(itemID2));
 	}
 
-	private double calculateActressesSimilarity(long itemID1, long itemID2) {
+	private Double calculateActressesSimilarity(Integer itemID1, Integer itemID2) {
 		return calculatePropertySetSimilarity(movieLensModel.getItemImdbActresses(itemID1), movieLensModel.getItemImdbActresses(itemID2));
 	}
 
-	private <T> double calculatePropertySetSimilarity(Set<T> set1, Set<T> set2) {
+	private <T> Double calculatePropertySetSimilarity(Set<T> set1, Set<T> set2) {
 		Set<T> commonPropertyIds = getCommonPropertyIds(set1, set2);
 		int min = Math.min(set1.size(), set2.size());
 		return ((double) commonPropertyIds.size()) / min;
@@ -62,7 +62,7 @@ public class MovieLensItemSimilarity implements ItemSimilarity {
 	}
 
 	@Override
-	public double[] itemSimilarities(long itemID1, long[] itemID2s) throws TasteException {
+	public double[] itemSimilarities(Integer itemID1, Integer[] itemID2s) throws TasteException {
 		int length = itemID2s.length;
 		double[] result = new double[length];
 		for (int i = 0; i < length; i++) {
@@ -72,7 +72,7 @@ public class MovieLensItemSimilarity implements ItemSimilarity {
 	}
 
 	@Override
-	public long[] allSimilarItemIDs(long itemID) throws TasteException {
+	public Integer[] allSimilarItemIDs(Integer itemID) throws TasteException {
 		return null;
 	}
 

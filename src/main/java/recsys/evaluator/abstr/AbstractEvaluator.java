@@ -27,16 +27,16 @@ import recsys.evaluator.WeightedRMSRecommenderFairEvaluator;
 
 public abstract class AbstractEvaluator {
 
-	public static final double testingPercentage = 0.25;
-	public static final double evaluationPercentage = 0.3333;
+	public static final Double testingPercentage = 0.25;
+	public static final Double evaluationPercentage = 0.3333;
 	protected static final NumberFormat formatter = new DecimalFormat("#0.000");
 
 	public abstract void evaluate() throws Exception;
 
 	protected Double average(List<Double> evaluate) {
 		Double total = 0d;
-		for (Double double1 : evaluate) {
-			total += double1;
+		for (Double Double1 : evaluate) {
+			total += Double1;
 		}
 		return total / evaluate.size();
 	}
@@ -45,17 +45,17 @@ public abstract class AbstractEvaluator {
 		Double average = average(evaluate);
 		Double total = 0d;
 		for (Double d : evaluate) {
-			double a = d - average;
+			Double a = d - average;
 			total += a * a;
 		}
-		return Math.sqrt(total / evaluate.size());
+		return (double) Math.sqrt(total / evaluate.size());
 	}
 
 	protected String listOfDoublesToString(List<Double> list) {
 		StringBuilder sb = new StringBuilder();
 		NumberFormat formatter = new DecimalFormat("#0.000");
-		for (Double double1 : list) {
-			sb.append(formatter.format(double1) + "\t");
+		for (Double Double1 : list) {
+			sb.append(formatter.format(Double1) + "\t");
 		}
 		return sb.toString();
 	}
@@ -68,10 +68,10 @@ public abstract class AbstractEvaluator {
 		return sb.toString();
 	}
 
-	protected double evaluateRecommenders(DataModel dataModel, List<RecommenderBuilder> builders, List<String> argsList) throws MissingArgumentException, TasteException {
+	protected Double evaluateRecommenders(DataModel dataModel, List<RecommenderBuilder> builders, List<String> argsList) throws MissingArgumentException, TasteException {
 		StringBuilder sb = new StringBuilder();
 		IncludeMetrics metrics = IncludeMetrics.fromList(argsList);
-		double totalScore = 0;
+		Double totalScore = 0d;
 
 		sb.append("minimum possible preference: " + dataModel.getMinPreference());
 		sb.append("\n");
@@ -107,7 +107,7 @@ public abstract class AbstractEvaluator {
 				Pair<FastByIDMap<PreferenceArray>, FastByIDMap<PreferenceArray>> pair = splitter.next();
 				FastByIDMap<PreferenceArray> trainingDataset = pair.getFirst();
 				FastByIDMap<PreferenceArray> testDataset = pair.getSecond();
-				double score = evaluator.evaluate(builder, trainingDataset, testDataset);
+				Double score = evaluator.evaluate(builder, trainingDataset, testDataset);
 				evaluated.add(score);
 				totalScore += score;
 			}
@@ -242,7 +242,7 @@ public abstract class AbstractEvaluator {
 		} else if (evaluator == IncludeMetrics.RMSE) {
 			e = new RMSRecommenderFairEvaluator(dataModel);
 		} else if (evaluator == IncludeMetrics.TAU) {
-			e = new TauRecommenderFairListEvaluator();
+			e = new TauRecommenderFairListEvaluator(dataModel);
 		} else {
 			throw new MissingArgumentException("Metrics missing. Choose one from [" + IncludeMetrics.getAllNames() + "].");
 		}

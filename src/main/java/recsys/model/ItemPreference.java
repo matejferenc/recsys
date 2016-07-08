@@ -8,17 +8,17 @@ import java.util.List;
  */
 public class ItemPreference {
 
-	private float averagePreference;
+	private Double averagePreference;
 
 	private int numberOfAddedPreferences;
 
-	private float cumulativePreference;
+	private Double cumulativePreference;
 
-	private List<Float> preferences = new ArrayList<Float>();
+	private List<Double> preferences = new ArrayList<Double>();
 
-	private float preferenceVariance;
+	private Double preferenceVariance;
 
-	public void addPreference(Float p) {
+	public void addPreference(Double p) {
 		numberOfAddedPreferences++;
 		cumulativePreference += p;
 		preferences.add(p);
@@ -32,9 +32,9 @@ public class ItemPreference {
 
 	private void calculatePreferenceVariance() {
 		int n = preferences.size();
-		float cummulativeDifferences = 0;
-		for (Float preference : preferences) {
-			float diff = (float) Math.pow(Math.abs(averagePreference - preference), 2);
+		Double cummulativeDifferences = 0d;
+		for (Double preference : preferences) {
+			Double diff = (double) Math.pow(Math.abs(averagePreference - preference), 2);
 			cummulativeDifferences += diff;
 		}
 		preferenceVariance = cummulativeDifferences / n;
@@ -44,11 +44,11 @@ public class ItemPreference {
 		preferences = null;
 	}
 
-	public float getAveragePreference() {
+	public Double getAveragePreference() {
 		return averagePreference;
 	}
 
-	public float getPreferenceVariance() {
+	public Double getPreferenceVariance() {
 		return preferenceVariance;
 	}
 

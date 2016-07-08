@@ -1,7 +1,7 @@
 package recsys.notebooks.model.builder;
 
 import org.apache.mahout.cf.taste.common.TasteException;
-import org.apache.mahout.cf.taste.impl.common.LongPrimitiveIterator;
+import org.apache.mahout.cf.taste.impl.common.IntPrimitiveIterator;
 import org.apache.mahout.cf.taste.model.DataModel;
 import org.apache.mahout.cf.taste.model.Preference;
 import org.apache.mahout.cf.taste.model.PreferenceArray;
@@ -26,16 +26,16 @@ public class NotebooksUserModelBuilder {
 	}
 
 	public NotebooksUserModel build() throws TasteException {
-		LongPrimitiveIterator userIDs = ratingsDataModel.getUserIDs();
+		IntPrimitiveIterator userIDs = ratingsDataModel.getUserIDs();
 		// cycle all users
 		while (userIDs.hasNext()) {
-			Long userID = userIDs.next();
+			Integer userID = userIDs.next();
 			// we created userModel in constructor, so we can change it arbitrarily
 			NotebooksUser user = notebooksUserModel.getOrCreate(userID.intValue());
 			PreferenceArray preferencesFromUser = ratingsDataModel.getPreferencesFromUser(userID);
 			// cycle user's preferences
 			for (Preference preference : preferencesFromUser) {
-				double p = preference.getValue();
+				Double p = preference.getValue();
 				int itemID = (int) preference.getItemID();
 				buildHddPreferences(user, itemID, p);
 				buildDisplayPreferences(user, itemID, p);
@@ -47,29 +47,29 @@ public class NotebooksUserModelBuilder {
 		return notebooksUserModel;
 	}
 
-	private void buildHddPreferences(NotebooksUser user, int itemID, double p) {
+	private void buildHddPreferences(NotebooksUser user, Integer itemID, Double p) {
 		int hdd = notebooksDataModel.getNotebook(itemID).getHdd();
 		user.getHddPreferences().addPreference((double) hdd, p);
 	}
 	
-	private void buildDisplayPreferences(NotebooksUser user, int itemID, double p) {
+	private void buildDisplayPreferences(NotebooksUser user, Integer itemID, Double p) {
 		int display = notebooksDataModel.getNotebook(itemID).getDisplay();
 		user.getDisplayPreferences().addPreference((double) display, p);
 	}
 	
-	private void buildManufacturerPreferences(NotebooksUser user, int itemID, double p) {
+	private void buildManufacturerPreferences(NotebooksUser user, Integer itemID, Double p) {
 		String producer = notebooksDataModel.getNotebook(itemID).getProducer();
 		// we store preference as hashcode of producer
 		user.getManufacturerPreferences().addPropertyPreference(producer.hashCode(), p);
 	}
 	
-	private void buildRamPreferences(NotebooksUser user, int itemID, double p) {
+	private void buildRamPreferences(NotebooksUser user, Integer itemID, Double p) {
 		int ram = notebooksDataModel.getNotebook(itemID).getRam();
 		user.getRamPreferences().addPreference((double) ram, p);
 	}
 	
-	private void buildPricePreferences(NotebooksUser user, int itemID, double p) {
-		double price = notebooksDataModel.getNotebook(itemID).getPrice();
+	private void buildPricePreferences(NotebooksUser user, Integer itemID, Double p) {
+		Double price = (double) notebooksDataModel.getNotebook(itemID).getPrice();
 		user.getPricePreferences().addPreference(price, p);
 	}
 	

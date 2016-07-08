@@ -51,7 +51,7 @@ public class MovielensUserSimilarityFunctionCalculator extends AbstractEvaluator
 		while (true) {
 			for (MovielensUserSimilarityFunction function : pool) {
 				List<RecommenderBuilder> builders = createRecommenderBuilders(dataModel, function);
-				double averageScore = evaluateRecommenders(dataModel, builders, argsList);
+				Double averageScore = evaluateRecommenders(dataModel, builders, argsList);
 				System.out.println("AVERAGE SCORE OF EVOLUTION ALGORITHM: " + averageScore);
 				pool.registerScore(averageScore);
 			}
@@ -60,7 +60,7 @@ public class MovielensUserSimilarityFunctionCalculator extends AbstractEvaluator
 		}
 	}
 	
-	protected double evaluateRecommenders(DataModel dataModel, List<RecommenderBuilder> builders, List<String> argsList) throws MissingArgumentException, TasteException {
+	protected Double evaluateRecommenders(DataModel dataModel, List<RecommenderBuilder> builders, List<String> argsList) throws MissingArgumentException, TasteException {
 		StringBuilder sb = new StringBuilder();
 		IncludeMetrics metrics = IncludeMetrics.fromList(argsList);
 
@@ -83,7 +83,7 @@ public class MovielensUserSimilarityFunctionCalculator extends AbstractEvaluator
 		sb.append("AverageScore\t");
 		sb.append("Deviation\t\n");
 		
-		double score = 0;
+		Double score = 0d;
 
 		for (RecommenderBuilder builder : builders) {
 			Date start = new Date();

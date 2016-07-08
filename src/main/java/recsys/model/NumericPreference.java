@@ -39,7 +39,7 @@ public class NumericPreference {
 		return sumOfPreferences / ratingTotal;
 	}
 	
-	public double getVariance(){
+	public Double getVariance(){
 		SimpleRegression simpleRegression = new SimpleRegression();
 		Iterator<Entry<Double, Double>> it = preferences.entrySet().iterator();
 		while (it.hasNext()) {
@@ -48,14 +48,14 @@ public class NumericPreference {
 			Double rating = pair.getValue();
 			simpleRegression.addData(numericValue, rating);
 		}
-		double cummulativeDifferences = 0;
+		Double cummulativeDifferences = 0d;
 		it = preferences.entrySet().iterator();
 		while (it.hasNext()) {
 			Map.Entry<Double, Double> pair = (Map.Entry<Double, Double>) it.next();
 			Double numericValue = pair.getKey();
 			Double rating = pair.getValue();
-			double predict = simpleRegression.predict(numericValue);
-			double diff = Math.pow(Math.abs(predict - rating), 2);
+			Double predict = (double) simpleRegression.predict(numericValue);
+			Double diff = (double) Math.pow(Math.abs(predict - rating), 2);
 			cummulativeDifferences += diff;
 		}
 		return cummulativeDifferences / preferences.size();

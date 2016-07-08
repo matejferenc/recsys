@@ -8,10 +8,10 @@ import org.apache.mahout.cf.taste.model.Preference;
 public final class WeightedRMSRecommenderEvaluator extends AbstractDifferenceRecommenderEvaluator {
 
 	private RunningAverage average;
-	private float numberOfDistinctPreferenceValues;
-	private float preferenceValueCorrection;
+	private Double numberOfDistinctPreferenceValues;
+	private Double preferenceValueCorrection;
 
-	public WeightedRMSRecommenderEvaluator(float numberOfDistinctPreferenceValues, float preferenceValueCorrection) {
+	public WeightedRMSRecommenderEvaluator(Double numberOfDistinctPreferenceValues, Double preferenceValueCorrection) {
 		this.numberOfDistinctPreferenceValues = numberOfDistinctPreferenceValues;
 		this.preferenceValueCorrection = preferenceValueCorrection;
 	}
@@ -22,16 +22,16 @@ public final class WeightedRMSRecommenderEvaluator extends AbstractDifferenceRec
 	}
 
 	@Override
-	protected void processOneEstimate(float estimatedPreference, Preference realPref) {
-		float realPrefValue = realPref.getValue();
-		float weight = (realPrefValue + preferenceValueCorrection) / numberOfDistinctPreferenceValues;
-		double diff = weight * (realPrefValue - estimatedPreference);
+	protected void processOneEstimate(Double estimatedPreference, Preference realPref) {
+		Double realPrefValue = realPref.getValue();
+		Double weight = (realPrefValue + preferenceValueCorrection) / numberOfDistinctPreferenceValues;
+		Double diff = weight * (realPrefValue - estimatedPreference);
 		average.addDatum(diff * diff);
 	}
 
 	@Override
-	protected double computeFinalEvaluation() {
-		return Math.sqrt(average.getAverage());
+	protected Double computeFinalEvaluation() {
+		return (double) Math.sqrt(average.getAverage());
 	}
 
 	@Override

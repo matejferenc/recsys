@@ -15,7 +15,7 @@ public class NotebooksDataset {
 		String path = prop.getProperty("notebooks-ratings");
 		
 		File dataFile = new File(path);
-		DataModel model = new MatrixDataModel(dataFile, ",", 0);
+		DataModel model = new MatrixDataModel(dataFile, ",", 0f);
 
 		return model;
 	}

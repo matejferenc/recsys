@@ -65,6 +65,6 @@ public interface RecommenderCrossEvaluator {
    */
   List<Double> evaluate(RecommenderBuilder recommenderBuilder,
                   DataModel dataModel,
-                  double trainingPercentage) throws TasteException;
+                  Double trainingPercentage) throws TasteException;
 
 }

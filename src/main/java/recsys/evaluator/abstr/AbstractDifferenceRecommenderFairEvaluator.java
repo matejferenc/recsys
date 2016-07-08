@@ -27,7 +27,7 @@ public abstract class AbstractDifferenceRecommenderFairEvaluator extends Abstrac
 		super(dataModel);
 	}
 
-	protected abstract void processOneEstimate(float estimatedPreference, Preference realPref);
+	protected abstract void processOneEstimate(Double estimatedPreference, Preference realPref);
 
 	protected double getEvaluation(FastByIDMap<PreferenceArray> testPrefs, Recommender recommender) throws TasteException {
 		reset();
@@ -60,7 +60,7 @@ public abstract class AbstractDifferenceRecommenderFairEvaluator extends Abstrac
 		@Override
 		public Void call() throws TasteException {
 			for (Preference realPref : prefs) {
-				float estimatedPreference = Float.NaN;
+				Double estimatedPreference = Double.NaN;
 				try {
 					// only takes relevant neighbors into account:
 					estimatedPreference = recommender.estimatePreference(testUserID, realPref.getItemID());
@@ -71,7 +71,7 @@ public abstract class AbstractDifferenceRecommenderFairEvaluator extends Abstrac
 				} catch (NoSuchItemException nsie) {
 					log.info("Item exists in test data but not training data: {}", realPref.getItemID());
 				}
-				if (Float.isNaN(estimatedPreference)) {
+				if (Double.isNaN(estimatedPreference)) {
 					noEstimateCounter.incrementAndGet();
 				} else {
 					int counter = estimateCounter.incrementAndGet();

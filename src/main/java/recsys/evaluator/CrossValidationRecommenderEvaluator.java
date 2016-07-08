@@ -20,7 +20,7 @@ import org.apache.mahout.cf.taste.eval.RecommenderBuilder;
 import org.apache.mahout.cf.taste.eval.RecommenderEvaluator;
 import org.apache.mahout.cf.taste.impl.common.FastByIDMap;
 import org.apache.mahout.cf.taste.impl.common.FullRunningAverageAndStdDev;
-import org.apache.mahout.cf.taste.impl.common.LongPrimitiveIterator;
+import org.apache.mahout.cf.taste.impl.common.IntPrimitiveIterator;
 import org.apache.mahout.cf.taste.impl.common.RunningAverageAndStdDev;
 import org.apache.mahout.cf.taste.impl.eval.StatsCallable;
 import org.apache.mahout.cf.taste.impl.model.GenericDataModel;
@@ -45,8 +45,8 @@ public abstract class CrossValidationRecommenderEvaluator implements Recommender
 	private static final Logger log = LoggerFactory.getLogger(CrossValidationRecommenderEvaluator.class);
 
 	private final Random random;
-	private float maxPreference;
-	private float minPreference;
+	private Double maxPreference;
+	private Double minPreference;
 
 	private AtomicInteger noEstimateCounter;
 
@@ -54,32 +54,32 @@ public abstract class CrossValidationRecommenderEvaluator implements Recommender
 
 	protected CrossValidationRecommenderEvaluator() {
 		random = RandomUtils.getRandom();
-		maxPreference = Float.NaN;
-		minPreference = Float.NaN;
+		maxPreference = Double.NaN;
+		minPreference = Double.NaN;
 	}
 
 	@Override
-	public final float getMaxPreference() {
+	public final Double getMaxPreference() {
 		return maxPreference;
 	}
 
 	@Override
-	public final void setMaxPreference(float maxPreference) {
+	public final void setMaxPreference(Double maxPreference) {
 		this.maxPreference = maxPreference;
 	}
 
 	@Override
-	public final float getMinPreference() {
+	public final Double getMinPreference() {
 		return minPreference;
 	}
 
 	@Override
-	public final void setMinPreference(float minPreference) {
+	public final void setMinPreference(Double minPreference) {
 		this.minPreference = minPreference;
 	}
 
 	@Override
-	public double evaluate(RecommenderBuilder recommenderBuilder, DataModelBuilder dataModelBuilder, DataModel dataModel, double trainingPercentage, double evaluationPercentage) throws TasteException {
+	public Double evaluate(RecommenderBuilder recommenderBuilder, DataModelBuilder dataModelBuilder, DataModel dataModel, Double trainingPercentage, Double evaluationPercentage) throws TasteException {
 		Preconditions.checkNotNull(recommenderBuilder);
 		Preconditions.checkNotNull(dataModel);
 		Preconditions.checkArgument(trainingPercentage >= 0.0 && trainingPercentage <= 1.0, "Invalid trainingPercentage: " + trainingPercentage + ". Must be: 0.0 <= trainingPercentage <= 1.0");
@@ -91,9 +91,9 @@ public abstract class CrossValidationRecommenderEvaluator implements Recommender
 		FastByIDMap<PreferenceArray> trainingPrefs = new FastByIDMap<PreferenceArray>(1 + (int) (evaluationPercentage * numUsers));
 		FastByIDMap<PreferenceArray> testPrefs = new FastByIDMap<PreferenceArray>(1 + (int) (evaluationPercentage * numUsers));
 
-		LongPrimitiveIterator it = dataModel.getUserIDs();
+		IntPrimitiveIterator it = dataModel.getUserIDs();
 		while (it.hasNext()) {
-			long userID = it.nextInt();
+			Integer userID = it.nextInt();
 			if (random.nextDouble() < evaluationPercentage) {
 				splitOneUsersPrefs(trainingPercentage, trainingPrefs, testPrefs, userID, dataModel);
 			}
@@ -103,12 +103,12 @@ public abstract class CrossValidationRecommenderEvaluator implements Recommender
 
 		Recommender recommender = recommenderBuilder.buildRecommender(trainingModel);
 
-		double result = getEvaluation(testPrefs, recommender);
+		Double result = getEvaluation(testPrefs, recommender);
 		log.info("Evaluation result: {}", result);
 		return result;
 	}
 
-	private void splitOneUsersPrefs(double trainingPercentage, FastByIDMap<PreferenceArray> trainingPrefs, FastByIDMap<PreferenceArray> testPrefs, long userID, DataModel dataModel) throws TasteException {
+	private void splitOneUsersPrefs(Double trainingPercentage, FastByIDMap<PreferenceArray> trainingPrefs, FastByIDMap<PreferenceArray> testPrefs, Integer userID, DataModel dataModel) throws TasteException {
 		List<Preference> oneUserTrainingPrefs = null;
 		List<Preference> oneUserTestPrefs = null;
 		PreferenceArray prefs = dataModel.getPreferencesFromUser(userID);
@@ -135,7 +135,7 @@ public abstract class CrossValidationRecommenderEvaluator implements Recommender
 		}
 	}
 
-	private float capEstimatedPreference(float estimate) {
+	private Double capEstimatedPreference(Double estimate) {
 		if (estimate > maxPreference) {
 			return maxPreference;
 		}
@@ -145,12 +145,12 @@ public abstract class CrossValidationRecommenderEvaluator implements Recommender
 		return estimate;
 	}
 
-	private double getEvaluation(FastByIDMap<PreferenceArray> testPrefs, Recommender recommender) throws TasteException {
+	private Double getEvaluation(FastByIDMap<PreferenceArray> testPrefs, Recommender recommender) throws TasteException {
 		reset();
 		Collection<Callable<Void>> estimateCallables = Lists.newArrayList();
 		noEstimateCounter = new AtomicInteger();
 		estimateCounter = new AtomicInteger();
-		for (Map.Entry<Long, PreferenceArray> entry : testPrefs.entrySet()) {
+		for (Map.Entry<Integer, PreferenceArray> entry : testPrefs.entrySet()) {
 			estimateCallables.add(new PreferenceEstimateCallable(recommender, entry.getKey(), entry.getValue(), noEstimateCounter, estimateCounter));
 		}
 		log.info("Beginning evaluation of {} users", estimateCallables.size());
@@ -198,19 +198,19 @@ public abstract class CrossValidationRecommenderEvaluator implements Recommender
 
 	protected abstract void reset();
 
-	protected abstract void processOneEstimate(float estimatedPreference, Preference realPref);
+	protected abstract void processOneEstimate(Double estimatedPreference, Preference realPref);
 
-	protected abstract double computeFinalEvaluation();
+	protected abstract Double computeFinalEvaluation();
 
 	public final class PreferenceEstimateCallable implements Callable<Void> {
 
 		private final Recommender recommender;
-		private final long testUserID;
+		private final Integer testUserID;
 		private final PreferenceArray prefs;
 		private final AtomicInteger noEstimateCounter;
 		private AtomicInteger estimateCounter;
 
-		public PreferenceEstimateCallable(Recommender recommender, long testUserID, PreferenceArray prefs, AtomicInteger noEstimateCounter, AtomicInteger estimateCounter) {
+		public PreferenceEstimateCallable(Recommender recommender, Integer testUserID, PreferenceArray prefs, AtomicInteger noEstimateCounter, AtomicInteger estimateCounter) {
 			this.recommender = recommender;
 			this.testUserID = testUserID;
 			this.prefs = prefs;
@@ -221,7 +221,7 @@ public abstract class CrossValidationRecommenderEvaluator implements Recommender
 		@Override
 		public Void call() throws TasteException {
 			for (Preference realPref : prefs) {
-				float estimatedPreference = Float.NaN;
+				Double estimatedPreference = Double.NaN;
 				try {
 					// estimatedPreference = recommender.estimatePreference(testUserID, realPref.getItemID());
 					// only takes relevant neighbors into account:
@@ -233,7 +233,7 @@ public abstract class CrossValidationRecommenderEvaluator implements Recommender
 				} catch (NoSuchItemException nsie) {
 					log.info("Item exists in test data but not training data: {}", realPref.getItemID());
 				}
-				if (Float.isNaN(estimatedPreference)) {
+				if (Double.isNaN(estimatedPreference)) {
 					noEstimateCounter.incrementAndGet();
 				} else {
 					estimateCounter.incrementAndGet();

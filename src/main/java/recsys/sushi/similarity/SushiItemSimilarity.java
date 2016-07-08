@@ -26,10 +26,10 @@ public class SushiItemSimilarity implements ItemSimilarity {
 	}
 
 	@Override
-	public double itemSimilarity(long itemID1, long itemID2) throws TasteException {
+	public double itemSimilarity(Integer itemID1, Integer itemID2) throws TasteException {
 		SushiPiece sushiPiece1 = sushiDataModel.getSushiPiece((int) itemID1);
 		SushiPiece sushiPiece2 = sushiDataModel.getSushiPiece((int) itemID2);
-		double similarity = (includeProperties.contains(IncludeProperties.STYLE) ? calculateStyleSimilarity(sushiPiece1, sushiPiece2) : 0)
+		Double similarity = (includeProperties.contains(IncludeProperties.STYLE) ? calculateStyleSimilarity(sushiPiece1, sushiPiece2) : 0)
 				+ (includeProperties.contains(IncludeProperties.MAJOR) ? calculateMajorGroupSimilarity(sushiPiece1, sushiPiece2) : 0)
 				+ (includeProperties.contains(IncludeProperties.MINOR) ? calculateMinorGroupSimilarity(sushiPiece1, sushiPiece2) : 0)
 				+ (includeProperties.contains(IncludeProperties.OILINESS) ? calculateOilinessSimilarity(sushiPiece1, sushiPiece2) : 0)
@@ -37,28 +37,28 @@ public class SushiItemSimilarity implements ItemSimilarity {
 		return similarity/ includeProperties.size();
 	}
 
-	private double calculateOilinessSimilarity(SushiPiece sushiPiece1, SushiPiece sushiPiece2) {
+	private Double calculateOilinessSimilarity(SushiPiece sushiPiece1, SushiPiece sushiPiece2) {
 		return 1 - Math.abs(sushiPiece1.getOiliness() - sushiPiece2.getOiliness()) / SushiItemDataModel.MAX_OILINESS;
 	}
 
-	private double calculatePriceSimilarity(SushiPiece sushiPiece1, SushiPiece sushiPiece2) {
+	private Double calculatePriceSimilarity(SushiPiece sushiPiece1, SushiPiece sushiPiece2) {
 		return 1 - Math.abs(sushiPiece1.getPrice() - sushiPiece2.getPrice()) / SushiItemDataModel.MAX_PRICE;
 	}
 
-	private double calculateMajorGroupSimilarity(SushiPiece sushiPiece1, SushiPiece sushiPiece2) {
-		return sushiPiece1.getMajorGroup() == sushiPiece2.getMajorGroup() ? 1 : 0;
+	private Double calculateMajorGroupSimilarity(SushiPiece sushiPiece1, SushiPiece sushiPiece2) {
+		return sushiPiece1.getMajorGroup() == sushiPiece2.getMajorGroup() ? 1d : 0d;
 	}
 
-	private double calculateStyleSimilarity(SushiPiece sushiPiece1, SushiPiece sushiPiece2) {
-		return sushiPiece1.getStyle() == sushiPiece2.getStyle() ? 1 : 0;
+	private Double calculateStyleSimilarity(SushiPiece sushiPiece1, SushiPiece sushiPiece2) {
+		return sushiPiece1.getStyle() == sushiPiece2.getStyle() ? 1d : 0d;
 	}
 
-	private double calculateMinorGroupSimilarity(SushiPiece sushiPiece1, SushiPiece sushiPiece2) {
-		return sushiPiece1.getMinorGroup() == sushiPiece2.getMinorGroup() ? 1 : 0;
+	private Double calculateMinorGroupSimilarity(SushiPiece sushiPiece1, SushiPiece sushiPiece2) {
+		return sushiPiece1.getMinorGroup() == sushiPiece2.getMinorGroup() ? 1d : 0d;
 	}
 
 	@Override
-	public double[] itemSimilarities(long itemID1, long[] itemID2s) throws TasteException {
+	public double[] itemSimilarities(Integer itemID1, Integer[] itemID2s) throws TasteException {
 		int length = itemID2s.length;
 		double[] result = new double[length];
 		for (int i = 0; i < length; i++) {
@@ -68,7 +68,7 @@ public class SushiItemSimilarity implements ItemSimilarity {
 	}
 
 	@Override
-	public long[] allSimilarItemIDs(long itemID) throws TasteException {
+	public Integer[] allSimilarItemIDs(Integer itemID) throws TasteException {
 		return null;
 	}
 

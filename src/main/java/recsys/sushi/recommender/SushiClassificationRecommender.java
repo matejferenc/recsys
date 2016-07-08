@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.apache.mahout.cf.taste.common.Refreshable;
 import org.apache.mahout.cf.taste.common.TasteException;
-import org.apache.mahout.cf.taste.impl.common.LongPrimitiveIterator;
+import org.apache.mahout.cf.taste.impl.common.IntPrimitiveIterator;
 import org.apache.mahout.cf.taste.model.DataModel;
 import org.apache.mahout.cf.taste.model.Preference;
 import org.apache.mahout.cf.taste.model.PreferenceArray;
@@ -57,16 +57,16 @@ public abstract class SushiClassificationRecommender implements Recommender {
 		attributes.addElement(ratingAttribute);
 	}
 
-	protected double getModelResult(Instance testInstance, Classifier classifier) throws Exception {
+	protected Double getModelResult(Instance testInstance, Classifier classifier) throws Exception {
 		double[] classificationResult = classifier.distributionForInstance(testInstance);
 
-		double sumOfEstimates = 0;
-		double sumOfProbabilities = 0;
+		double sumOfEstimates = 0f;
+		double sumOfProbabilities = 0f;
 		for (int i = 0; i < classificationResult.length; i++) {
 			sumOfEstimates += classificationResult[i] * i;
 			sumOfProbabilities += classificationResult[i];
 		}
-		double resultEstimate = sumOfEstimates / sumOfProbabilities;
+		Double resultEstimate = (double) (sumOfEstimates / sumOfProbabilities);
 		return resultEstimate;
 	}
 
@@ -75,21 +75,21 @@ public abstract class SushiClassificationRecommender implements Recommender {
 	}
 
 	@Override
-	public List<RecommendedItem> recommend(long userID, int howMany) throws TasteException {
+	public List<RecommendedItem> recommend(Integer userID, int howMany) throws TasteException {
 		return null;
 	}
 
 	@Override
-	public List<RecommendedItem> recommend(long userID, int howMany, IDRescorer rescorer) throws TasteException {
+	public List<RecommendedItem> recommend(Integer userID, int howMany, IDRescorer rescorer) throws TasteException {
 		return null;
 	}
 
 	@SuppressWarnings("unchecked")
 	protected void trainGlobalModel() throws Exception {
 		int trainingSetSize = 0;
-		LongPrimitiveIterator userIDs = dataModel.getUserIDs();
+		IntPrimitiveIterator userIDs = dataModel.getUserIDs();
 		while (userIDs.hasNext()) {
-			Long userID = userIDs.next();
+			Integer userID = userIDs.next();
 			PreferenceArray preferencesFromUser = dataModel.getPreferencesFromUser(userID);
 			trainingSetSize += preferencesFromUser.length();
 		}
@@ -100,7 +100,7 @@ public abstract class SushiClassificationRecommender implements Recommender {
 
 		userIDs = dataModel.getUserIDs();
 		while (userIDs.hasNext()) {
-			Long userID = userIDs.next();
+			Integer userID = userIDs.next();
 			SushiUser user = userModel.get(userID.intValue());
 			PreferenceArray preferencesFromUser = dataModel.getPreferencesFromUser(userID);
 			fillTrainingSet(preferencesFromUser, globalTrainingSet, user);
@@ -123,7 +123,7 @@ public abstract class SushiClassificationRecommender implements Recommender {
 		return localTrainingSet;
 	}
 
-	protected Instance fillTestSet(long itemID, Instances trainingSet, SushiUser user) {
+	protected Instance fillTestSet(Integer itemID, Instances trainingSet, SushiUser user) {
 		SushiPiece sushiPiece = sushiDataModel.getSushiPiece((int) itemID);
 
 		// Create the instance
@@ -153,7 +153,7 @@ public abstract class SushiClassificationRecommender implements Recommender {
 
 	protected void fillTrainingSet(PreferenceArray preferencesFromUser, Instances trainingSet, SushiUser user) throws TasteException {
 		for (Preference preference : preferencesFromUser) {
-			long itemID = preference.getItemID();
+			Integer itemID = preference.getItemID();
 			SushiPiece sushiPiece = sushiDataModel.getSushiPiece((int) itemID);
 
 			// Create the instance
@@ -168,19 +168,19 @@ public abstract class SushiClassificationRecommender implements Recommender {
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	protected FastVector createAttributes() {
-		// Declare a nominal attribute along with its values
+		// Declare a nominal attribute aInteger with its values
 		FastVector style = new FastVector(2);
 		style.addElement("0");
 		style.addElement("1");
 		styleAttribute = new Attribute("style", style);
 
-		// Declare a nominal attribute along with its values
+		// Declare a nominal attribute aInteger with its values
 		FastVector majorGroup = new FastVector(2);
 		majorGroup.addElement("0");
 		majorGroup.addElement("1");
 		majorGroupAttribute = new Attribute("majorGroup", majorGroup);
 
-		// Declare a nominal attribute along with its values
+		// Declare a nominal attribute aInteger with its values
 		FastVector minorGroup = new FastVector(2);
 		minorGroup.addElement("0");
 		minorGroup.addElement("1");
@@ -199,7 +199,7 @@ public abstract class SushiClassificationRecommender implements Recommender {
 		priceAttribute = new Attribute("price");
 		oilinessAttribute = new Attribute("oiliness");
 
-		// Declare the class attribute along with its values
+		// Declare the class attribute aInteger with its values
 		FastVector rating = new FastVector(2);
 		rating.addElement("0");
 		rating.addElement("1");
@@ -220,14 +220,14 @@ public abstract class SushiClassificationRecommender implements Recommender {
 	}
 
 	@Override
-	public void setPreference(long userID, long itemID, float value) throws TasteException {
-		Preconditions.checkArgument(!Float.isNaN(value), "NaN value");
+	public void setPreference(Integer userID, Integer itemID, Double value) throws TasteException {
+		Preconditions.checkArgument(!Double.isNaN(value), "NaN value");
 		log.debug("Setting preference for user {}, item {}", userID, itemID);
 		dataModel.setPreference(userID, itemID, value);
 	}
 
 	@Override
-	public void removePreference(long userID, long itemID) throws TasteException {
+	public void removePreference(Integer userID, Integer itemID) throws TasteException {
 		log.debug("Remove preference for user '{}', item '{}'", userID, itemID);
 		dataModel.removePreference(userID, itemID);
 	}
@@ -237,21 +237,21 @@ public abstract class SushiClassificationRecommender implements Recommender {
 		return dataModel;
 	}
 
-	protected double getGlobalResult(long userID, long itemID) throws Exception {
+	protected Double getGlobalResult(Integer userID, Integer itemID) throws Exception {
 		SushiUser user = userModel.get((int) userID);
 		Instance globalTestInstance = fillTestSet(itemID, globalTrainingSet, user);
-		double globalResult = getModelResult(globalTestInstance, globalClassifier);
+		Double globalResult = getModelResult(globalTestInstance, globalClassifier);
 		return globalResult;
 	}
 
-	protected double getLocalResult(long userID, long itemID) throws Exception {
+	protected Double getLocalResult(Integer userID, Integer itemID) throws Exception {
 		SushiUser user = userModel.get((int) userID);
 		PreferenceArray preferencesFromUser = dataModel.getPreferencesFromUser(userID);
 		Classifier localClassifier = createClassifier();
 		Instances localTrainingSet = trainLocalModel(preferencesFromUser, localClassifier, user);
 
 		Instance localTestInstance = fillTestSet(itemID, localTrainingSet, user);
-		double localResult = getModelResult(localTestInstance, localClassifier);
+		Double localResult = getModelResult(localTestInstance, localClassifier);
 		return localResult;
 	}
 

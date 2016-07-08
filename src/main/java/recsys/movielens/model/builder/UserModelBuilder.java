@@ -41,7 +41,7 @@ public class UserModelBuilder {
 			PreferenceArray preferencesFromUser = ratingsDataModel.getPreferencesFromUser(userID);
 			// cycle user's preferences
 			for (Preference preference : preferencesFromUser) {
-				Float p = preference.getValue();
+				Double p = preference.getValue();
 				Integer itemID = preference.getItemID();
 				buildImdbGenresPreferences(user, itemID, p);
 				buildImdbDirectorsPreferences(user, itemID, p);
@@ -78,35 +78,35 @@ public class UserModelBuilder {
 		}
 	}
 
-	private void buildImdbGenresPreferences(User user, int itemID, Float p) {
+	private void buildImdbGenresPreferences(User user, int itemID, Double p) {
 		Set<Integer> itemImdbGenres = movieLensEnrichedModel.getItemImdbGenres(itemID);
 		for (Integer genreId : itemImdbGenres) {
 			user.getGenrePreferences().addPropertyPreference(genreId, p);
 		}
 	}
 
-	private void buildImdbDirectorsPreferences(User user, int itemID, Float p) {
+	private void buildImdbDirectorsPreferences(User user, int itemID, Double p) {
 		Set<Integer> itemImdbDirectors = movieLensEnrichedModel.getItemImdbDirectors(itemID);
 		for (Integer directorId : itemImdbDirectors) {
 			user.getDirectorPreferences().addPropertyPreference(directorId, p);
 		}
 	}
 
-	private void buildImdbActorsPreferences(User user, int itemID, Float p) {
+	private void buildImdbActorsPreferences(User user, int itemID, Double p) {
 		Set<Integer> itemImdbActors = movieLensEnrichedModel.getItemImdbActors(itemID);
 		for (Integer actorId : itemImdbActors) {
 			user.getActorPreferences().addPropertyPreference(actorId, p);
 		}
 	}
 
-	private void buildImdbActressesPreferences(User user, int itemID, Float p) {
+	private void buildImdbActressesPreferences(User user, int itemID, Double p) {
 		Set<Integer> itemImdbActresses = movieLensEnrichedModel.getItemImdbActresses(itemID);
 		for (Integer actressId : itemImdbActresses) {
 			user.getActressPreferences().addPropertyPreference(actressId, p);
 		}
 	}
 	
-	private void buildImdbKeywordsPreferences(User user, int itemID, Float p) {
+	private void buildImdbKeywordsPreferences(User user, int itemID, Double p) {
 		Set<Integer> itemImdbKeywords = movieLensEnrichedModel.getItemImdbKeywords(itemID);
 		for (Integer keywordId : itemImdbKeywords) {
 			user.getKeywordsPreferences().addPropertyPreference(keywordId, p);

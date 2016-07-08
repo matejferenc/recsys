@@ -21,7 +21,7 @@ public class SetPreference {
 		propertyPreferences = new HashMap<Integer, ItemPreference>();
 	}
 
-	public void addPropertyPreference(Integer propertyId, Float p) {
+	public void addPropertyPreference(Integer propertyId, Double p) {
 		ItemPreference itemPreference = propertyPreferences.get(propertyId);
 		if (itemPreference != null) {
 			itemPreference.addPreference(p);
@@ -39,7 +39,7 @@ public class SetPreference {
 	 * @param propertyId
 	 * @return
 	 */
-	public Float getPropertyAverage(Integer propertyId) {
+	public Double getPropertyAverage(Integer propertyId) {
 		ItemPreference itemPreference = propertyPreferences.get(propertyId);
 		return itemPreference.getAveragePreference();
 	}
@@ -51,7 +51,7 @@ public class SetPreference {
 	 * @param propertyId
 	 * @return
 	 */
-	public Float getPropertyVariance(Integer propertyId) {
+	public Double getPropertyVariance(Integer propertyId) {
 		ItemPreference itemPreference = propertyPreferences.get(propertyId);
 		return itemPreference.getPreferenceVariance();
 	}

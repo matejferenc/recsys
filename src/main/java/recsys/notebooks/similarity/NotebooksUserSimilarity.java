@@ -51,7 +51,7 @@ public class NotebooksUserSimilarity implements UserSimilarity {
 	}
 
 	@Override
-	public double userSimilarity(long userID1, long userID2) throws TasteException {
+	public double userSimilarity(Integer userID1, Integer userID2) throws TasteException {
 		double similarity = computeSimilarity((int) userID1, (int) userID2);
 		return similarity;
 
@@ -72,7 +72,7 @@ public class NotebooksUserSimilarity implements UserSimilarity {
 		// correction for Taste framework (interface says the return value should be between -1 and +1,
 		// yet the computed similarity is between 0 and +1)
 		double transformedUserSimilarity = userSimilarity * 2 - 1;
-		// double transformedUserSimilarity = userSimilarity;
+		// Double transformedUserSimilarity = userSimilarity;
 		return transformedUserSimilarity;
 	}
 
@@ -88,29 +88,29 @@ public class NotebooksUserSimilarity implements UserSimilarity {
 	 * @param user2
 	 * @return number from interval [0,1]
 	 */
-	private double calculateRamSimilarity(NotebooksUser user1, NotebooksUser user2) {
-		double preferred1 = user1.getRamPreferences().getPreferredValue();
-		double preferred2 = user2.getRamPreferences().getPreferredValue();
+	private Double calculateRamSimilarity(NotebooksUser user1, NotebooksUser user2) {
+		Double preferred1 = user1.getRamPreferences().getPreferredValue();
+		Double preferred2 = user2.getRamPreferences().getPreferredValue();
 		return 1 - (Math.abs(preferred1 - preferred2)) / NotebooksDataModel.MAX_RAM;
 	}
 
-	private double calculateHddSimilarity(NotebooksUser user1, NotebooksUser user2) {
-		double preferred1 = user1.getHddPreferences().getPreferredValue();
-		double preferred2 = user2.getHddPreferences().getPreferredValue();
+	private Double calculateHddSimilarity(NotebooksUser user1, NotebooksUser user2) {
+		Double preferred1 = user1.getHddPreferences().getPreferredValue();
+		Double preferred2 = user2.getHddPreferences().getPreferredValue();
 		return 1 - (Math.abs(preferred1 - preferred2)) / NotebooksDataModel.MAX_HDD;
 	}
 
-	private double calculateDisplaySimilarity(NotebooksUser user1, NotebooksUser user2) {
-		double preferred1 = user1.getDisplayPreferences().getPreferredValue();
-		double preferred2 = user2.getDisplayPreferences().getPreferredValue();
+	private Double calculateDisplaySimilarity(NotebooksUser user1, NotebooksUser user2) {
+		Double preferred1 = user1.getDisplayPreferences().getPreferredValue();
+		Double preferred2 = user2.getDisplayPreferences().getPreferredValue();
 		return 1 - (Math.abs(preferred1 - preferred2)) / NotebooksDataModel.MAX_DISPLAY;
 	}
 
-	private double calculateManufacturerSimilarity(NotebooksUser user1, NotebooksUser user2) {
+	private Double calculateManufacturerSimilarity(NotebooksUser user1, NotebooksUser user2) {
 		return calculatePropertySetSimilarity(user1.getManufacturerPreferences(), user2.getManufacturerPreferences());
 	}
 
-	private double calculatePropertySetSimilarity(SetPreference set1, SetPreference set2) {
+	private Double calculatePropertySetSimilarity(SetPreference set1, SetPreference set2) {
 		Set<Integer> commonPropertyIds = getCommonPropertyIds(set1.getAllPropertyIds(), set2.getAllPropertyIds());
 		List<Double> user1Preferences = new ArrayList<>();
 		List<Double> user2Preferences = new ArrayList<>();
@@ -127,16 +127,16 @@ public class NotebooksUserSimilarity implements UserSimilarity {
 	 * @param user2Preferences
 	 * @return number from interval [0,1]
 	 */
-	private double calculateCommonPropertiesSimilarity(List<Double> user1Preferences, List<Double> user2Preferences) {
-		double nominator = 0;
+	private Double calculateCommonPropertiesSimilarity(List<Double> user1Preferences, List<Double> user2Preferences) {
+		Double nominator = 0d;
 		for (int i = 0; i < user1Preferences.size(); i++) {
-			double propertyPreference1 = user1Preferences.get(i);
-			double propertyPreference2 = user2Preferences.get(i);
-			double abs = Math.abs(propertyPreference1 - propertyPreference2);
+			Double propertyPreference1 = user1Preferences.get(i);
+			Double propertyPreference2 = user2Preferences.get(i);
+			Double abs = Math.abs(propertyPreference1 - propertyPreference2);
 			nominator += abs;
 		}
 		if (user1Preferences.size() == 0) {
-			return 0;
+			return 0d;
 		} else {
 			return 1 - nominator / (user1Preferences.size() * MAX_RATING_DIFFERENCE);
 		}

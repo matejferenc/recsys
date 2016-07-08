@@ -24,7 +24,7 @@ public class MovielensDataModel {
 		setItemIDs(new ArrayList<Integer>());
 	}
 
-	public Set<String> getGenres(long itemID) {
+	public Set<String> getGenres(Integer itemID) {
 		return genres.get(itemID);
 	}
 

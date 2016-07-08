@@ -28,29 +28,29 @@ public class ContentBasedMovieGenreRecommender extends AbstractRecommender {
 	}
 
 	@Override
-	public List<RecommendedItem> recommend(long userID, int howMany, IDRescorer rescorer) throws TasteException {
+	public List<RecommendedItem> recommend(Integer userID, int howMany, IDRescorer rescorer) throws TasteException {
 		throw new NotImplementedException("not implemented yet - recommend(userID, howMany, rescorer)");
 	}
 
 	@Override
-	public float estimatePreference(long userID, long itemID) throws TasteException {
+	public Double estimatePreference(Integer userID, Integer itemID) throws TasteException {
 		Set<String> itemGenres = genresModel.getGenres(itemID);
 		DataModel model = getDataModel();
 		FastIDSet itemIDsFromUser = model.getItemIDsFromUser(userID);
-		List<Long> itemsWithAtLeastOneSameGenre = new ArrayList<Long>();
-		List<Float> similarities = getItemsWithAtLeastOneSameGenre(itemIDsFromUser, itemGenres, itemsWithAtLeastOneSameGenre);
-		float averageRating = calculateAverageRating(itemsWithAtLeastOneSameGenre, userID, similarities);
+		List<Integer> itemsWithAtLeastOneSameGenre = new ArrayList<Integer>();
+		List<Double> similarities = getItemsWithAtLeastOneSameGenre(itemIDsFromUser, itemGenres, itemsWithAtLeastOneSameGenre);
+		Double averageRating = calculateAverageRating(itemsWithAtLeastOneSameGenre, userID, similarities);
 		return averageRating;
 	}
 
-	private float calculateAverageRating(List<Long> itemsWithAtLeastOneSameGenre, Long userID, List<Float> similarities) {
-		Float sumOfRatings = 0f;
-		Float sumOfSimilarities = 0f;
+	private Double calculateAverageRating(List<Integer> itemsWithAtLeastOneSameGenre, Integer userID, List<Double> similarities) {
+		Double sumOfRatings = 0d;
+		Double sumOfSimilarities = 0d;
 		int i = 0;
-		for (Long itemID : itemsWithAtLeastOneSameGenre) {
+		for (Integer itemID : itemsWithAtLeastOneSameGenre) {
 			try {
-				float similarity = similarities.get(i);
-				Float preferenceValue = getDataModel().getPreferenceValue(userID, itemID);
+				Double similarity = similarities.get(i);
+				Double preferenceValue = getDataModel().getPreferenceValue(userID, itemID);
 				sumOfRatings += preferenceValue * similarity;
 				sumOfSimilarities += similarity;
 			} catch (TasteException e) {
@@ -71,9 +71,9 @@ public class ContentBasedMovieGenreRecommender extends AbstractRecommender {
 	 * @return
 	 * @throws TasteException
 	 */
-	private List<Float> getItemsWithAtLeastOneSameGenre(FastIDSet itemIDsFromUser, Set<String> itemGenres, List<Long> itemsWithSameGenre) throws TasteException {
-		List<Float> itemsSimilarity = new ArrayList<Float>();
-		for (Long itemIDFromUser : itemIDsFromUser) {
+	private List<Double> getItemsWithAtLeastOneSameGenre(FastIDSet itemIDsFromUser, Set<String> itemGenres, List<Integer> itemsWithSameGenre) throws TasteException {
+		List<Double> itemsSimilarity = new ArrayList<Double>();
+		for (Integer itemIDFromUser : itemIDsFromUser) {
 			Set<String> genres = genresModel.getGenres(itemIDFromUser);
 			if (genresModel.intersects(itemGenres, genres)) {
 				itemsWithSameGenre.add(itemIDFromUser);

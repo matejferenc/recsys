@@ -10,10 +10,10 @@ import recsys.evaluator.abstr.AbstractDifferenceRecommenderFairEvaluator;
 public final class WeightedRMSRecommenderFairEvaluator extends AbstractDifferenceRecommenderFairEvaluator {
 
 	private RunningAverage average;
-	private float numberOfDistinctPreferenceValues;
-	private float preferenceValueCorrection;
+	private Integer numberOfDistinctPreferenceValues;
+	private Integer preferenceValueCorrection;
 
-	public WeightedRMSRecommenderFairEvaluator(DataModel dataModel, float numberOfDistinctPreferenceValues, float preferenceValueCorrection) {
+	public WeightedRMSRecommenderFairEvaluator(DataModel dataModel, Integer numberOfDistinctPreferenceValues, Integer preferenceValueCorrection) {
 		super(dataModel);
 		this.numberOfDistinctPreferenceValues = numberOfDistinctPreferenceValues;
 		this.preferenceValueCorrection = preferenceValueCorrection;
@@ -25,10 +25,10 @@ public final class WeightedRMSRecommenderFairEvaluator extends AbstractDifferenc
 	}
 
 	@Override
-	protected void processOneEstimate(float estimatedPreference, Preference realPref) {
-		float realPrefValue = realPref.getValue();
-		float weight = (realPrefValue + preferenceValueCorrection) / numberOfDistinctPreferenceValues;
-		double diff = weight * (realPrefValue - estimatedPreference);
+	protected void processOneEstimate(Double estimatedPreference, Preference realPref) {
+		Double realPrefValue = realPref.getValue();
+		Double weight = (realPrefValue + preferenceValueCorrection) / numberOfDistinctPreferenceValues;
+		Double diff = weight * (realPrefValue - estimatedPreference);
 		average.addDatum(diff * diff);
 	}
 

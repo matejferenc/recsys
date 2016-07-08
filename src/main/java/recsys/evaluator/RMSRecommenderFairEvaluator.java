@@ -27,8 +27,8 @@ public class RMSRecommenderFairEvaluator extends AbstractDifferenceRecommenderFa
 	}
 
 	@Override
-	protected void processOneEstimate(float estimatedPreference, Preference realPref) {
-		double diff = realPref.getValue() - estimatedPreference;
+	protected void processOneEstimate(Double estimatedPreference, Preference realPref) {
+		Double diff = realPref.getValue() - estimatedPreference;
 		average.addDatum(diff * diff);
 	}
 

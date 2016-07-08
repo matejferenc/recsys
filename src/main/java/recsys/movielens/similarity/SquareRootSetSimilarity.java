@@ -19,15 +19,15 @@ public class SquareRootSetSimilarity implements SetSimilarity {
 	 * similarity(S1,S2) = 0.74
 	 */
 	@Override
-	public Float getSimilarity(Set<String> set1, Set<String> set2) {
+	public Double getSimilarity(Set<String> set1, Set<String> set2) {
 		int intersectionSize = 0;
 		for (String item : set2) {
 			if (set1.contains(item))
 				intersectionSize++;
 		}
-		float i1 = (float) intersectionSize / set1.size();
-		float i2 = (float) intersectionSize / set2.size();
-		return (float) Math.sqrt((i1 * i1 + i2 * i2) / 2);
+		Double i1 = (double) intersectionSize / set1.size();
+		Double i2 = (double) intersectionSize / set2.size();
+		return (double) Math.sqrt((i1 * i1 + i2 * i2) / 2);
 	}
 
 	public static void main(String[] args) {

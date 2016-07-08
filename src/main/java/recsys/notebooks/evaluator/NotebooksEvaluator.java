@@ -158,16 +158,16 @@ public class NotebooksEvaluator extends AbstractEvaluator {
 		}
 		
 		if (includeAlgorithms.contains(IncludeAlgorithms.SVD_ASWLR)) {
-			builders.add(new SvdRecommenderBuilder(new ALSWRFactorizer(dataModel, 1, 0.001, 10)));
-			builders.add(new SvdRecommenderBuilder(new ALSWRFactorizer(dataModel, 2, 0.001, 10)));
-			builders.add(new SvdRecommenderBuilder(new ALSWRFactorizer(dataModel, 3, 0.001, 10)));
-			builders.add(new SvdRecommenderBuilder(new ALSWRFactorizer(dataModel, 4, 0.001, 10)));
-			builders.add(new SvdRecommenderBuilder(new ALSWRFactorizer(dataModel, 5, 0.001, 10)));
-			builders.add(new SvdRecommenderBuilder(new ALSWRFactorizer(dataModel, 6, 0.001, 10)));
-			builders.add(new SvdRecommenderBuilder(new ALSWRFactorizer(dataModel, 7, 0.001, 10)));
-			builders.add(new SvdRecommenderBuilder(new ALSWRFactorizer(dataModel, 8, 0.001, 10)));
-			builders.add(new SvdRecommenderBuilder(new ALSWRFactorizer(dataModel, 9, 0.001, 10)));
-			builders.add(new SvdRecommenderBuilder(new ALSWRFactorizer(dataModel, 10, 0.001, 10)));
+			builders.add(new SvdRecommenderBuilder(new ALSWRFactorizer(dataModel, 1, 0.001f, 10)));
+			builders.add(new SvdRecommenderBuilder(new ALSWRFactorizer(dataModel, 2, 0.001f, 10)));
+			builders.add(new SvdRecommenderBuilder(new ALSWRFactorizer(dataModel, 3, 0.001f, 10)));
+			builders.add(new SvdRecommenderBuilder(new ALSWRFactorizer(dataModel, 4, 0.001f, 10)));
+			builders.add(new SvdRecommenderBuilder(new ALSWRFactorizer(dataModel, 5, 0.001f, 10)));
+			builders.add(new SvdRecommenderBuilder(new ALSWRFactorizer(dataModel, 6, 0.001f, 10)));
+			builders.add(new SvdRecommenderBuilder(new ALSWRFactorizer(dataModel, 7, 0.001f, 10)));
+			builders.add(new SvdRecommenderBuilder(new ALSWRFactorizer(dataModel, 8, 0.001f, 10)));
+			builders.add(new SvdRecommenderBuilder(new ALSWRFactorizer(dataModel, 9, 0.001f, 10)));
+			builders.add(new SvdRecommenderBuilder(new ALSWRFactorizer(dataModel, 10, 0.001f, 10)));
 		}
 		
 		

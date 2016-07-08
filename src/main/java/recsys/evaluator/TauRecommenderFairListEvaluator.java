@@ -4,10 +4,15 @@ import java.util.List;
 
 import org.apache.mahout.cf.taste.impl.common.FullRunningAverage;
 import org.apache.mahout.cf.taste.impl.common.RunningAverage;
+import org.apache.mahout.cf.taste.model.DataModel;
 
 import recsys.evaluator.abstr.AbstractDifferenceRecommenderFairListEvaluator;
 
 public final class TauRecommenderFairListEvaluator extends AbstractDifferenceRecommenderFairListEvaluator {
+
+	public TauRecommenderFairListEvaluator(DataModel dataModel) {
+		super(dataModel);
+	}
 
 	private RunningAverage average;
 
@@ -27,7 +32,7 @@ public final class TauRecommenderFairListEvaluator extends AbstractDifferenceRec
 	}
 
 	@Override
-	protected void processOneEstimateList(List<Float> estimated, List<Float> real) {
+	protected void processOneEstimateList(List<Double> estimated, List<Double> real) {
 		int concordant = 0;
 		int discordant = 0;
 		int n = estimated.size();
@@ -42,7 +47,7 @@ public final class TauRecommenderFairListEvaluator extends AbstractDifferenceRec
 			}
 		}
 
-		double tau = (concordant - discordant) / ((double)n * (n - 1) / 2);
+		Double tau = (concordant - discordant) / ((double)n * (n - 1) / 2);
 		average.addDatum(tau);
 	}
 

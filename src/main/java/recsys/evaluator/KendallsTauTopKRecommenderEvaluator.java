@@ -11,15 +11,15 @@ public class KendallsTauTopKRecommenderEvaluator extends TopKRecommenderEvaluato
 	}
 
 	@Override
-	protected void processOneEstimate(long itemID, float estimatedPreference, Preference realPref) {
+	protected void processOneEstimate(Integer itemID, Double estimatedPreference, Preference realPref) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	protected double computeFinalEvaluation() {
+	protected Double computeFinalEvaluation() {
 		// TODO Auto-generated method stub
-		return 0;
+		return 0d;
 	}
 
 }

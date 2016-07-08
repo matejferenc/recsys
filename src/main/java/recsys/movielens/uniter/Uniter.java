@@ -84,11 +84,11 @@ public class Uniter {
 	private void writeMovieDataToFile() {
 		createFile();
 
-		List<Long> itemIDs = movielensDataModel.getItemIDs();
+		List<Integer> itemIDs = movielensDataModel.getItemIDs();
 		FastByIDMap<String> names = movielensDataModel.getNames();
 		FastByIDMap<Integer> years = movielensDataModel.getYears();
 		FastByIDMap<Set<String>> genres = movielensDataModel.getGenres();
-		for (Long itemID : itemIDs) {
+		for (Integer itemID : itemIDs) {
 			String movieName = names.get(itemID);
 			Integer movieYear = years.get(itemID);
 			Set<String> movieGenres = genres.get(itemID);
@@ -122,7 +122,7 @@ public class Uniter {
 		writer.println(movieLine);
 	}
 
-	private String createMovieLine(String name, long id, int year, Set<String> genres,
+	private String createMovieLine(String name, Integer id, int year, Set<String> genres,
 			Set<String> imdbGenres, Set<String> imdbDirectors, Set<String> imdbActors, Set<String> imdbActresses, Set<String> imdbKeywords) {
 		StringBuilder sb = new StringBuilder();
 		sb.append(id);
@@ -167,7 +167,7 @@ public class Uniter {
 		moviesNotFound = 0;
 		moviesFound = 0;
 
-		for (Long itemID : movielensDataModel.getItemIDs()) {
+		for (Integer itemID : movielensDataModel.getItemIDs()) {
 			String name = movielensDataModel.getNames().get(itemID);
 			Integer year = movielensDataModel.getYears().get(itemID);
 			Movie<String> movieLensMovie = movielensMoviesCollection.getOrCreateMovie(name, year);
@@ -195,7 +195,7 @@ public class Uniter {
 		moviesNotFound = 0;
 		moviesFound = 0;
 
-		for (Long itemID : movielensDataModel.getItemIDs()) {
+		for (Integer itemID : movielensDataModel.getItemIDs()) {
 			String name = movielensDataModel.getNames().get(itemID);
 			Integer year = movielensDataModel.getYears().get(itemID);
 			Movie<String> movieLensMovie = movielensMoviesCollection.getOrCreateMovie(name, year);
@@ -225,7 +225,7 @@ public class Uniter {
 
 		imdbDirectorsDataModel.getMovieCollection().getMovie("Toxic Avenger Part III: The Last Temptation of Toxie, The", 1989);
 
-		for (Long itemID : movielensDataModel.getItemIDs()) {
+		for (Integer itemID : movielensDataModel.getItemIDs()) {
 			String name = movielensDataModel.getNames().get(itemID);
 			Integer year = movielensDataModel.getYears().get(itemID);
 			Movie<String> movieLensMovie = movielensMoviesCollection.getOrCreateMovie(name, year);
@@ -255,7 +255,7 @@ public class Uniter {
 
 		// imdbGenresDataModel.getMovieCollection().getMovie("Naked Gun 2 1/2: The Smell of Fear, The", 1991);
 
-		for (Long itemID : movielensDataModel.getItemIDs()) {
+		for (Integer itemID : movielensDataModel.getItemIDs()) {
 			String name = movielensDataModel.getNames().get(itemID);
 			Integer year = movielensDataModel.getYears().get(itemID);
 			Movie<String> movieLensMovie = movielensMoviesCollection.getOrCreateMovie(name, year);
@@ -284,7 +284,7 @@ public class Uniter {
 		moviesFound = 0;
 		Set<String> allKeywords = getAllKeywords();
 
-		for (Long itemID : movielensDataModel.getItemIDs()) {
+		for (Integer itemID : movielensDataModel.getItemIDs()) {
 			String name = movielensDataModel.getNames().get(itemID);
 			Integer year = movielensDataModel.getYears().get(itemID);
 			Movie<String> movieLensMovie = movielensMoviesCollection.getOrCreateMovie(name, year);

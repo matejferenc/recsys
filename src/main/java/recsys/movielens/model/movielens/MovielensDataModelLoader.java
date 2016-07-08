@@ -75,7 +75,7 @@ public class MovielensDataModelLoader {
 			Integer itemYear = Integer.parseInt(itemYearString);
 			String genresString = tokens.next();
 
-			long itemID = readItemIDFromString(itemIDString);
+			Integer itemID = readItemIDFromString(itemIDString);
 
 			List<String> genresList = readGenresFromString(genresString);
 			Set<String> genresSet = new HashSet<String>(genresList);
@@ -85,7 +85,7 @@ public class MovielensDataModelLoader {
 		}
 	}
 
-	private void addMovieToDataModel(String itemTitle, Integer itemYear, long itemID, Set<String> genresSet) {
+	private void addMovieToDataModel(String itemTitle, Integer itemYear, Integer itemID, Set<String> genresSet) {
 		movielensDataModel.getGenres().put(itemID, genresSet);
 		movielensDataModel.getNames().put(itemID, itemTitle);
 		movielensDataModel.getYears().put(itemID, itemYear);
@@ -97,8 +97,8 @@ public class MovielensDataModelLoader {
 		return Arrays.asList(split);
 	}
 
-	protected long readItemIDFromString(String value) {
-		return Long.parseLong(value);
+	protected Integer readItemIDFromString(String value) {
+		return Integer.parseInt(value);
 	}
 
 	public MovielensDataModel getDataModel() {

@@ -14,13 +14,13 @@ public abstract class NotebooksGlobalAndLocalClassificationRecommender extends N
 	}
 
 	@Override
-	public float estimatePreference(long userID, long itemID) throws TasteException {
+	public Double estimatePreference(Integer userID, Integer itemID) throws TasteException {
 		try {
-			double globalResult = getGlobalResult(userID, itemID);
+			Double globalResult = getGlobalResult(userID, itemID);
 
-			double localResult = getLocalResult(userID, itemID);
+			Double localResult = getLocalResult(userID, itemID);
 
-			return (float) (globalResult + localResult) / 2;
+			return (double) (globalResult + localResult) / 2;
 		} catch (Exception e) {
 			throw new TasteException(e);
 		}

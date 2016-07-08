@@ -15,16 +15,16 @@ public enum IncludeClassificators {
 	NAIVE_BAYES("naiveBayes"),
 	RANDOM_FOREST("randomForest");
 	
-	private String longName;
+	private String IntegerName;
 
-	private IncludeClassificators(String longName) {
-		this.longName = longName;
+	private IncludeClassificators(String IntegerName) {
+		this.IntegerName = IntegerName;
 	}
 	
 	public static EnumSet<IncludeClassificators> fromList(List<String> argsList) {
 		EnumSet<IncludeClassificators> includeClassificators = EnumSet.noneOf(IncludeClassificators.class);
 		for (IncludeClassificators ic : IncludeClassificators.values()) {
-			if (argsList.contains(ic.longName)) {
+			if (argsList.contains(ic.IntegerName)) {
 				includeClassificators.add(ic);
 			}
 		}
@@ -37,7 +37,7 @@ public enum IncludeClassificators {
 			if (ic != IncludeClassificators.values()[0]) {
 				sb.append(", ");
 			}
-			sb.append(ic.longName);
+			sb.append(ic.IntegerName);
 		}
 		return sb.toString();
 	}

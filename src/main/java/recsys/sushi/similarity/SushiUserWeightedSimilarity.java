@@ -37,11 +37,11 @@ public class SushiUserWeightedSimilarity implements UserSimilarity {
 	}
 
 	@Override
-	public synchronized double userSimilarity(long userID1, long userID2) throws TasteException {
+	public synchronized double userSimilarity(Integer userID1, Integer userID2) throws TasteException {
 		return computeSimilarity(userID1, userID2);
 	}
 
-	private double computeSimilarity(long userID1, long userID2) {
+	private double computeSimilarity(Integer userID1, Integer userID2) {
 		SushiUser user1 = userModel.get((int) userID1);
 		SushiUser user2 = userModel.get((int) userID2);
 		
@@ -68,31 +68,31 @@ public class SushiUserWeightedSimilarity implements UserSimilarity {
 		return transformedUserSimilarity;
 	}
 
-	private double calculatePriceSimilarity(SushiUser user1, SushiUser user2) {
-		double preferred1 = user1.getPricePreferences().getPreferredValue();
-		double preferred2 = user2.getPricePreferences().getPreferredValue();
+	private Double calculatePriceSimilarity(SushiUser user1, SushiUser user2) {
+		Double preferred1 = user1.getPricePreferences().getPreferredValue();
+		Double preferred2 = user2.getPricePreferences().getPreferredValue();
 		return 1 - (Math.abs(preferred1 - preferred2)) / SushiItemDataModel.MAX_PRICE;
 	}
 
-	private double calculateOilinessSimilarity(SushiUser user1, SushiUser user2) {
-		double preferred1 = user1.getOilinessPreferences().getPreferredValue();
-		double preferred2 = user2.getOilinessPreferences().getPreferredValue();
+	private Double calculateOilinessSimilarity(SushiUser user1, SushiUser user2) {
+		Double preferred1 = user1.getOilinessPreferences().getPreferredValue();
+		Double preferred2 = user2.getOilinessPreferences().getPreferredValue();
 		return 1 - (Math.abs(preferred1 - preferred2)) / SushiItemDataModel.MAX_OILINESS;
 	}
 
-	private double calculateStyleSimilarity(SushiUser user1, SushiUser user2) {
+	private Double calculateStyleSimilarity(SushiUser user1, SushiUser user2) {
 		return calculatePropertySetSimilarity(user1.getStylePreferences(), user2.getStylePreferences());
 	}
 
-	private double calculateMajorGroupSimilarity(SushiUser user1, SushiUser user2) {
+	private Double calculateMajorGroupSimilarity(SushiUser user1, SushiUser user2) {
 		return calculatePropertySetSimilarity(user1.getMajorGroupPreferences(), user2.getMajorGroupPreferences());
 	}
 
-	private double calculateMinorGroupSimilarity(SushiUser user1, SushiUser user2) {
+	private Double calculateMinorGroupSimilarity(SushiUser user1, SushiUser user2) {
 		return calculatePropertySetSimilarity(user1.getMinorGroupPreferences(), user2.getMinorGroupPreferences());
 	}
 
-	private double calculatePropertySetSimilarity(SetPreference set1, SetPreference set2) {
+	private Double calculatePropertySetSimilarity(SetPreference set1, SetPreference set2) {
 		Set<Integer> commonPropertyIds = getCommonPropertyIds(set1.getAllPropertyIds(), set2.getAllPropertyIds());
 		List<Double> user1Preferences = new ArrayList<>();
 		List<Double> user2Preferences = new ArrayList<>();
@@ -103,16 +103,16 @@ public class SushiUserWeightedSimilarity implements UserSimilarity {
 		return calculateCommonPropertiesSimilarity(user1Preferences, user2Preferences);
 	}
 
-	private double calculateCommonPropertiesSimilarity(List<Double> user1Preferences, List<Double> user2Preferences) {
-		double nominator = 0;
+	private Double calculateCommonPropertiesSimilarity(List<Double> user1Preferences, List<Double> user2Preferences) {
+		Double nominator = 0d;
 		for (int i = 0; i < user1Preferences.size(); i++) {
-			double propertyPreference1 = user1Preferences.get(i);
-			double propertyPreference2 = user2Preferences.get(i);
-			double abs = Math.abs(propertyPreference1 - propertyPreference2);
+			Double propertyPreference1 = user1Preferences.get(i);
+			Double propertyPreference2 = user2Preferences.get(i);
+			Double abs = Math.abs(propertyPreference1 - propertyPreference2);
 			nominator += abs;
 		}
 		if (user1Preferences.size() == 0) {
-			return 0;
+			return 0d;
 		} else {
 			return 1 - nominator / (user1Preferences.size() * MAX_DIFFERENCE);
 		}
@@ -130,14 +130,14 @@ public class SushiUserWeightedSimilarity implements UserSimilarity {
 	
 	
 	private double calculatePriceWeight(SushiUser user1, SushiUser user2) {
-		double variance1 = user1.getPricePreferences().getVariance();
-		double variance2 = user2.getPricePreferences().getVariance();
+		Double variance1 = user1.getPricePreferences().getVariance();
+		Double variance2 = user2.getPricePreferences().getVariance();
 		return calculateSimilarityFromVariances(variance1, variance2);
 	}
 
 	private double calculateOilinessWeight(SushiUser user1, SushiUser user2) {
-		double variance1 = user1.getOilinessPreferences().getVariance();
-		double variance2 = user2.getOilinessPreferences().getVariance();
+		Double variance1 = user1.getOilinessPreferences().getVariance();
+		Double variance2 = user2.getOilinessPreferences().getVariance();
 		return calculateSimilarityFromVariances(variance1, variance2);
 	}
 
@@ -168,43 +168,43 @@ public class SushiUserWeightedSimilarity implements UserSimilarity {
 		Set<Integer> allPropertyIds = set.getAllPropertyIds();
 		double accumulatedVariance = 0;
 		for (Integer propertyId : allPropertyIds) {
-			double propertyVariance = set.getPropertyVariance(propertyId);
+			Double propertyVariance = set.getPropertyVariance(propertyId);
 			accumulatedVariance += propertyVariance;
 		}
 		return accumulatedVariance / allPropertyIds.size();
 	}
 	
-	private double calculateEastWestCurrentSimilarity(SushiUser user1, SushiUser user2) {
-		return user1.getEastWestIDCurrent() == user2.getEastWestIDCurrent() ? 1 : 0;
+	private Double calculateEastWestCurrentSimilarity(SushiUser user1, SushiUser user2) {
+		return (double) (user1.getEastWestIDCurrent() == user2.getEastWestIDCurrent() ? 1 : 0);
 	}
 
-	private double calculateEastWest15Similarity(SushiUser user1, SushiUser user2) {
-		return user1.getEastWestIDUntil15() == user2.getEastWestIDUntil15() ? 1 : 0;
+	private Double calculateEastWest15Similarity(SushiUser user1, SushiUser user2) {
+		return (double) (user1.getEastWestIDUntil15() == user2.getEastWestIDUntil15() ? 1 : 0);
 	}
 
-	private double calculateRegion15Similarity(SushiUser user1, SushiUser user2) {
-		return user1.getRegionIDUntil15() == user2.getRegionIDUntil15() ? 1 : 0;
+	private Double calculateRegion15Similarity(SushiUser user1, SushiUser user2) {
+		return (double) (user1.getRegionIDUntil15() == user2.getRegionIDUntil15() ? 1 : 0);
 	}
 
-	private double calculateRegionCurrentSimilarity(SushiUser user1, SushiUser user2) {
-		return user1.getRegionIDCurrent() == user2.getRegionIDCurrent() ? 1 : 0;
+	private Double calculateRegionCurrentSimilarity(SushiUser user1, SushiUser user2) {
+		return (double) (user1.getRegionIDCurrent() == user2.getRegionIDCurrent() ? 1 : 0);
 	}
 
-	private double calculatePrefecture15Similarity(SushiUser user1, SushiUser user2) {
-		return user1.getPrefectureIDUntil15() == user2.getPrefectureIDUntil15() ? 1 : 0;
+	private Double calculatePrefecture15Similarity(SushiUser user1, SushiUser user2) {
+		return (double) (user1.getPrefectureIDUntil15() == user2.getPrefectureIDUntil15() ? 1 : 0);
 	}
 
-	private double calculatePrefectureCurrentSimilarity(SushiUser user1, SushiUser user2) {
-		return user1.getPrefectureIDCurrent() == user2.getPrefectureIDCurrent() ? 1 : 0;
+	private Double calculatePrefectureCurrentSimilarity(SushiUser user1, SushiUser user2) {
+		return (double) (user1.getPrefectureIDCurrent() == user2.getPrefectureIDCurrent() ? 1 : 0);
 	}
 
-	private double calculateAgeSimilarity(SushiUser user1, SushiUser user2) {
+	private Double calculateAgeSimilarity(SushiUser user1, SushiUser user2) {
 		int MAX_AGE = 5;
-		return 1 - (Math.abs(user1.getAge() - user2.getAge())) / MAX_AGE;
+		return (double) (1 - (Math.abs(user1.getAge() - user2.getAge())) / MAX_AGE);
 	}
 
-	private double calculateGenderSimilarity(SushiUser user1, SushiUser user2) {
-		return 1 - Math.abs(user1.getGender() - user2.getGender());
+	private Double calculateGenderSimilarity(SushiUser user1, SushiUser user2) {
+		return (double) (1 - Math.abs(user1.getGender() - user2.getGender()));
 	}
 
 	@Override

@@ -112,8 +112,8 @@ public class MovieLensEnrichedDataModelLoader {
 		return ids;
 	}
 
-	protected long readItemIDFromString(String value) {
-		return Long.parseLong(value);
+	protected Integer readItemIDFromString(String value) {
+		return Integer.parseInt(value);
 	}
 
 	public MovieLensEnrichedModel getMovieLensEnrichedModel() {

@@ -40,77 +40,77 @@ public class MovieLensContentBasedRecommender implements Recommender {
 	}
 
 	@Override
-	public List<RecommendedItem> recommend(int userID, int howMany) throws TasteException {
+	public List<RecommendedItem> recommend(Integer userID, int howMany) throws TasteException {
 		return null;
 	}
 
 	@Override
-	public List<RecommendedItem> recommend(int userID, int howMany, IDRescorer rescorer) throws TasteException {
+	public List<RecommendedItem> recommend(Integer userID, int howMany, IDRescorer rescorer) throws TasteException {
 		return null;
 	}
 
 	@Override
-	public float estimatePreference(int userID, int itemID) throws TasteException {
+	public Double estimatePreference(Integer userID, Integer itemID) throws TasteException {
 		User user = userModel.get(userID);
-		double genresRating = calculateGenresRating(user, itemID);
-		double directorsRating = calculateDirectorsRating(user, itemID);
-		double actorsRating = calculateActorsRating(user, itemID);
-		double actressesRating = calculateActressesRating(user, itemID);
-		double keywordsRating = calculateKeywordsRating(user, itemID);
+		Double genresRating = calculateGenresRating(user, itemID);
+		Double directorsRating = calculateDirectorsRating(user, itemID);
+		Double actorsRating = calculateActorsRating(user, itemID);
+		Double actressesRating = calculateActressesRating(user, itemID);
+		Double keywordsRating = calculateKeywordsRating(user, itemID);
 		
 		int nonZeroRatingCount = getNonZeroRatingCount(genresRating, directorsRating, actorsRating, actressesRating);
-		return (float) ((genresRating + directorsRating + actorsRating + actressesRating) / nonZeroRatingCount);
+		return (double) ((genresRating + directorsRating + actorsRating + actressesRating) / nonZeroRatingCount);
 		
 	}
 
-	private int getNonZeroRatingCount(double genresRating, double directorsRating, double actorsRating, double actressesRating) {
+	private int getNonZeroRatingCount(Double genresRating, Double directorsRating, Double actorsRating, Double actressesRating) {
 		return isNonZero(genresRating) + isNonZero(directorsRating) + isNonZero(actorsRating) + isNonZero(actressesRating);
 	}
 
-	private int isNonZero(double rating) {
+	private int isNonZero(Double rating) {
 		return Math.abs(rating) < 0.001 ? 0 : 1;
 	}
 	
-	private double calculateKeywordsRating(User user, int itemID) {
+	private Double calculateKeywordsRating(User user, int itemID) {
 		Set<Integer> itemImdbKeywords = movieLensMovieModel.getItemImdbKeywords(itemID);
 		SetPreference keywordsPreferences = user.getKeywordsPreferences();
 		return calculatePreference(itemImdbKeywords, keywordsPreferences);
 	}
 
-	private double calculateActressesRating(User user, int itemID) {
+	private Double calculateActressesRating(User user, int itemID) {
 		Set<Integer> itemImdbActresses = movieLensMovieModel.getItemImdbActresses(itemID);
 		SetPreference actressPreferences = user.getActressPreferences();
 		return calculatePreference(itemImdbActresses, actressPreferences);
 	}
 
-	private double calculateActorsRating(User user, int itemID) {
+	private Double calculateActorsRating(User user, int itemID) {
 		Set<Integer> itemImdbActors = movieLensMovieModel.getItemImdbActors(itemID);
 		SetPreference actorPreferences = user.getActorPreferences();
 		return calculatePreference(itemImdbActors, actorPreferences);
 	}
 
-	private double calculateDirectorsRating(User user, int itemID) {
+	private Double calculateDirectorsRating(User user, int itemID) {
 		Set<Integer> itemImdbDirectors = movieLensMovieModel.getItemImdbDirectors(itemID);
 		SetPreference directorPreferences = user.getDirectorPreferences();
 		return calculatePreference(itemImdbDirectors, directorPreferences);
 	}
 
-	private double calculateGenresRating(User user, int itemID) {
+	private Double calculateGenresRating(User user, int itemID) {
 		Set<Integer> itemImdbGenres = movieLensMovieModel.getItemImdbGenres(itemID);
 		SetPreference genrePreferences = user.getGenrePreferences();
 		return calculatePreference(itemImdbGenres, genrePreferences);
 	}
 
-	private double calculatePreference(Set<Integer> itemImdbGenres, SetPreference genrePreferences) {
+	private Double calculatePreference(Set<Integer> itemImdbGenres, SetPreference genrePreferences) {
 		Set<Integer> allPropertyIds = genrePreferences.getAllPropertyIds();
 		Set<Integer> commonPropertyIds = getCommonPropertyIds(itemImdbGenres, allPropertyIds);
-		double totalPreference = 0;
+		Double totalPreference = 0d;
 		for (Integer propertyId : commonPropertyIds) {
-			double propertyPreference = genrePreferences.getPropertyAverage(propertyId);
+			Double propertyPreference = genrePreferences.getPropertyAverage(propertyId);
 			totalPreference += propertyPreference;
 		}
 		if (commonPropertyIds.size() == 0) {
-			return 0;
+			return 0d;
 		} else {
 			return totalPreference / commonPropertyIds.size();
 		}
@@ -127,14 +127,14 @@ public class MovieLensContentBasedRecommender implements Recommender {
 	}
 
 	@Override
-	public void setPreference(int userID, int itemID, float value) throws TasteException {
-		Preconditions.checkArgument(!Float.isNaN(value), "NaN value");
+	public void setPreference(Integer userID, Integer itemID, Double value) throws TasteException {
+		Preconditions.checkArgument(!Double.isNaN(value), "NaN value");
 		log.debug("Setting preference for user {}, item {}", userID, itemID);
 		dataModel.setPreference(userID, itemID, value);
 	}
 
 	@Override
-	public void removePreference(int userID, int itemID) throws TasteException {
+	public void removePreference(Integer userID, Integer itemID) throws TasteException {
 		log.debug("Remove preference for user '{}', item '{}'", userID, itemID);
 		dataModel.removePreference(userID, itemID);
 	}

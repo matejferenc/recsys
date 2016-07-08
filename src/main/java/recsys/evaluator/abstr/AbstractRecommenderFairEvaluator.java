@@ -72,12 +72,12 @@ public abstract class AbstractRecommenderFairEvaluator implements RecommenderFai
 
 	protected abstract double getEvaluation(FastByIDMap<PreferenceArray> testPrefs, Recommender recommender) throws TasteException;
 
-	protected float capEstimatedPreference(float estimate) {
-		float maxPreference = dataModel.getMaxPreference();
+	protected double capEstimatedPreference(double estimate) {
+		double maxPreference = dataModel.getMaxPreference();
 		if (estimate > maxPreference) {
 			return maxPreference;
 		}
-		float minPreference = dataModel.getMinPreference();
+		double minPreference = dataModel.getMinPreference();
 		if (estimate < minPreference) {
 			return minPreference;
 		}
@@ -135,13 +135,13 @@ public abstract class AbstractRecommenderFairEvaluator implements RecommenderFai
 		return alreadySelectedItems;
 	}
 	
-	protected void processEasiestAndHardestItems(float estimatedPreference, Preference realPref) {
-		float absoluteError = Math.abs(estimatedPreference - realPref.getValue());
+	protected void processEasiestAndHardestItems(Double estimatedPreference, Preference realPref) {
+		Double absoluteError = Math.abs(estimatedPreference - realPref.getValue());
 		processItems(realPref, absoluteError);
 		processUsers(realPref, absoluteError);
 	}
 
-	private void processUsers(Preference realPref, float absoluteError) {
+	private void processUsers(Preference realPref, Double absoluteError) {
 		int userID = realPref.getUserID();
 		List<Double> estimatesForUser= estimatesForUsers.get(userID);
 		if (estimatesForUser != null) {
@@ -153,7 +153,7 @@ public abstract class AbstractRecommenderFairEvaluator implements RecommenderFai
 		}
 	}
 
-	private void processItems(Preference realPref, float absoluteError) {
+	private void processItems(Preference realPref, Double absoluteError) {
 		int itemID = realPref.getItemID();
 		List<Double> estimatesForItem = estimatesForItems.get(itemID);
 		if (estimatesForItem != null) {

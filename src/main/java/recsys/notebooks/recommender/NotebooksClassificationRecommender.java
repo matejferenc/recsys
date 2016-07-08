@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.apache.mahout.cf.taste.common.Refreshable;
 import org.apache.mahout.cf.taste.common.TasteException;
-import org.apache.mahout.cf.taste.impl.common.LongPrimitiveIterator;
+import org.apache.mahout.cf.taste.impl.common.IntPrimitiveIterator;
 import org.apache.mahout.cf.taste.model.DataModel;
 import org.apache.mahout.cf.taste.model.Preference;
 import org.apache.mahout.cf.taste.model.PreferenceArray;
@@ -55,7 +55,7 @@ public abstract class NotebooksClassificationRecommender implements Recommender 
 		attributes.addElement(ratingAttribute);
 	}
 
-	protected double getModelResult(Instance testInstance, Classifier classifier) throws Exception {
+	protected Double getModelResult(Instance testInstance, Classifier classifier) throws Exception {
 		double[] classificationResult = classifier.distributionForInstance(testInstance);
 
 		double sumOfEstimates = 0;
@@ -64,7 +64,7 @@ public abstract class NotebooksClassificationRecommender implements Recommender 
 			sumOfEstimates += classificationResult[i] * i;
 			sumOfProbabilities += classificationResult[i];
 		}
-		double resultEstimate = sumOfEstimates / sumOfProbabilities;
+		Double resultEstimate = (double) (sumOfEstimates / sumOfProbabilities);
 		return resultEstimate;
 	}
 
@@ -73,20 +73,20 @@ public abstract class NotebooksClassificationRecommender implements Recommender 
 	}
 
 	@Override
-	public List<RecommendedItem> recommend(long userID, int howMany) throws TasteException {
+	public List<RecommendedItem> recommend(Integer userID, int howMany) throws TasteException {
 		return null;
 	}
 
 	@Override
-	public List<RecommendedItem> recommend(long userID, int howMany, IDRescorer rescorer) throws TasteException {
+	public List<RecommendedItem> recommend(Integer userID, int howMany, IDRescorer rescorer) throws TasteException {
 		return null;
 	}
 
 	protected void trainGlobalModel() throws Exception {
 		int trainingSetSize = 0;
-		LongPrimitiveIterator userIDs = dataModel.getUserIDs();
+		IntPrimitiveIterator userIDs = dataModel.getUserIDs();
 		while (userIDs.hasNext()) {
-			Long userID = userIDs.next();
+			Integer userID = userIDs.next();
 			PreferenceArray preferencesFromUser = dataModel.getPreferencesFromUser(userID);
 			trainingSetSize += preferencesFromUser.length();
 		}
@@ -98,7 +98,7 @@ public abstract class NotebooksClassificationRecommender implements Recommender 
 
 		userIDs = dataModel.getUserIDs();
 		while (userIDs.hasNext()) {
-			Long userID = userIDs.next();
+			Integer userID = userIDs.next();
 			NotebooksUser user = userModel.get(userID.intValue());
 			PreferenceArray preferencesFromUser = dataModel.getPreferencesFromUser(userID);
 			fillTrainingSet(preferencesFromUser, globalTrainingSet, user);
@@ -121,7 +121,7 @@ public abstract class NotebooksClassificationRecommender implements Recommender 
 		return localTrainingSet;
 	}
 
-	protected Instance fillTestSet(long itemID, Instances trainingSet, NotebooksUser user) {
+	protected Instance fillTestSet(Integer itemID, Instances trainingSet, NotebooksUser user) {
 		Notebook sushiPiece = sushiDataModel.getNotebook((int) itemID);
 
 		// Create the instance
@@ -151,7 +151,7 @@ public abstract class NotebooksClassificationRecommender implements Recommender 
 
 	protected void fillTrainingSet(PreferenceArray preferencesFromUser, Instances trainingSet, NotebooksUser user) throws TasteException {
 		for (Preference preference : preferencesFromUser) {
-			long itemID = preference.getItemID();
+			Integer itemID = preference.getItemID();
 			Notebook notebook = sushiDataModel.getNotebook((int) itemID);
 
 			// Create the instance
@@ -197,14 +197,14 @@ public abstract class NotebooksClassificationRecommender implements Recommender 
 	}
 
 	@Override
-	public void setPreference(long userID, long itemID, float value) throws TasteException {
-		Preconditions.checkArgument(!Float.isNaN(value), "NaN value");
+	public void setPreference(Integer userID, Integer itemID, Double value) throws TasteException {
+		Preconditions.checkArgument(!Double.isNaN(value), "NaN value");
 		log.debug("Setting preference for user {}, item {}", userID, itemID);
 		dataModel.setPreference(userID, itemID, value);
 	}
 
 	@Override
-	public void removePreference(long userID, long itemID) throws TasteException {
+	public void removePreference(Integer userID, Integer itemID) throws TasteException {
 		log.debug("Remove preference for user '{}', item '{}'", userID, itemID);
 		dataModel.removePreference(userID, itemID);
 	}
@@ -214,21 +214,21 @@ public abstract class NotebooksClassificationRecommender implements Recommender 
 		return dataModel;
 	}
 
-	protected double getGlobalResult(long userID, long itemID) throws Exception {
+	protected Double getGlobalResult(Integer userID, Integer itemID) throws Exception {
 		NotebooksUser user = userModel.get((int) userID);
 		Instance globalTestInstance = fillTestSet(itemID, globalTrainingSet, user);
-		double globalResult = getModelResult(globalTestInstance, globalClassifier);
+		Double globalResult = getModelResult(globalTestInstance, globalClassifier);
 		return globalResult;
 	}
 
-	protected double getLocalResult(long userID, long itemID) throws Exception {
+	protected Double getLocalResult(Integer userID, Integer itemID) throws Exception {
 		NotebooksUser user = userModel.get((int) userID);
 		PreferenceArray preferencesFromUser = dataModel.getPreferencesFromUser(userID);
 		Classifier localClassifier = createClassifier();
 		Instances localTrainingSet = trainLocalModel(preferencesFromUser, localClassifier, user);
 
 		Instance localTestInstance = fillTestSet(itemID, localTrainingSet, user);
-		double localResult = getModelResult(localTestInstance, localClassifier);
+		Double localResult = getModelResult(localTestInstance, localClassifier);
 		return localResult;
 	}
 

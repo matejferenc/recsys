@@ -34,7 +34,7 @@ public class DatasetSplitterTest {
 	@Test
 	public void sampleTest() throws Exception {
 		DataModel dataModel = new NotebooksDataset().build();
-		DatasetSplitter splitter = new DatasetSplitter(dataModel, 0.3333, 0.25);
+		DatasetSplitter splitter = new DatasetSplitter(dataModel, 0.3333d, 0.25d);
 		List<Integer> userIDs = splitter.getUserIDs();
 		Set<Integer> alreadySelectedUsers = new HashSet<Integer>();
 		List<Integer> sample1 = splitter.createSample(userIDs, 36, alreadySelectedUsers);
@@ -82,7 +82,7 @@ public class DatasetSplitterTest {
 		for (int i = 0; i < 3; i++) {
 			prefs.clear();
 			for (int j = 0; j < 6; j++) {
-				prefs.add(new GenericPreference(i, j, 0.1f));
+				prefs.add(new GenericPreference(i, j, 0.1));
 			}
 			userData.put(i, new GenericUserPreferenceArray(prefs));
 		}
@@ -100,8 +100,8 @@ public class DatasetSplitterTest {
 	@Test
 	public void testSplittingIsCalled4Times() throws Exception {
 		DataModel dataModel = new SushiDataset().build();
-		double testingPercentage = 0.3333;
-		double evaluationPercentage = 0.25;
+		Double testingPercentage = 0.3333;
+		Double evaluationPercentage = 0.25;
 		DatasetSplitter splitter = new DatasetSplitter(dataModel, testingPercentage, evaluationPercentage);
 		DatasetSplitter spySplitter = Mockito.spy(splitter);
 		List<Pair<FastByIDMap<PreferenceArray>, FastByIDMap<PreferenceArray>>> splitDatset = spySplitter.splitDatset();
@@ -116,8 +116,8 @@ public class DatasetSplitterTest {
 	@Test
 	public void testAllItemsAreSelectedForTesting() throws Exception {
 		DataModel dataModel = new SushiDataset().build();
-		double testingPercentage = 0.3333;
-		double evaluationPercentage = 0.25;
+		Double testingPercentage = 0.3333;
+		Double evaluationPercentage = 0.25;
 		DatasetSplitter evaluator = new DatasetSplitter(dataModel, testingPercentage, evaluationPercentage);
 		List<Pair<FastByIDMap<PreferenceArray>, FastByIDMap<PreferenceArray>>> splitDatset = evaluator.splitDatset();
 		IntPrimitiveIterator userIDs = dataModel.getUserIDs();
@@ -161,12 +161,12 @@ public class DatasetSplitterTest {
 	}
 
 	private void assertPreferenceArrayEquals(PreferenceArray preferenceArray1, PreferenceArray preferenceArray2) {
-		int[] iDs1 = preferenceArray1.getIDs();
-		int[] iDs2 = preferenceArray2.getIDs();
+		Integer[] iDs1 = preferenceArray1.getIDs();
+		Integer[] iDs2 = preferenceArray2.getIDs();
 		assertEquals(iDs1.length, iDs2.length);
 		for (int i = 0; i < iDs1.length; i++) {
 			for (int j = 0; j < iDs2.length; j++) {
-				if (iDs2[j] == iDs1[i]) {
+				if (iDs2[j].equals(iDs1[i])) {
 					assertTrue(preferenceArray1.hasPrefWithItemID(iDs1[i]));
 					assertTrue(preferenceArray2.hasPrefWithItemID(iDs1[i]));
 				}
@@ -175,8 +175,8 @@ public class DatasetSplitterTest {
 	}
 
 	private Set<Pair<Integer, Integer>> assertTestDatasetCorrectlyCreated(DataModel dataModel) throws TasteException {
-		double testingPercentage = 0.3333;
-		double evaluationPercentage = 0.25;
+		Double testingPercentage = 0.3333;
+		Double evaluationPercentage = 0.25;
 		DatasetSplitter splitter = new DatasetSplitter(dataModel, testingPercentage, evaluationPercentage);
 		DatasetSplitter splitter1 = new DatasetSplitter(dataModel, testingPercentage, evaluationPercentage);
 		List<Pair<FastByIDMap<PreferenceArray>, FastByIDMap<PreferenceArray>>> splitDatset = splitter.splitDatset();
@@ -207,7 +207,7 @@ public class DatasetSplitterTest {
 			IntPrimitiveIterator itemIDs = dataModel.getItemIDs();
 			while (itemIDs.hasNext()) {
 				Integer itemID = itemIDs.next();
-				Float preferenceValue = dataModel.getPreferenceValue(userID, itemID);
+				Double preferenceValue = dataModel.getPreferenceValue(userID, itemID);
 				if (preferenceValue != null) {
 					if (!testDataset.contains(new Pair<Integer, Integer>(userID, itemID))) {
 						System.out.println("is in dataModel but not in testDataset");

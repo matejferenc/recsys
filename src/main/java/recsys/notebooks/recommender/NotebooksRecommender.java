@@ -38,35 +38,35 @@ public class NotebooksRecommender implements Recommender {
 	}
 
 	@Override
-	public List<RecommendedItem> recommend(long userID, int howMany) throws TasteException {
+	public List<RecommendedItem> recommend(Integer userID, int howMany) throws TasteException {
 		throw new RuntimeException("unsupported");
 	}
 
 	@Override
-	public List<RecommendedItem> recommend(long userID, int howMany, IDRescorer rescorer) throws TasteException {
+	public List<RecommendedItem> recommend(Integer userID, int howMany, IDRescorer rescorer) throws TasteException {
 		throw new RuntimeException("unsupported");
 	}
 
 	@Override
-	public float estimatePreference(long userID, long itemID) throws TasteException {
+	public Double estimatePreference(Integer userID, Integer itemID) throws TasteException {
 		NotebooksUser user = userModel.get((int) userID);
 		Notebook notebook = notebooksDataModel.getNotebook((int) itemID);
 
-		double userSimilarity = (include.contains(Include.HDD) ? calculateHddSimilarity(user, notebook) : 0) + (include.contains(Include.DISPLAY) ? calculateDisplaySimilarity(user, notebook) : 0)
+		Double userSimilarity = (include.contains(Include.HDD) ? calculateHddSimilarity(user, notebook) : 0) + (include.contains(Include.DISPLAY) ? calculateDisplaySimilarity(user, notebook) : 0)
 				+ (include.contains(Include.MANUFACTURER) ? calculateManufacturerSimilarity(user, notebook) : 0) + (include.contains(Include.PRICE) ? calculatePriceSimilarity(user, notebook) : 0)
 				+ (include.contains(Include.RAM) ? calculateRamSimilarity(user, notebook) : 0);
 
 		userSimilarity /= include.size();
 
-		return (float) userSimilarity;
+		return (double) userSimilarity;
 	}
 
 	@Override
-	public void setPreference(long userID, long itemID, float value) throws TasteException {
+	public void setPreference(Integer userID, Integer itemID, Double value) throws TasteException {
 	}
 
 	@Override
-	public void removePreference(long userID, long itemID) throws TasteException {
+	public void removePreference(Integer userID, Integer itemID) throws TasteException {
 	}
 
 	@Override
@@ -74,38 +74,38 @@ public class NotebooksRecommender implements Recommender {
 		return dataModel;
 	}
 
-	private double calculatePriceSimilarity(NotebooksUser user, Notebook notebook) {
-		double preferred1 = user.getPricePreferences().getPreferredValue();
-		double preferred2 = notebook.getPrice();
+	private Double calculatePriceSimilarity(NotebooksUser user, Notebook notebook) {
+		Double preferred1 = user.getPricePreferences().getPreferredValue();
+		Double preferred2 = (double) notebook.getPrice();
 		return 1 - (Math.abs(preferred1 - preferred2)) / NotebooksDataModel.MAX_PRICE;
 	}
 
-	private double calculateRamSimilarity(NotebooksUser user, Notebook notebook) {
-		double preferred1 = user.getRamPreferences().getPreferredValue();
-		double preferred2 = notebook.getRam();
+	private Double calculateRamSimilarity(NotebooksUser user, Notebook notebook) {
+		Double preferred1 = user.getRamPreferences().getPreferredValue();
+		Double preferred2 = (double) notebook.getRam();
 		return 1 - (Math.abs(preferred1 - preferred2)) / NotebooksDataModel.MAX_RAM;
 	}
 
-	private double calculateHddSimilarity(NotebooksUser user, Notebook notebook) {
-		double preferred1 = user.getHddPreferences().getPreferredValue();
-		double preferred2 = notebook.getHdd();
+	private Double calculateHddSimilarity(NotebooksUser user, Notebook notebook) {
+		Double preferred1 = user.getHddPreferences().getPreferredValue();
+		Double preferred2 = (double) notebook.getHdd();
 		return 1 - (Math.abs(preferred1 - preferred2)) / NotebooksDataModel.MAX_HDD;
 	}
 
-	private double calculateDisplaySimilarity(NotebooksUser user, Notebook notebook) {
-		double preferred1 = user.getDisplayPreferences().getPreferredValue();
-		double preferred2 = notebook.getDisplay();
+	private Double calculateDisplaySimilarity(NotebooksUser user, Notebook notebook) {
+		Double preferred1 = user.getDisplayPreferences().getPreferredValue();
+		Double preferred2 = (double) notebook.getDisplay();
 		return 1 - (Math.abs(preferred1 - preferred2)) / NotebooksDataModel.MAX_DISPLAY;
 	}
 
-	private double calculateManufacturerSimilarity(NotebooksUser user, Notebook notebook) {
+	private Double calculateManufacturerSimilarity(NotebooksUser user, Notebook notebook) {
 		int manufacturerHashCode = notebook.hashCode();
 		for (Integer propertyId: user.getManufacturerPreferences().getAllPropertyIds()) {
 			if (propertyId == manufacturerHashCode) {
 				return user.getManufacturerPreferences().getPropertyAverage(propertyId) / MAX_RATING_DIFFERENCE;
 			}
 		}
-		return 0;
+		return 0d;
 	}
 
 }

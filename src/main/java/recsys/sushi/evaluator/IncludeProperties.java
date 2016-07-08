@@ -23,11 +23,11 @@ public enum IncludeProperties {
 	EAST_WEST_CURRENT("ew_c", "eastWestCurrent");
 	
 	private String shortName;
-	private String longName;
+	private String IntegerName;
 
-	private IncludeProperties(String shortName, String longName) {
+	private IncludeProperties(String shortName, String IntegerName) {
 		this.shortName = shortName;
-		this.longName = longName;
+		this.IntegerName = IntegerName;
 	}
 	
 	public String getShortName(){
@@ -37,7 +37,7 @@ public enum IncludeProperties {
 	public static EnumSet<IncludeProperties> fromList(List<String> argsList) {
 		EnumSet<IncludeProperties> includeProperties = EnumSet.noneOf(IncludeProperties.class);
 		for (IncludeProperties ip : IncludeProperties.values()) {
-			if (argsList.contains(ip.longName)) {
+			if (argsList.contains(ip.IntegerName)) {
 				includeProperties.add(ip);
 			}
 		}
@@ -50,7 +50,7 @@ public enum IncludeProperties {
 			if (ip != IncludeProperties.values()[0]) {
 				sb.append(", ");
 			}
-			sb.append(ip.longName);
+			sb.append(ip.IntegerName);
 		}
 		return sb.toString();
 	}
