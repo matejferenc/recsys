@@ -2,8 +2,10 @@ package recsys.evaluator.abstr;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Random;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -15,17 +17,13 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.apache.mahout.cf.taste.common.TasteException;
 import org.apache.mahout.cf.taste.eval.RecommenderBuilder;
 import org.apache.mahout.cf.taste.impl.common.FastByIDMap;
-import org.apache.mahout.cf.taste.impl.common.LongPrimitiveIterator;
 import org.apache.mahout.cf.taste.impl.common.RunningAverageAndStdDev;
 import org.apache.mahout.cf.taste.impl.eval.StatsCallable;
 import org.apache.mahout.cf.taste.impl.model.GenericDataModel;
-import org.apache.mahout.cf.taste.impl.model.GenericPreference;
-import org.apache.mahout.cf.taste.impl.model.GenericUserPreferenceArray;
 import org.apache.mahout.cf.taste.model.DataModel;
 import org.apache.mahout.cf.taste.model.Preference;
 import org.apache.mahout.cf.taste.model.PreferenceArray;
 import org.apache.mahout.cf.taste.recommender.Recommender;
-import org.apache.mahout.common.RandomUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,120 +32,46 @@ import recsys.evaluator.RecommenderFairEvaluator;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 
-/**
- * Superclass for FairEvaluator counting estimated and not-estimated cases.
- *
- */
 public abstract class AbstractRecommenderFairEvaluator implements RecommenderFairEvaluator {
 	
 	protected static final Logger log = LoggerFactory.getLogger(AbstractRecommenderFairEvaluator.class);
 
-	private final Random random;
-
+	private Map<Long, Set<Long>> alreadySelectedItems;
+	
 	protected DataModel dataModel;
 	
 	protected AtomicInteger noEstimateCounter = new AtomicInteger();
 
 	protected AtomicInteger estimateCounter = new AtomicInteger();
+	
+	protected Map<Long, List<Double>> estimatesForItems;
+	
+	protected Map<Long, List<Double>> estimatesForUsers;
 
-	protected AbstractRecommenderFairEvaluator() {
-		random = RandomUtils.getRandom();
+	protected AbstractRecommenderFairEvaluator(DataModel dataModel) {
+		this.dataModel = dataModel;
+		alreadySelectedItems = new HashMap<Long, Set<Long>>();
+		estimatesForItems = new HashMap<Long, List<Double>>();
+		estimatesForUsers = new HashMap<Long, List<Double>>();
 	}
 
 	/**
-	 * Builds a testing and training dataset, trains the recommender on training dataset and evaluates the recommender on testing dataset.
+	 * Trains the recommender on training dataset and evaluates the recommender on test dataset.
 	 */
 	@Override
-	public double evaluate(RecommenderBuilder recommenderBuilder, DataModel dataModel, double trainingPercentage, double evaluationPercentage) throws TasteException {
-		this.dataModel = dataModel;
+	public double evaluate(RecommenderBuilder recommenderBuilder, FastByIDMap<PreferenceArray> trainingPrefs, FastByIDMap<PreferenceArray> testPrefs) throws TasteException {
 		Preconditions.checkNotNull(recommenderBuilder);
-		Preconditions.checkNotNull(dataModel);
-		Preconditions.checkArgument(trainingPercentage >= 0.0 && trainingPercentage <= 1.0, "Invalid trainingPercentage: " + trainingPercentage + ". Must be: 0.0 <= trainingPercentage <= 1.0");
-
-		log.info("Beginning evaluation using {} of {}", trainingPercentage, dataModel);
-
-		int numUsers = dataModel.getNumUsers();
-		FastByIDMap<PreferenceArray> trainingPrefs = new FastByIDMap<PreferenceArray>(1 + (int) (evaluationPercentage * numUsers));
-		FastByIDMap<PreferenceArray> testPrefs = new FastByIDMap<PreferenceArray>(1 + (int) (evaluationPercentage * numUsers));
-
-		List<Integer> evaluationSample = createSample(numUsers, (int) Math.floor(numUsers * evaluationPercentage));
-		int i = 0;
-		LongPrimitiveIterator it = dataModel.getUserIDs();
-		while (it.hasNext()) {
-			long userID = it.nextLong();
-			if (evaluationSample.contains(i)) {
-				splitOneUsersPrefs(trainingPercentage, trainingPrefs, testPrefs, userID);
-			}
-			i++;
-		}
-
+		log.info("Beginning evaluation using of {}", dataModel);
 		DataModel trainingModel = new GenericDataModel(trainingPrefs);
-
 		Recommender recommender = recommenderBuilder.buildRecommender(trainingModel);
-
 		double result = getEvaluation(testPrefs, recommender);
 		log.info("Evaluation result: {}", result);
 		return result;
 	}
 	
+
 	protected abstract double getEvaluation(FastByIDMap<PreferenceArray> testPrefs, Recommender recommender) throws TasteException;
 
-	/**
-	 * Splits the preferences of user with id userId into training and testing data structures. TrainingPercentage of preferences
-	 * will go to training dataset and 1-trainingPercentage of preferences will go to testing dataset.
-	 * @param trainingPercentage
-	 * @param trainingPrefs
-	 * @param testPrefs
-	 * @param userID
-	 * @throws TasteException
-	 */
-	private void splitOneUsersPrefs(double trainingPercentage, FastByIDMap<PreferenceArray> trainingPrefs, FastByIDMap<PreferenceArray> testPrefs, long userID) throws TasteException {
-		List<Preference> oneUserTrainingPrefs = null;
-		List<Preference> oneUserTestPrefs = null;
-		PreferenceArray prefs = dataModel.getPreferencesFromUser(userID);
-		int size = prefs.length();
-		int trainSampleSize = (int) Math.floor(size * trainingPercentage);
-		List<Integer> trainingSample = createSample(size, trainSampleSize);
-		for (int i = 0; i < size; i++) {
-			Preference newPref = new GenericPreference(userID, prefs.getItemID(i), prefs.getValue(i));
-			if (trainingSample.contains(i)) {
-				if (oneUserTrainingPrefs == null) {
-					oneUserTrainingPrefs = Lists.newArrayListWithCapacity(3);
-				}
-				oneUserTrainingPrefs.add(newPref);
-			} else {
-				if (oneUserTestPrefs == null) {
-					oneUserTestPrefs = Lists.newArrayListWithCapacity(3);
-				}
-				oneUserTestPrefs.add(newPref);
-			}
-		}
-		if (oneUserTrainingPrefs != null) {
-			trainingPrefs.put(userID, new GenericUserPreferenceArray(oneUserTrainingPrefs));
-			if (oneUserTestPrefs != null) {
-				testPrefs.put(userID, new GenericUserPreferenceArray(oneUserTestPrefs));
-			}
-		}
-	}
-
-	/**
-	 * Create sample set of numbers 0..max of size sampleSize.
-	 * @param max
-	 * @param sampleSize
-	 * @return
-	 */
-	private List<Integer> createSample(int max, int sampleSize) {
-		List<Integer> results = new ArrayList<>();
-		for (int i = 0; i < sampleSize; i++) {
-			int rand = random.nextInt(max);
-			while (results.contains(rand)) {
-				rand = random.nextInt(max);
-			}
-			results.add(rand);
-		}
-		return results;
-	}
-	
 	protected float capEstimatedPreference(float estimate) {
 		float maxPreference = dataModel.getMaxPreference();
 		if (estimate > maxPreference) {
@@ -161,7 +85,6 @@ public abstract class AbstractRecommenderFairEvaluator implements RecommenderFai
 	}
 
 	protected static void execute(Collection<Callable<Void>> callables, AtomicInteger noEstimateCounter, AtomicInteger estimateCounter, RunningAverageAndStdDev timing) throws TasteException {
-
 		Collection<Callable<Void>> wrappedCallables = wrapWithStatsCallables(callables, noEstimateCounter, estimateCounter, timing);
 		int numProcessors = Runtime.getRuntime().availableProcessors();
 		ExecutorService executor = Executors.newFixedThreadPool(numProcessors);
@@ -207,4 +130,39 @@ public abstract class AbstractRecommenderFairEvaluator implements RecommenderFai
 	public AtomicInteger getEstimateCounter() {
 		return estimateCounter;
 	}
+	
+	public Map<Long, Set<Long>> getAlreadySelectedItems() {
+		return alreadySelectedItems;
+	}
+	
+	protected void processEasiestAndHardestItems(float estimatedPreference, Preference realPref) {
+		float absoluteError = Math.abs(estimatedPreference - realPref.getValue());
+		processItems(realPref, absoluteError);
+		processUsers(realPref, absoluteError);
+	}
+
+	private void processUsers(Preference realPref, float absoluteError) {
+		long userID = realPref.getUserID();
+		List<Double> estimatesForUser= estimatesForUsers.get(userID);
+		if (estimatesForUser != null) {
+			estimatesForUser.add((double) absoluteError);
+		} else {
+			ArrayList<Double> list = new ArrayList<Double>();
+			list.add((double) absoluteError);
+			estimatesForUsers.put(userID, list);
+		}
+	}
+
+	private void processItems(Preference realPref, float absoluteError) {
+		long itemID = realPref.getItemID();
+		List<Double> estimatesForItem = estimatesForItems.get(itemID);
+		if (estimatesForItem != null) {
+			estimatesForItem.add((double) absoluteError);
+		} else {
+			ArrayList<Double> list = new ArrayList<Double>();
+			list.add((double) absoluteError);
+			estimatesForItems.put(itemID, list);
+		}
+	}
+	
 }

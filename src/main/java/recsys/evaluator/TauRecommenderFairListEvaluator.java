@@ -4,10 +4,15 @@ import java.util.List;
 
 import org.apache.mahout.cf.taste.impl.common.FullRunningAverage;
 import org.apache.mahout.cf.taste.impl.common.RunningAverage;
+import org.apache.mahout.cf.taste.model.DataModel;
 
 import recsys.evaluator.abstr.AbstractDifferenceRecommenderFairListEvaluator;
 
 public final class TauRecommenderFairListEvaluator extends AbstractDifferenceRecommenderFairListEvaluator {
+
+	public TauRecommenderFairListEvaluator(DataModel dataModel) {
+		super(dataModel);
+	}
 
 	private RunningAverage average;
 

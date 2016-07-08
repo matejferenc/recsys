@@ -2,6 +2,7 @@ package recsys.evaluator;
 
 import org.apache.mahout.cf.taste.impl.common.FullRunningAverage;
 import org.apache.mahout.cf.taste.impl.common.RunningAverage;
+import org.apache.mahout.cf.taste.model.DataModel;
 import org.apache.mahout.cf.taste.model.Preference;
 
 import recsys.evaluator.abstr.AbstractDifferenceRecommenderFairEvaluator;
@@ -12,7 +13,8 @@ public final class WeightedRMSRecommenderFairEvaluator extends AbstractDifferenc
 	private float numberOfDistinctPreferenceValues;
 	private float preferenceValueCorrection;
 
-	public WeightedRMSRecommenderFairEvaluator(float numberOfDistinctPreferenceValues, float preferenceValueCorrection) {
+	public WeightedRMSRecommenderFairEvaluator(DataModel dataModel, float numberOfDistinctPreferenceValues, float preferenceValueCorrection) {
+		super(dataModel);
 		this.numberOfDistinctPreferenceValues = numberOfDistinctPreferenceValues;
 		this.preferenceValueCorrection = preferenceValueCorrection;
 	}

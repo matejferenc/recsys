@@ -13,6 +13,7 @@ import org.apache.mahout.cf.taste.common.TasteException;
 import org.apache.mahout.cf.taste.impl.common.FastByIDMap;
 import org.apache.mahout.cf.taste.impl.common.FullRunningAverageAndStdDev;
 import org.apache.mahout.cf.taste.impl.common.RunningAverageAndStdDev;
+import org.apache.mahout.cf.taste.model.DataModel;
 import org.apache.mahout.cf.taste.model.Preference;
 import org.apache.mahout.cf.taste.model.PreferenceArray;
 import org.apache.mahout.cf.taste.recommender.Recommender;
@@ -23,6 +24,10 @@ import com.google.common.collect.Lists;
  * Abstract superclass of a couple implementations, providing shared functionality.
  */
 public abstract class AbstractDifferenceRecommenderFairListEvaluator extends AbstractRecommenderFairEvaluator {
+
+	protected AbstractDifferenceRecommenderFairListEvaluator(DataModel dataModel) {
+		super(dataModel);
+	}
 
 	protected abstract void processOneEstimateList(List<Float> estimated, List<Float> real);
 	
