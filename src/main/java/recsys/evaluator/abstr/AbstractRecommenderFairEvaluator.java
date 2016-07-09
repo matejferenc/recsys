@@ -2,6 +2,7 @@ package recsys.evaluator.abstr;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -153,15 +154,16 @@ public abstract class AbstractRecommenderFairEvaluator implements RecommenderFai
 		}
 	}
 
-	private void processItems(Preference realPref, float absoluteError) {
+	
+	private synchronized void processItems(Preference realPref, float absoluteError) {
 		long itemID = realPref.getItemID();
 		List<Double> estimatesForItem = estimatesForItems.get(itemID);
 		if (estimatesForItem != null) {
 			estimatesForItem.add((double) absoluteError);
 		} else {
-			ArrayList<Double> list = new ArrayList<Double>();
-			list.add((double) absoluteError);
-			estimatesForItems.put(itemID, list);
+			estimatesForItem = new ArrayList<Double>();
+			estimatesForItem.add((double) absoluteError);
+			estimatesForItems.put(itemID, estimatesForItem);
 		}
 	}
 	

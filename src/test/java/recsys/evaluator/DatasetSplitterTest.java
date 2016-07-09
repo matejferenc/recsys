@@ -72,6 +72,36 @@ public class DatasetSplitterTest {
 	}
 	
 	@Test
+	public void splittingNotebooksDataset2()  throws Exception {
+		DataModel dataModel = new NotebooksDataset().build();
+		DatasetSplitter splitter = new DatasetSplitter(dataModel, TESTING_PERCENTAGE, EVALUATION_PERCENTAGE);
+		while (splitter.hasNext()) {
+			Pair<FastByIDMap<PreferenceArray>,FastByIDMap<PreferenceArray>> pair = splitter.next();
+			assertEquals(108, pair.getFirst().size());
+			assertEquals(36, pair.getSecond().size());
+			assertEmptyIntersection(pair.getFirst(), pair.getSecond());
+		}
+	}
+	
+	private void assertEmptyIntersection(FastByIDMap<PreferenceArray> first, FastByIDMap<PreferenceArray> second) {
+		LongPrimitiveIterator keySetIterator = second.keySetIterator();
+		while (keySetIterator.hasNext()) {
+			Long userID = keySetIterator.next();
+			PreferenceArray trainingPreferences = first.get(userID);
+			PreferenceArray testingPreferences = second.get(userID);
+			assertEmptyIntersection(testingPreferences.getIDs(), trainingPreferences.getIDs());
+		}
+	}
+
+	private void assertEmptyIntersection(long[] iDs, long[] iDs2) {
+		for (int i = 0; i < iDs.length; i++) {
+			for (int j = 0; j < iDs2.length; j++) {
+				assertFalse(iDs[i] == iDs2[j]);
+			}
+		}
+	}
+
+	@Test
 	public void testSplittingSampleDataset() throws Exception {
 		DataModel dataModel = createSampleDataModel();
 		Set<Pair<Long, Long>> testDataset = assertTestDatasetCorrectlyCreated(dataModel);
@@ -140,10 +170,34 @@ public class DatasetSplitterTest {
 	}
 	
 	@Test
+	public void splittingSushiDataset2()  throws Exception {
+		DataModel dataModel = new SushiDataset().build();
+		DatasetSplitter splitter = new DatasetSplitter(dataModel, TESTING_PERCENTAGE, EVALUATION_PERCENTAGE);
+		while (splitter.hasNext()) {
+			Pair<FastByIDMap<PreferenceArray>,FastByIDMap<PreferenceArray>> pair = splitter.next();
+			assertEquals(5000, pair.getFirst().size());
+			assertTrue(1667 == pair.getSecond().size() || 1666 == pair.getSecond().size());
+			assertEmptyIntersection(pair.getFirst(), pair.getSecond());
+		}
+	}
+	
+	@Test
 	public void testSplittingMovielensDataset() throws Exception {
 		DataModel dataModel = new Movielens1MDataset().build();
 		Set<Pair<Long, Long>> testDataset = assertTestDatasetCorrectlyCreated(dataModel);
 		assertEquals(1000209, testDataset.size());
+	}
+	
+	@Test
+	public void splittingMovielensDataset2()  throws Exception {
+		DataModel dataModel = new Movielens1MDataset().build();
+		DatasetSplitter splitter = new DatasetSplitter(dataModel, TESTING_PERCENTAGE, EVALUATION_PERCENTAGE);
+		while (splitter.hasNext()) {
+			Pair<FastByIDMap<PreferenceArray>,FastByIDMap<PreferenceArray>> pair = splitter.next();
+			assertEquals(6040, pair.getFirst().size());
+			assertTrue(2014 == pair.getSecond().size() || 2012 == pair.getSecond().size());
+			assertEmptyIntersection(pair.getFirst(), pair.getSecond());
+		}
 	}
 	
 	private void assertSplitEquals(List<Pair<FastByIDMap<PreferenceArray>, FastByIDMap<PreferenceArray>>> dataset1, List<Pair<FastByIDMap<PreferenceArray>, FastByIDMap<PreferenceArray>>> dataset2) {

@@ -20,6 +20,8 @@ import org.apache.mahout.cf.taste.model.DataModel;
 import org.apache.mahout.cf.taste.model.PreferenceArray;
 import org.apache.mahout.common.Pair;
 
+import com.google.common.base.Joiner;
+
 import recsys.evaluator.DatasetSplitter;
 import recsys.evaluator.RMSRecommenderFairEvaluator;
 import recsys.evaluator.TauRecommenderFairListEvaluator;
@@ -73,6 +75,7 @@ public abstract class AbstractEvaluator {
 		IncludeMetrics metrics = IncludeMetrics.fromList(argsList);
 		double totalScore = 0;
 
+		sb.append("program arguments:\t" + Joiner.on(", ").join(argsList));
 		sb.append("minimum possible preference: " + dataModel.getMinPreference());
 		sb.append("\n");
 		sb.append("maximum possible preference: " + dataModel.getMaxPreference());

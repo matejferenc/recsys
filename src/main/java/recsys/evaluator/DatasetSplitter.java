@@ -221,7 +221,7 @@ public class DatasetSplitter {
 		return alreadySelectedItems;
 	}
 
-	public List<Pair<FastByIDMap<PreferenceArray>, FastByIDMap<PreferenceArray>>> splitDatset() throws TasteException {
+	List<Pair<FastByIDMap<PreferenceArray>, FastByIDMap<PreferenceArray>>> splitDatset() throws TasteException {
 		List<Pair<FastByIDMap<PreferenceArray>, FastByIDMap<PreferenceArray>>> result = new ArrayList<Pair<FastByIDMap<PreferenceArray>,FastByIDMap<PreferenceArray>>>();
 		while (this.hasNext()) {
 			Pair<FastByIDMap<PreferenceArray>, FastByIDMap<PreferenceArray>> next = this.next();
