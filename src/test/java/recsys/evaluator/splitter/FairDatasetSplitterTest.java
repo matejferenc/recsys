@@ -1,4 +1,4 @@
-package recsys.evaluator;
+package recsys.evaluator.splitter;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
@@ -24,11 +24,12 @@ import org.apache.mahout.common.Pair;
 import org.junit.Test;
 import org.mockito.Mockito;
 
+import recsys.evaluator.splitter.FairDatasetSplitter;
 import recsys.movielens.dataset.Movielens1MDataset;
 import recsys.notebooks.dataset.NotebooksDataset;
 import recsys.sushi.dataset.SushiDataset;
 
-public class DatasetSplitterTest {
+public class FairDatasetSplitterTest {
 	
 	private static final double TESTING_PERCENTAGE = 0.3333;
 	private static final double EVALUATION_PERCENTAGE = 0.25;
@@ -36,7 +37,7 @@ public class DatasetSplitterTest {
 	@Test
 	public void sampleTest() throws Exception {
 		DataModel dataModel = new NotebooksDataset().build();
-		DatasetSplitter splitter = new DatasetSplitter(dataModel, TESTING_PERCENTAGE, EVALUATION_PERCENTAGE);
+		FairDatasetSplitter splitter = new FairDatasetSplitter(dataModel, TESTING_PERCENTAGE, EVALUATION_PERCENTAGE);
 		List<Long> userIDs = splitter.getUserIDs();
 		Set<Long> alreadySelectedUsers = new HashSet<Long>();
 		List<Long> sample1 = splitter.createSample(userIDs, 36, alreadySelectedUsers);
@@ -50,7 +51,7 @@ public class DatasetSplitterTest {
 	@Test
 	public void testSplittingUsers1() throws Exception {
 		DataModel dataModel = new NotebooksDataset().build();
-		DatasetSplitter splitter = new DatasetSplitter(dataModel, TESTING_PERCENTAGE, EVALUATION_PERCENTAGE);
+		FairDatasetSplitter splitter = new FairDatasetSplitter(dataModel, TESTING_PERCENTAGE, EVALUATION_PERCENTAGE);
 		for (int i = 0; i < 2; i++) {
 			List<List<Long>> userGroups = splitter.splitUsers(TESTING_PERCENTAGE);
 			assertEquals(3, userGroups.size());
@@ -63,7 +64,7 @@ public class DatasetSplitterTest {
 	@Test
 	public void testSplittingNotebooksDataset1() throws Exception {
 		DataModel dataModel = new NotebooksDataset().build();
-		DatasetSplitter splitter = new DatasetSplitter(dataModel, TESTING_PERCENTAGE, EVALUATION_PERCENTAGE);
+		FairDatasetSplitter splitter = new FairDatasetSplitter(dataModel, TESTING_PERCENTAGE, EVALUATION_PERCENTAGE);
 		Pair<GenericUserPreferenceArray, GenericUserPreferenceArray> splitOneUsersPrefs = splitter.splitOneUsersPrefs(1, 0, false);
 		int trainSize = splitOneUsersPrefs.getFirst().length();
 		int testSize = splitOneUsersPrefs.getSecond().length();
@@ -74,7 +75,7 @@ public class DatasetSplitterTest {
 	@Test
 	public void splittingNotebooksDataset2()  throws Exception {
 		DataModel dataModel = new NotebooksDataset().build();
-		DatasetSplitter splitter = new DatasetSplitter(dataModel, TESTING_PERCENTAGE, EVALUATION_PERCENTAGE);
+		FairDatasetSplitter splitter = new FairDatasetSplitter(dataModel, TESTING_PERCENTAGE, EVALUATION_PERCENTAGE);
 		while (splitter.hasNext()) {
 			Pair<FastByIDMap<PreferenceArray>,FastByIDMap<PreferenceArray>> pair = splitter.next();
 			assertEquals(36, pair.getFirst().size());
@@ -134,8 +135,8 @@ public class DatasetSplitterTest {
 		DataModel dataModel = new SushiDataset().build();
 		double testingPercentage = TESTING_PERCENTAGE;
 		double evaluationPercentage = EVALUATION_PERCENTAGE;
-		DatasetSplitter splitter = new DatasetSplitter(dataModel, testingPercentage, evaluationPercentage);
-		DatasetSplitter spySplitter = Mockito.spy(splitter);
+		FairDatasetSplitter splitter = new FairDatasetSplitter(dataModel, testingPercentage, evaluationPercentage);
+		FairDatasetSplitter spySplitter = Mockito.spy(splitter);
 		List<Pair<FastByIDMap<PreferenceArray>, FastByIDMap<PreferenceArray>>> splitDatset = spySplitter.splitDatset();
 		LongPrimitiveIterator userIDs = dataModel.getUserIDs();
 		while (userIDs.hasNext()) {
@@ -150,7 +151,7 @@ public class DatasetSplitterTest {
 		DataModel dataModel = new SushiDataset().build();
 		double testingPercentage = TESTING_PERCENTAGE;
 		double evaluationPercentage = EVALUATION_PERCENTAGE;
-		DatasetSplitter evaluator = new DatasetSplitter(dataModel, testingPercentage, evaluationPercentage);
+		FairDatasetSplitter evaluator = new FairDatasetSplitter(dataModel, testingPercentage, evaluationPercentage);
 		List<Pair<FastByIDMap<PreferenceArray>, FastByIDMap<PreferenceArray>>> splitDatset = evaluator.splitDatset();
 		LongPrimitiveIterator userIDs = dataModel.getUserIDs();
 		Map<Long, Set<Long>> alreadySelectedItems = evaluator.getAlreadySelectedItems();
@@ -172,7 +173,7 @@ public class DatasetSplitterTest {
 	@Test
 	public void splittingSushiDataset2()  throws Exception {
 		DataModel dataModel = new SushiDataset().build();
-		DatasetSplitter splitter = new DatasetSplitter(dataModel, TESTING_PERCENTAGE, EVALUATION_PERCENTAGE);
+		FairDatasetSplitter splitter = new FairDatasetSplitter(dataModel, TESTING_PERCENTAGE, EVALUATION_PERCENTAGE);
 		while (splitter.hasNext()) {
 			Pair<FastByIDMap<PreferenceArray>,FastByIDMap<PreferenceArray>> pair = splitter.next();
 			assertTrue(1667 == pair.getFirst().size() || 1666 == pair.getFirst().size());
@@ -191,7 +192,7 @@ public class DatasetSplitterTest {
 	@Test
 	public void splittingMovielensDataset2()  throws Exception {
 		DataModel dataModel = new Movielens1MDataset().build();
-		DatasetSplitter splitter = new DatasetSplitter(dataModel, TESTING_PERCENTAGE, EVALUATION_PERCENTAGE);
+		FairDatasetSplitter splitter = new FairDatasetSplitter(dataModel, TESTING_PERCENTAGE, EVALUATION_PERCENTAGE);
 		while (splitter.hasNext()) {
 			Pair<FastByIDMap<PreferenceArray>,FastByIDMap<PreferenceArray>> pair = splitter.next();
 			assertTrue(2014 == pair.getFirst().size() || 2012 == pair.getFirst().size());
@@ -233,8 +234,8 @@ public class DatasetSplitterTest {
 	private Set<Pair<Long, Long>> assertTestDatasetCorrectlyCreated(DataModel dataModel) throws TasteException {
 		double testingPercentage = TESTING_PERCENTAGE;
 		double evaluationPercentage = EVALUATION_PERCENTAGE;
-		DatasetSplitter splitter = new DatasetSplitter(dataModel, testingPercentage, evaluationPercentage);
-		DatasetSplitter splitter1 = new DatasetSplitter(dataModel, testingPercentage, evaluationPercentage);
+		FairDatasetSplitter splitter = new FairDatasetSplitter(dataModel, testingPercentage, evaluationPercentage);
+		FairDatasetSplitter splitter1 = new FairDatasetSplitter(dataModel, testingPercentage, evaluationPercentage);
 		List<Pair<FastByIDMap<PreferenceArray>, FastByIDMap<PreferenceArray>>> splitDatset = splitter.splitDatset();
 		List<Pair<FastByIDMap<PreferenceArray>, FastByIDMap<PreferenceArray>>> splitDatsetCheck = splitter1.splitDatset();
 		assertSplitEquals(splitDatset, splitDatsetCheck);

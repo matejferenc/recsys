@@ -1,4 +1,4 @@
-package recsys.evaluator;
+package recsys.evaluator.splitter;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -25,7 +25,7 @@ import org.apache.mahout.common.RandomUtils;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 
-public class DatasetSplitter {
+public class FairDatasetSplitter implements DataSplitter {
 	
 	private final int totalGroups;
 	
@@ -51,7 +51,7 @@ public class DatasetSplitter {
 	
 	private Map<Pair<Double, Integer>, List<List<Long>>> usersSplitted;
 
-	public DatasetSplitter(DataModel dataModel, double testingPercentage, double evaluationPercentage) throws TasteException {
+	public FairDatasetSplitter(DataModel dataModel, double testingPercentage, double evaluationPercentage) throws TasteException {
 		this.dataModel = dataModel;
 		this.evaluationPercentage = evaluationPercentage;
 		Preconditions.checkArgument(testingPercentage >= 0.0 && testingPercentage <= 1.0, "Invalid testingPercentage: " + testingPercentage + ". Must be: 0.0 <= testingPercentage <= 1.0");
@@ -191,10 +191,12 @@ public class DatasetSplitter {
 		return new ArrayList<Long>(results);
 	}
 
+	@Override
 	public boolean hasNext() {
 		return returnedGroupsCount < totalGroups;
 	}
 	
+	@Override
 	public Pair<FastByIDMap<PreferenceArray>, FastByIDMap<PreferenceArray>> next() throws TasteException {
 		boolean lastGroup = actualEvaluationGroupId == (evaluationGroupsCount - 1);
 		List<Long> userGroup = userGroups.get(actualUserGroupId);

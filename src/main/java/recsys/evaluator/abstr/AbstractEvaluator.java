@@ -22,10 +22,10 @@ import org.apache.mahout.common.Pair;
 
 import com.google.common.base.Joiner;
 
-import recsys.evaluator.DatasetSplitter;
 import recsys.evaluator.RMSRecommenderFairEvaluator;
 import recsys.evaluator.TauRecommenderFairListEvaluator;
 import recsys.evaluator.WeightedRMSRecommenderFairEvaluator;
+import recsys.evaluator.splitter.FairDatasetSplitter;
 
 public abstract class AbstractEvaluator {
 
@@ -105,7 +105,7 @@ public abstract class AbstractEvaluator {
 
 			AbstractRecommenderFairEvaluator evaluator = createEvaluator(dataModel, metrics);
 			
-			DatasetSplitter splitter = new DatasetSplitter(dataModel, testingPercentage, evaluationPercentage);
+			FairDatasetSplitter splitter = new FairDatasetSplitter(dataModel, testingPercentage, evaluationPercentage);
 
 			while (splitter.hasNext()) {
 				Pair<FastByIDMap<PreferenceArray>, FastByIDMap<PreferenceArray>> pair = splitter.next();

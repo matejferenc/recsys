@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.Random;
 
 import org.apache.commons.cli.MissingArgumentException;
 import org.apache.mahout.cf.taste.common.TasteException;
@@ -14,11 +13,11 @@ import org.apache.mahout.cf.taste.model.DataModel;
 import org.apache.mahout.cf.taste.model.PreferenceArray;
 import org.apache.mahout.common.Pair;
 
-import recsys.evaluator.DatasetSplitter;
 import recsys.evaluator.abstr.AbstractEvaluator;
 import recsys.evaluator.abstr.AbstractRecommenderFairEvaluator;
 import recsys.evaluator.abstr.IncludeMetrics;
 import recsys.evaluator.builder.NearestNUserNeighborhoodBuilder;
+import recsys.evaluator.splitter.FairDatasetSplitter;
 import recsys.movielens.dataset.MovieLensEnrichedModelDataset;
 import recsys.movielens.dataset.Movielens1MDataset;
 import recsys.movielens.model.movielens.MovieLensEnrichedModel;
@@ -93,13 +92,9 @@ public class MovielensUserSimilarityFunctionCalculator extends AbstractEvaluator
 
 			AbstractRecommenderFairEvaluator evaluator = createEvaluator(dataModel, metrics);
 			
-			DatasetSplitter splitter = new DatasetSplitter(dataModel, testingPercentage, evaluationPercentage);
+			FairDatasetSplitter splitter = new FairDatasetSplitter(dataModel, testingPercentage, evaluationPercentage);
 
-			int randomGroup = 1 + new Random().nextInt(splitter.getTotalGroups() - 1);
-			Pair<FastByIDMap<PreferenceArray>, FastByIDMap<PreferenceArray>> pair = null;
-			for (int i = 0; i < randomGroup; i++) {
-				pair = splitter.next();
-			}
+			Pair<FastByIDMap<PreferenceArray>, FastByIDMap<PreferenceArray>> pair = splitter.next();
 			
 			FastByIDMap<PreferenceArray> trainingDataset = pair.getFirst();
 			FastByIDMap<PreferenceArray> testDataset = pair.getSecond();

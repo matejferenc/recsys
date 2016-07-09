@@ -18,6 +18,7 @@ import recsys.movielens.dataset.MovieLensEnrichedModelDataset;
 import recsys.movielens.dataset.Movielens1MDataset;
 import recsys.movielens.model.movielens.MovieLensEnrichedModel;
 import recsys.movielens.recommender.builder.MovieLensContentBasedRecommenderBuilder;
+import recsys.movielens.similarity.MovielensUserSimilarityFunction;
 import recsys.movielens.similarity.builder.MovieLensItemSimilarityBuilder;
 import recsys.movielens.similarity.builder.MovieLensUserSimilarityBuilder;
 import recsys.recommender.builder.ItemAndUserAverageRecommenderBuilder;
@@ -64,7 +65,8 @@ public class MovieLensEvaluator extends AbstractEvaluator {
 		List<RecommenderBuilder> builders = new ArrayList<>();
 		
 		if (includeAlgorithms.contains(IncludeAlgorithms.MOVIE_LENS_USER_SIMILARITY)) {
-			UserSimilarityBuilder movieLensUserSimilarityBuilder = new MovieLensUserSimilarityBuilder(movieLensEnrichedModel);
+			MovielensUserSimilarityFunction movielensUserSimilarityFunction = new MovielensUserSimilarityFunction(0.2, 0.2, 0.2, 0.2, 0.2);
+			UserSimilarityBuilder movieLensUserSimilarityBuilder = new MovieLensUserSimilarityBuilder(movieLensEnrichedModel, movielensUserSimilarityFunction);
 			builders.add(new UserBasedRecommenderBuilder(movieLensUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(5)));
 			builders.add(new UserBasedRecommenderBuilder(movieLensUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(10)));
 			builders.add(new UserBasedRecommenderBuilder(movieLensUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(15)));

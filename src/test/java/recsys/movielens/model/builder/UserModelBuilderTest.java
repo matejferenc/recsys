@@ -7,7 +7,7 @@ import org.apache.mahout.cf.taste.model.PreferenceArray;
 import org.apache.mahout.common.Pair;
 import org.junit.Test;
 
-import recsys.evaluator.DatasetSplitter;
+import recsys.evaluator.splitter.FairDatasetSplitter;
 import recsys.movielens.dataset.MovieLensEnrichedModelDataset;
 import recsys.movielens.dataset.Movielens1MDataset;
 import recsys.movielens.model.movielens.MovieLensEnrichedModel;
@@ -19,7 +19,7 @@ public class UserModelBuilderTest {
 	public void testCreatingUserModel() throws Exception {
 		MovieLensEnrichedModel movieLensEnrichedModel = new MovieLensEnrichedModelDataset().build();
 		DataModel dataModel = new Movielens1MDataset().build();
-		DatasetSplitter splitter = new DatasetSplitter(dataModel, 0.25, 0.3333);
+		FairDatasetSplitter splitter = new FairDatasetSplitter(dataModel, 0.25, 0.3333);
 		Pair<FastByIDMap<PreferenceArray>, FastByIDMap<PreferenceArray>> pair = splitter.next();
 		FastByIDMap<PreferenceArray> trainingDataset = pair.getFirst();
 		DataModel trainingModel = new GenericDataModel(trainingDataset);

@@ -9,8 +9,8 @@ import org.apache.mahout.cf.taste.model.PreferenceArray;
 import org.apache.mahout.cf.taste.recommender.Recommender;
 import org.junit.Test;
 
-import recsys.evaluator.DatasetSplitterTest;
 import recsys.evaluator.builder.NearestNUserNeighborhoodBuilder;
+import recsys.evaluator.splitter.FairDatasetSplitterTest;
 import recsys.notebooks.dataset.NotebooksDataset;
 import recsys.recommender.builder.UserBasedRecommenderBuilder;
 import recsys.similarity.builder.EuclideanDistanceUserSimilarityBuilder;
@@ -43,7 +43,7 @@ public class OldAbstractRecommenderFairEvaluatorTest {
 			protected void logPrefsStatistics(FastByIDMap<PreferenceArray> trainingPrefs, FastByIDMap<PreferenceArray> testPrefs) {
 				assertEquals(27, trainingPrefs.size());
 				assertEquals(27, testPrefs.size());
-				DatasetSplitterTest.assertEmptyIntersection(trainingPrefs, testPrefs);
+				FairDatasetSplitterTest.assertEmptyIntersection(trainingPrefs, testPrefs);
 			}
 		};
 		
