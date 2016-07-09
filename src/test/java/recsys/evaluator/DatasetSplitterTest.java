@@ -77,13 +77,13 @@ public class DatasetSplitterTest {
 		DatasetSplitter splitter = new DatasetSplitter(dataModel, TESTING_PERCENTAGE, EVALUATION_PERCENTAGE);
 		while (splitter.hasNext()) {
 			Pair<FastByIDMap<PreferenceArray>,FastByIDMap<PreferenceArray>> pair = splitter.next();
-			assertEquals(108, pair.getFirst().size());
+			assertEquals(36, pair.getFirst().size());
 			assertEquals(36, pair.getSecond().size());
 			assertEmptyIntersection(pair.getFirst(), pair.getSecond());
 		}
 	}
 	
-	private void assertEmptyIntersection(FastByIDMap<PreferenceArray> first, FastByIDMap<PreferenceArray> second) {
+	public static void assertEmptyIntersection(FastByIDMap<PreferenceArray> first, FastByIDMap<PreferenceArray> second) {
 		LongPrimitiveIterator keySetIterator = second.keySetIterator();
 		while (keySetIterator.hasNext()) {
 			Long userID = keySetIterator.next();
@@ -93,7 +93,7 @@ public class DatasetSplitterTest {
 		}
 	}
 
-	private void assertEmptyIntersection(long[] iDs, long[] iDs2) {
+	static void assertEmptyIntersection(long[] iDs, long[] iDs2) {
 		for (int i = 0; i < iDs.length; i++) {
 			for (int j = 0; j < iDs2.length; j++) {
 				assertFalse(iDs[i] == iDs2[j]);
@@ -175,7 +175,7 @@ public class DatasetSplitterTest {
 		DatasetSplitter splitter = new DatasetSplitter(dataModel, TESTING_PERCENTAGE, EVALUATION_PERCENTAGE);
 		while (splitter.hasNext()) {
 			Pair<FastByIDMap<PreferenceArray>,FastByIDMap<PreferenceArray>> pair = splitter.next();
-			assertEquals(5000, pair.getFirst().size());
+			assertTrue(1667 == pair.getFirst().size() || 1666 == pair.getFirst().size());
 			assertTrue(1667 == pair.getSecond().size() || 1666 == pair.getSecond().size());
 			assertEmptyIntersection(pair.getFirst(), pair.getSecond());
 		}
@@ -194,7 +194,7 @@ public class DatasetSplitterTest {
 		DatasetSplitter splitter = new DatasetSplitter(dataModel, TESTING_PERCENTAGE, EVALUATION_PERCENTAGE);
 		while (splitter.hasNext()) {
 			Pair<FastByIDMap<PreferenceArray>,FastByIDMap<PreferenceArray>> pair = splitter.next();
-			assertEquals(6040, pair.getFirst().size());
+			assertTrue(2014 == pair.getFirst().size() || 2012 == pair.getFirst().size());
 			assertTrue(2014 == pair.getSecond().size() || 2012 == pair.getSecond().size());
 			assertEmptyIntersection(pair.getFirst(), pair.getSecond());
 		}

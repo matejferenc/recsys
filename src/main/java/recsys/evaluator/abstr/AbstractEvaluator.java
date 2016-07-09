@@ -31,7 +31,7 @@ public abstract class AbstractEvaluator {
 
 	public static final double testingPercentage = 0.25;
 	public static final double evaluationPercentage = 0.3333;
-	private static final NumberFormat formatter = new DecimalFormat("#0.000");
+	protected static final NumberFormat formatter = new DecimalFormat("#0.000");
 
 	public abstract void evaluate() throws Exception;
 
@@ -76,6 +76,7 @@ public abstract class AbstractEvaluator {
 		double totalScore = 0;
 
 		sb.append("program arguments:\t" + Joiner.on(", ").join(argsList));
+		sb.append("\n");
 		sb.append("minimum possible preference: " + dataModel.getMinPreference());
 		sb.append("\n");
 		sb.append("maximum possible preference: " + dataModel.getMaxPreference());
@@ -238,7 +239,7 @@ public abstract class AbstractEvaluator {
 		return list;
 	}
 
-	private AbstractRecommenderFairEvaluator createEvaluator(DataModel dataModel, IncludeMetrics evaluator) throws MissingArgumentException {
+	public AbstractRecommenderFairEvaluator createEvaluator(DataModel dataModel, IncludeMetrics evaluator) throws MissingArgumentException {
 		AbstractRecommenderFairEvaluator e;
 		if (evaluator == IncludeMetrics.WEIGHTED_RMSE) {
 			e = new WeightedRMSRecommenderFairEvaluator(dataModel, 5, 1);

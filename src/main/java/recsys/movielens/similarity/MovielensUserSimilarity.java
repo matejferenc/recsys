@@ -18,10 +18,14 @@ import recsys.movielens.model.movielens.UserModel;
 public class MovielensUserSimilarity implements UserSimilarity {
 
 	private static final int MAX_DIFFERENCE = 4;
+	
 	private final UserModel userModel;
+	
+	private final MovielensUserSimilarityFunction movielensUserSimilarityFunction;
 
-	public MovielensUserSimilarity(UserModel userModel) {
+	public MovielensUserSimilarity(UserModel userModel, MovielensUserSimilarityFunction movielensUserSimilarityFunction) {
 		this.userModel = userModel;
+		this.movielensUserSimilarityFunction = movielensUserSimilarityFunction;
 	}
 
 	@Override
@@ -38,12 +42,13 @@ public class MovielensUserSimilarity implements UserSimilarity {
 		User user1 = userModel.get(userID1);
 		User user2 = userModel.get(userID2);
 		double genresSimilarity = calculateGenresSimilarity(user1, user2);
-		double directoresSimilarity = calculateDirectorsSimilarity(user1, user2);
+		double directorsSimilarity = calculateDirectorsSimilarity(user1, user2);
 		double actorsSimilarity = calculateActorsSimilarity(user1, user2);
 		double actressesSimilarity = calculateActressesSimilarity(user1, user2);
-		// every partial similarity has the same weight: 1
-//		 we need to divide by 4 (total weight)
-		double userSimilarity = (genresSimilarity + directoresSimilarity + actorsSimilarity + actressesSimilarity) / 4;
+//		double keywordsSimilarity = calculateKeywordsSimilarity(user1, user2);
+		double keywordsSimilarity = 0;
+		
+		double userSimilarity = movielensUserSimilarityFunction.calculateSimilarity(genresSimilarity, directorsSimilarity, actorsSimilarity, actressesSimilarity, keywordsSimilarity);
 		// correction for Taste framework (interface says the return value should be between -1 and +1,
 		// yet the computed similarity is between 0 and +1)
 		double transformedUserSimilarity = userSimilarity * 2 - 1;
@@ -65,6 +70,10 @@ public class MovielensUserSimilarity implements UserSimilarity {
 	private double calculateActressesSimilarity(User user1, User user2) {
 		return calculatePropertySetSimilarity(user1.getActressPreferences(), user2.getActressPreferences());
 	}
+	
+//	private double calculateKeywordsSimilarity(User user1, User user2) {
+//		return calculatePropertySetSimilarity(user1.getKeywordsPreferences(), user2.getKeywordsPreferences());
+//	}
 
 	private double calculatePropertySetSimilarity(SetPreference set1, SetPreference set2) {
 		Set<Integer> commonPropertyIds = getCommonPropertyIds(set1.getAllPropertyIds(), set2.getAllPropertyIds());

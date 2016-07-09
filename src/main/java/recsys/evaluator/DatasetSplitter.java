@@ -68,20 +68,13 @@ public class DatasetSplitter {
 	public Pair<FastByIDMap<PreferenceArray>, FastByIDMap<PreferenceArray>> createTestAndTrainDatasetForPart(int evaluationGroupId, List<Long> userGroup, boolean lastGroup) throws TasteException {
 		FastByIDMap<PreferenceArray> trainingPrefs = new FastByIDMap<PreferenceArray>();
 		FastByIDMap<PreferenceArray> testPrefs = new FastByIDMap<PreferenceArray>();
-		List<Long> userIDs = getUserIDs();
-		for (long userId: userIDs) {
-			if (!userGroup.contains(userId)) {
-				//adding preferences from training set
-				PreferenceArray prefs = dataModel.getPreferencesFromUser(userId);
-				trainingPrefs.put(userId, prefs);
-			} else {
-				//adding preferences from testing set - have to be split in train and test sets
-				Pair<GenericUserPreferenceArray,GenericUserPreferenceArray> splitOneUsersPrefs = splitOneUsersPrefs(userId, evaluationGroupId, lastGroup);
-				if (splitOneUsersPrefs.getFirst() != null) {
-					trainingPrefs.put(userId, splitOneUsersPrefs.getFirst());
-					if (splitOneUsersPrefs.getSecond() != null) {
-						testPrefs.put(userId, splitOneUsersPrefs.getSecond());
-					}
+		for (long userId: userGroup) {
+			//adding preferences from testing set - have to be split in train and test sets
+			Pair<GenericUserPreferenceArray,GenericUserPreferenceArray> splitOneUsersPrefs = splitOneUsersPrefs(userId, evaluationGroupId, lastGroup);
+			if (splitOneUsersPrefs.getFirst() != null) {
+				trainingPrefs.put(userId, splitOneUsersPrefs.getFirst());
+				if (splitOneUsersPrefs.getSecond() != null) {
+					testPrefs.put(userId, splitOneUsersPrefs.getSecond());
 				}
 			}
 		}
@@ -228,6 +221,10 @@ public class DatasetSplitter {
 			result.add(next);
 		}
 		return result;
+	}
+
+	public int getTotalGroups() {
+		return totalGroups;
 	}
 	
 }
