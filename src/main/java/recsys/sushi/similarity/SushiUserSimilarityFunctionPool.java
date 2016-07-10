@@ -25,18 +25,12 @@ public class SushiUserSimilarityFunctionPool extends ArrayList<SushiUserSimilari
 	}
 
 	public void nextGeneration() {
-		Collections.sort(this, new Comparator<SushiUserSimilarityFunction>() {
-		    public int compare(SushiUserSimilarityFunction left, SushiUserSimilarityFunction right) {
-		        return Double.compare(scores.indexOf(left), scores.indexOf(right));
-		    }
-		});
 		List<SushiUserSimilarityFunction> newGeneration = new ArrayList<SushiUserSimilarityFunction>();
 		newGeneration.add(this.get(0));
 		newGeneration.add(this.get(1));
 		newGeneration.add(this.get(2));
 		newGeneration.add(this.get(3));
-		newGeneration.add(this.get(4));
-		newGeneration = mutate(newGeneration);
+		newGeneration.addAll(mutate(newGeneration));
 		this.clear();
 		addAll(newGeneration);
 		scores.clear();
@@ -55,13 +49,16 @@ public class SushiUserSimilarityFunctionPool extends ArrayList<SushiUserSimilari
 	}
 
 	public void printBest() {
-		Collections.sort(this, new Comparator<SushiUserSimilarityFunction>() {
-		    public int compare(SushiUserSimilarityFunction left, SushiUserSimilarityFunction right) {
-		        return Double.compare(scores.indexOf(left), scores.indexOf(right));
-		    }
-		});
 		System.out.println("best function:");
 		System.out.println(this.get(0).toString());
+	}
+
+	public void sort() {
+		Collections.sort(this, new Comparator<SushiUserSimilarityFunction>() {
+		    public int compare(SushiUserSimilarityFunction left, SushiUserSimilarityFunction right) {
+		    	return Double.compare(scores.get(indexOf(left)), scores.get(indexOf(right)));
+		    }
+		});
 	}
 	
 }
