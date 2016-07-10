@@ -72,11 +72,11 @@ public class GenresDataModel {
 
 		long itemID = readItemIDFromString(itemIDString);
 
-		Set<String> genresSet = new HashSet<String>(Arrays.asList(genreString));
+		Set<String> styleSet = new HashSet<String>(Arrays.asList(genreString));
 		if (data.containsKey(itemID))
 			data.get(itemID).add(genreString);
 		else
-			data.put(itemID, genresSet);
+			data.put(itemID, styleSet);
 	}
 
 	protected long readItemIDFromString(String value) {

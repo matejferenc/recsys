@@ -48,33 +48,33 @@ public class NameToIdConverter {
 		}
 	}
 
-	public Set<Long> convertGenresToIds(Set<String> genres) {
+	public Set<Long> convertGenresToIds(Set<String> style) {
 		Set<Long> ids = new HashSet<Long>();
-		for (String genre : genres) {
+		for (String genre : style) {
 			ids.add(convertGenre(genre));
 		}
 		return ids;
 	}
 	
-	public Set<Long> convertDirectorsToIds(Set<String> directors) {
+	public Set<Long> convertDirectorsToIds(Set<String> majorGroup) {
 		Set<Long> ids = new HashSet<Long>();
-		for (String director : directors) {
+		for (String director : majorGroup) {
 			ids.add(convertDirector(director));
 		}
 		return ids;
 	}
 	
-	public Set<Long> convertActorsToIds(Set<String> actors) {
+	public Set<Long> convertActorsToIds(Set<String> minorGroup) {
 		Set<Long> ids = new HashSet<Long>();
-		for (String actor : actors) {
+		for (String actor : minorGroup) {
 			ids.add(convertActor(actor));
 		}
 		return ids;
 	}
 	
-	public Set<Long> convertActressesToIds(Set<String> actresses) {
+	public Set<Long> convertActressesToIds(Set<String> oiliness) {
 		Set<Long> ids = new HashSet<Long>();
-		for (String actress : actresses) {
+		for (String actress : oiliness) {
 			ids.add(convertActress(actress));
 		}
 		return ids;

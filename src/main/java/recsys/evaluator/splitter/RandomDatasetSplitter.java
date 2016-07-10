@@ -53,16 +53,19 @@ public class RandomDatasetSplitter implements DataSplitter {
 	}
 	
 	public Pair<FastByIDMap<PreferenceArray>, FastByIDMap<PreferenceArray>> createTestAndTrainDatasetForPart(int groupId) throws TasteException {
-		int preferencesInGroup = totalPreferences / totalGroups;
-		if (groupId == (totalGroups - 1)) {
-			preferencesInGroup = totalPreferences - (totalGroups - 1) * preferencesInGroup;
-		}
+		boolean lastGroup = groupId == (totalGroups - 1);
 		Random random = RandomUtils.getRandom(groupId);
 		FastByIDMap<PreferenceArray> trainingPrefs = new FastByIDMap<PreferenceArray>();
 		FastByIDMap<PreferenceArray> testPrefs = new FastByIDMap<PreferenceArray>();
 		Set<Long> itemIDs = getAllItemIDs();
 		Set<Long> userIDs = getAllUserIDs();
-		Set<Pair<Long, Long>> randomSplit = getRandomPreferences(random, userIDs, itemIDs, preferencesInGroup);
+		Set<Pair<Long, Long>> randomSplit;
+		if (lastGroup) {
+			randomSplit = getRestOfPreferences(userIDs, itemIDs);
+		} else {
+			int preferencesInGroup = totalPreferences / totalGroups;
+			randomSplit = getRandomPreferences(random, userIDs, itemIDs, preferencesInGroup);
+		}
 		alreadySelectedPreferences.addAll(randomSplit);
 		
 		for (long userID: userIDs) {
@@ -120,6 +123,22 @@ public class RandomDatasetSplitter implements DataSplitter {
 						if (!alreadySelectedPreferences.contains(pair) && !result.contains(pair)) {
 							result.add(pair);
 						}
+					}
+				}
+			}
+		}
+		return result;
+	}
+	
+	private Set<Pair<Long, Long>> getRestOfPreferences(Set<Long> userIDs, Set<Long> itemIDs) throws TasteException {
+		Set<Pair<Long, Long>> result = new HashSet<Pair<Long, Long>>();
+		for (Long userID : userIDs) {
+			for (Long itemID : itemIDs) {
+				Float preferenceValue = dataModel.getPreferenceValue(userID, itemID);
+				if (preferenceValue != null) {
+					Pair<Long, Long> pair = new Pair<Long, Long>(userID, itemID);
+					if (!alreadySelectedPreferences.contains(pair)) {
+						result.add(pair);
 					}
 				}
 			}

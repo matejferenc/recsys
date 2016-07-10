@@ -6,7 +6,7 @@ import java.util.Set;
 
 /**
  * Represents preferences of one user to attributes.
- * Attributes can be for example genres, actors, directors or actresses<br/>
+ * Attributes can be for example style, minorGroup, majorGroup or oiliness<br/>
  */
 public class SetPreference {
 

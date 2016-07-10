@@ -26,6 +26,7 @@ import recsys.evaluator.RMSRecommenderFairEvaluator;
 import recsys.evaluator.TauRecommenderFairListEvaluator;
 import recsys.evaluator.WeightedRMSRecommenderFairEvaluator;
 import recsys.evaluator.splitter.FairDatasetSplitter;
+import recsys.evaluator.splitter.RandomDatasetSplitter;
 
 public abstract class AbstractEvaluator {
 
@@ -105,7 +106,8 @@ public abstract class AbstractEvaluator {
 
 			AbstractRecommenderFairEvaluator evaluator = createEvaluator(dataModel, metrics);
 			
-			FairDatasetSplitter splitter = new FairDatasetSplitter(dataModel, testingPercentage, evaluationPercentage);
+//			FairDatasetSplitter splitter = new FairDatasetSplitter(dataModel, testingPercentage, evaluationPercentage);
+			RandomDatasetSplitter splitter = new RandomDatasetSplitter(dataModel, 10);
 
 			while (splitter.hasNext()) {
 				Pair<FastByIDMap<PreferenceArray>, FastByIDMap<PreferenceArray>> pair = splitter.next();

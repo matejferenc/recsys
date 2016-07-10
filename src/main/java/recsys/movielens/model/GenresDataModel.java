@@ -46,13 +46,13 @@ public class GenresDataModel {
 		processFile(iterator, data, names);
 	}
 
-	protected void processFile(FileLineIterator dataFileIterator, FastByIDMap<Set<String>> genres, FastByIDMap<String> names) {
+	protected void processFile(FileLineIterator dataFileIterator, FastByIDMap<Set<String>> style, FastByIDMap<String> names) {
 		log.info("Reading file info...");
 		int count = 0;
 		while (dataFileIterator.hasNext()) {
 			String line = dataFileIterator.next();
 			if (!line.isEmpty()) {
-				processLine(line, genres, names);
+				processLine(line, style, names);
 				if (++count % 1000000 == 0) {
 					log.info("Processed {} lines", count);
 				}
@@ -64,10 +64,10 @@ public class GenresDataModel {
 	/**
 	 * processing of one line
 	 * @param line
-	 * @param genres
+	 * @param style
 	 * @param names
 	 */
-	protected void processLine(String line, FastByIDMap<Set<String>> genres, FastByIDMap<String> names) {
+	protected void processLine(String line, FastByIDMap<Set<String>> style, FastByIDMap<String> names) {
 		// Ignore empty lines and comments
 		if (line.isEmpty() || line.charAt(0) == COMMENT_CHAR) {
 			return;
@@ -76,20 +76,20 @@ public class GenresDataModel {
 		Iterator<String> tokens = delimiterPattern.split(line).iterator();
 		String itemIDString = tokens.next();
 		String itemTitleString = tokens.next();
-		String genresString = tokens.next();
+		String styleString = tokens.next();
 
 		long itemID = readItemIDFromString(itemIDString);
 
-		List<String> genresList = readGenresFromString(genresString);
-		Set<String> genresSet = new HashSet<String>(genresList);
-		genres.put(itemID, genresSet);
+		List<String> styleList = readGenresFromString(styleString);
+		Set<String> styleSet = new HashSet<String>(styleList);
+		style.put(itemID, styleSet);
 
 		names.put(itemID, itemTitleString);
 
 	}
 
-	private List<String> readGenresFromString(String genresString) {
-		String[] split = genresString.split("\\|");
+	private List<String> readGenresFromString(String styleString) {
+		String[] split = styleString.split("\\|");
 		return Arrays.asList(split);
 	}
 

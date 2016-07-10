@@ -18,7 +18,7 @@ public class MovieCollectionTest {
 	@Test
 	public void testFindingMovieForGenres() throws Exception {
 		prop.load(getClass().getClassLoader().getResourceAsStream("config.properties"));
-		File imdbGenresFile = new File(prop.getProperty("imdb-genres.list"));
+		File imdbGenresFile = new File(prop.getProperty("imdb-style.list"));
 		imdbGenresDataModel = new ImdbGenresDataModel(imdbGenresFile);
 		
 		assertMovieGenreFound("Underneath, The", 1995);
@@ -47,7 +47,7 @@ public class MovieCollectionTest {
 	@Test
 	public void testFindingMovieForDirectors() throws Exception {
 		prop.load(getClass().getClassLoader().getResourceAsStream("config.properties"));
-		File imdbGenresFile = new File(prop.getProperty("imdb-genres.list"));
+		File imdbGenresFile = new File(prop.getProperty("imdb-style.list"));
 		imdbGenresDataModel = new ImdbGenresDataModel(imdbGenresFile);
 	}
 	

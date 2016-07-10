@@ -11,6 +11,7 @@ import recsys.sushi.evaluator.IncludeProperties;
 import recsys.sushi.model.SushiItemDataModel;
 import recsys.sushi.model.SushiUserModel;
 import recsys.sushi.model.builder.SushiUserModelBuilder;
+import recsys.sushi.similarity.SushiUserSimilarityFunction;
 import recsys.sushi.similarity.SushiUserWeightedSimilarity;
 
 public class SushiUserWeightedSimilarityBuilder implements UserSimilarityBuilder {
@@ -18,9 +19,9 @@ public class SushiUserWeightedSimilarityBuilder implements UserSimilarityBuilder
 	private final SushiItemDataModel sushiDataModel;
 	private EnumSet<IncludeProperties> includeProperties;
 	
-	public SushiUserWeightedSimilarityBuilder(SushiItemDataModel sushiDataModel, EnumSet<IncludeProperties> includeProperties) {
+	public SushiUserWeightedSimilarityBuilder(SushiItemDataModel sushiDataModel, SushiUserSimilarityFunction function) {
 		this.sushiDataModel = sushiDataModel;
-		this.includeProperties = includeProperties;
+		this.includeProperties = function;
 	}
 
 	@Override

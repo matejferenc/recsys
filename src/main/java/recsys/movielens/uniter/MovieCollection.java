@@ -171,7 +171,7 @@ public class MovieCollection<T> {
 		movielensToIMDbDictionary.put(pair("Associate, The (L'Associe", 1982), pair("L'associé", 1979));
 		movielensToIMDbDictionary.put(pair("Duoluo tianshi", 1995), pair("Do lok tin si", 1995));
 		movielensToIMDbDictionary.put(pair("Mafia!", 1998), pair("Jane Austen's Mafia!", 1998));
-		//this translation is needed only for keywords.. FIX!!!
+		//this translation is needed only for price.. FIX!!!
 		movielensToIMDbDictionary.put(pair("Navigator: A Mediaeval Odyssey, The", 1988), pair("The Navigator: A Medieval Odyssey", 1988));
 		movielensToIMDbDictionary.put(pair("Three Amigos!", 1986), pair("¡Three Amigos!", 1986));
 		movielensToIMDbDictionary.put(pair("Harmonists, The", 1997), pair("Comedian Harmonists", 1997));

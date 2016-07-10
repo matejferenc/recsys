@@ -1,4 +1,4 @@
-package recsys.movielens.evaluator;
+package recsys.sushi.evaluator;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,39 +18,38 @@ import recsys.evaluator.abstr.AbstractRecommenderFairEvaluator;
 import recsys.evaluator.abstr.IncludeMetrics;
 import recsys.evaluator.builder.NearestNUserNeighborhoodBuilder;
 import recsys.evaluator.splitter.RandomDatasetSplitter;
-import recsys.movielens.dataset.MovieLensEnrichedModelDataset;
 import recsys.movielens.dataset.Movielens1MDataset;
-import recsys.movielens.model.movielens.MovieLensEnrichedModel;
-import recsys.movielens.similarity.MovielensUserSimilarityFunction;
-import recsys.movielens.similarity.MovielensUserSimilarityFunctionPool;
-import recsys.movielens.similarity.builder.MovieLensUserSimilarityBuilder;
 import recsys.recommender.builder.UserBasedRecommenderBuilder;
 import recsys.similarity.builder.UserSimilarityBuilder;
+import recsys.sushi.dataset.SushiDataset;
+import recsys.sushi.dataset.SushiItemDataModelDataset;
+import recsys.sushi.model.SushiItemDataModel;
+import recsys.sushi.similarity.SushiUserSimilarityFunction;
+import recsys.sushi.similarity.SushiUserSimilarityFunctionPool;
+import recsys.sushi.similarity.builder.SushiUserSimilarityBuilder;
 
-public class MovielensUserSimilarityFunctionCalculator extends AbstractEvaluator {
+public class SushiUserSimilarityFunctionCalculator extends AbstractEvaluator {
 
 	private static final int GROUPS_COUNT = 5;
 	private List<String> argsList;
-	private MovieLensEnrichedModel movieLensEnrichedModel;
 
-	public MovielensUserSimilarityFunctionCalculator(List<String> argsList) {
+	public SushiUserSimilarityFunctionCalculator(List<String> argsList) {
 		this.argsList = argsList;
 	}
 
 	public static void main(String[] args) throws Exception {
 		List<String> argsList = Arrays.asList(args);
-		MovielensUserSimilarityFunctionCalculator e = new MovielensUserSimilarityFunctionCalculator(argsList);
+		SushiUserSimilarityFunctionCalculator e = new SushiUserSimilarityFunctionCalculator(argsList);
 		e.evaluate();
 	}
 
 	@Override
 	public void evaluate() throws Exception {
-		DataModel dataModel = new Movielens1MDataset().build();
-		movieLensEnrichedModel = new MovieLensEnrichedModelDataset().build();
-		MovielensUserSimilarityFunctionPool pool = new MovielensUserSimilarityFunctionPool();
+		DataModel dataModel = new SushiDataset().build();
+		SushiUserSimilarityFunctionPool pool = new SushiUserSimilarityFunctionPool();
 		pool.generateRandom(10);
 		while (true) {
-			for (MovielensUserSimilarityFunction function : pool) {
+			for (SushiUserSimilarityFunction function : pool) {
 				List<RecommenderBuilder> builders = createRecommenderBuilders(dataModel, function);
 				double averageScore = evaluateRecommenders(dataModel, builders, argsList);
 				System.out.println("AVERAGE SCORE OF EVOLUTION ALGORITHM: " + averageScore);
@@ -70,7 +69,7 @@ public class MovielensUserSimilarityFunctionCalculator extends AbstractEvaluator
 		sb.append("maximum possible preference: " + dataModel.getMaxPreference());
 		sb.append("\n");
 
-		sb.append("Starting cross validation using " + 5 + " groups");
+		sb.append("Starting cross validation using " + GROUPS_COUNT + " groups");
 		sb.append("\n");
 
 		sb.append("Builder\t");
@@ -97,7 +96,6 @@ public class MovielensUserSimilarityFunctionCalculator extends AbstractEvaluator
 				FastByIDMap<PreferenceArray> trainingDataset = pair.getFirst();
 				FastByIDMap<PreferenceArray> testDataset = pair.getSecond();
 				double score = evaluator.evaluate(builder, trainingDataset, testDataset);
-				totalScore += score;
 				evaluated.add(score);
 			}
 
@@ -113,35 +111,39 @@ public class MovielensUserSimilarityFunctionCalculator extends AbstractEvaluator
 			sb.append("\t");
 			sb.append((end.getTime() - start.getTime()) / 1000);
 			sb.append("\t");
-			sb.append(formatter.format(totalScore / GROUPS_COUNT));
+			sb.append(formatter.format(average(evaluated)));
 			sb.append("\t\t");
 			sb.append(listOfDoublesToString(evaluated));
 			sb.append("\n");
 
+			totalScore += average(evaluated);
 			builder.freeReferences();
 		}
 
 		System.out.println(sb.toString());
-		return totalScore / GROUPS_COUNT / builders.size();
+		return totalScore / builders.size();
 	}
 
-	private List<RecommenderBuilder> createRecommenderBuilders(DataModel dataModel, MovielensUserSimilarityFunction movielensUserSimilarityFunction) throws Exception, TasteException {
+	private List<RecommenderBuilder> createRecommenderBuilders(DataModel dataModel, SushiUserSimilarityFunction sushiUserSimilarityFunction) throws Exception, TasteException {
 		List<RecommenderBuilder> builders = new ArrayList<>();
-
-		UserSimilarityBuilder movieLensUserSimilarityBuilder = new MovieLensUserSimilarityBuilder(movieLensEnrichedModel, movielensUserSimilarityFunction);
-		// builders.add(new UserBasedRecommenderBuilder(movieLensUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(5)));
-		// builders.add(new UserBasedRecommenderBuilder(movieLensUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(10)));
-		// builders.add(new UserBasedRecommenderBuilder(movieLensUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(15)));
-		// builders.add(new UserBasedRecommenderBuilder(movieLensUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(20)));
-		// builders.add(new UserBasedRecommenderBuilder(movieLensUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(25)));
-		builders.add(new UserBasedRecommenderBuilder(movieLensUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(30)));
-		// builders.add(new UserBasedRecommenderBuilder(movieLensUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(35)));
-		// builders.add(new UserBasedRecommenderBuilder(movieLensUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(40)));
-		// builders.add(new UserBasedRecommenderBuilder(movieLensUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(45)));
-		// builders.add(new UserBasedRecommenderBuilder(movieLensUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(50)));
-		// builders.add(new UserBasedRecommenderBuilder(movieLensUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(75)));
-		// builders.add(new UserBasedRecommenderBuilder(movieLensUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(100)));
-
+		SushiItemDataModel sushiDataModel = new SushiItemDataModelDataset().build();
+		UserSimilarityBuilder sushiUserSimilarityBuilder = new SushiUserSimilarityBuilder(sushiDataModel, sushiUserSimilarityFunction);
+//		builders.add(new UserBasedRecommenderBuilder(sushiUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(5)));
+//		builders.add(new UserBasedRecommenderBuilder(sushiUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(10)));
+//		builders.add(new UserBasedRecommenderBuilder(sushiUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(15)));
+//		builders.add(new UserBasedRecommenderBuilder(sushiUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(20)));
+//		builders.add(new UserBasedRecommenderBuilder(sushiUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(25)));
+//		builders.add(new UserBasedRecommenderBuilder(sushiUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(30)));
+//		builders.add(new UserBasedRecommenderBuilder(sushiUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(35)));
+//		builders.add(new UserBasedRecommenderBuilder(sushiUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(40)));
+//		builders.add(new UserBasedRecommenderBuilder(sushiUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(45)));
+//		builders.add(new UserBasedRecommenderBuilder(sushiUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(50)));
+//		builders.add(new UserBasedRecommenderBuilder(sushiUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(75)));
+//		builders.add(new UserBasedRecommenderBuilder(sushiUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(100)));
+		builders.add(new UserBasedRecommenderBuilder(sushiUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(125)));
+//		builders.add(new UserBasedRecommenderBuilder(sushiUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(150)));
+//		builders.add(new UserBasedRecommenderBuilder(sushiUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(175)));
+//		builders.add(new UserBasedRecommenderBuilder(sushiUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(200)));
 		return builders;
 	}
 

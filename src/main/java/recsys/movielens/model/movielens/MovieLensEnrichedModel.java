@@ -18,11 +18,11 @@ public class MovieLensEnrichedModel {
 		this.movies = new HashMap<>();
 	}
 	
-	public void addEnrichedMovie(String itemTitle, long itemID, int itemYear, Set<String> genres,
+	public void addEnrichedMovie(String itemTitle, long itemID, int itemYear, Set<String> style,
 			Set<Integer> imdbGenres, Set<Integer> imdbDirectors, Set<Integer> imdbActors, Set<Integer> imdbActresses, Set<Integer> imdbKeywords){
 		movielensDataModel.getItemIDs().add(itemID);
 		movielensDataModel.getNames().put(itemID, itemTitle);
-		movielensDataModel.getGenres().put(itemID, genres);
+		movielensDataModel.getGenres().put(itemID, style);
 		movielensDataModel.getYears().put(itemID, itemYear);
 		
 		Movie<Integer> movie = new Movie<>(imdbGenres, imdbDirectors, imdbActors, imdbActresses, imdbKeywords);

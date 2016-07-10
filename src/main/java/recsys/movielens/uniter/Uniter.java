@@ -88,11 +88,11 @@ public class Uniter {
 		List<Long> itemIDs = movielensDataModel.getItemIDs();
 		FastByIDMap<String> names = movielensDataModel.getNames();
 		FastByIDMap<Integer> years = movielensDataModel.getYears();
-		FastByIDMap<Set<String>> genres = movielensDataModel.getGenres();
+		FastByIDMap<Set<String>> style = movielensDataModel.getGenres();
 		for (Long itemID : itemIDs) {
 			String movieName = names.get(itemID);
 			Integer movieYear = years.get(itemID);
-			Set<String> movieGenres = genres.get(itemID);
+			Set<String> movieGenres = style.get(itemID);
 			Movie<String> movie = movielensMoviesCollection.getOrCreateMovie(movieName, movieYear);
 			Set<String> imdbGenres = movie.getGenres();
 			Set<String> imdbDirectors = movie.getDirectors();
@@ -123,7 +123,7 @@ public class Uniter {
 		writer.println(movieLine);
 	}
 
-	private String createMovieLine(String name, long id, int year, Set<String> genres,
+	private String createMovieLine(String name, long id, int year, Set<String> style,
 			Set<String> imdbGenres, Set<String> imdbDirectors, Set<String> imdbActors, Set<String> imdbActresses, Set<String> imdbKeywords) {
 		StringBuilder sb = new StringBuilder();
 		sb.append(id);
@@ -132,7 +132,7 @@ public class Uniter {
 		sb.append(fieldSeparator);
 		sb.append(year);
 		sb.append(fieldSeparator);
-		sb.append(createSetString(genres));
+		sb.append(createSetString(style));
 		sb.append(fieldSeparator);
 		sb.append(createSetString(nameToIdConverter.convertGenresToIds(imdbGenres)));
 		sb.append(fieldSeparator);
@@ -160,7 +160,7 @@ public class Uniter {
 	void uniteActresses() throws Exception {
 		System.err.println("Uniting Actresses");
 		
-		File imdbActressesFile = new File(prop.getProperty("imdb-actresses.list"));
+		File imdbActressesFile = new File(prop.getProperty("imdb-oiliness.list"));
 		imdbActressesDataModel = new ImdbActressesDataModel(imdbActressesFile);
 
 		moviesNotFound = 0;
@@ -181,14 +181,14 @@ public class Uniter {
 				moviesFound++;
 			}
 		}
-		System.err.println("Successfully matched actresses for " + moviesFound + " movies");
-		System.err.println("Could not match actresses for " + moviesNotFound + " movies");
+		System.err.println("Successfully matched oiliness for " + moviesFound + " movies");
+		System.err.println("Could not match oiliness for " + moviesNotFound + " movies");
 	}
 
 	void uniteActors() throws Exception {
 		System.err.println("Uniting Actors");
 		
-		File imdbActorsFile = new File(prop.getProperty("imdb-actors.list"));
+		File imdbActorsFile = new File(prop.getProperty("imdb-minorGroup.list"));
 		imdbActorsDataModel = new ImdbActorsDataModel(imdbActorsFile);
 
 		moviesNotFound = 0;
@@ -209,14 +209,14 @@ public class Uniter {
 				moviesFound++;
 			}
 		}
-		System.err.println("Successfully matched actors for " + moviesFound + " movies");
-		System.err.println("Could not match actors for " + moviesNotFound + " movies");
+		System.err.println("Successfully matched minorGroup for " + moviesFound + " movies");
+		System.err.println("Could not match minorGroup for " + moviesNotFound + " movies");
 	}
 
 	void uniteDirectors() throws Exception {
 		System.err.println("Uniting Directors");
 		
-		File imdbDirectorsFile = new File(prop.getProperty("imdb-directors.list"));
+		File imdbDirectorsFile = new File(prop.getProperty("imdb-majorGroup.list"));
 		imdbDirectorsDataModel = new ImdbDirectorsDataModel(imdbDirectorsFile);
 
 		moviesNotFound = 0;
@@ -239,14 +239,14 @@ public class Uniter {
 				moviesFound++;
 			}
 		}
-		System.err.println("Successfully matched directors for " + moviesFound + " movies");
-		System.err.println("Could not match directors for " + moviesNotFound + " movies");
+		System.err.println("Successfully matched majorGroup for " + moviesFound + " movies");
+		System.err.println("Could not match majorGroup for " + moviesNotFound + " movies");
 	}
 
 	void uniteGenres() throws Exception {
 		System.err.println("Uniting Genres");
 		
-		File imdbGenresFile = new File(prop.getProperty("imdb-genres.list"));
+		File imdbGenresFile = new File(prop.getProperty("imdb-style.list"));
 		imdbGenresDataModel = new ImdbGenresDataModel(imdbGenresFile);
 
 		moviesNotFound = 0;
@@ -269,14 +269,14 @@ public class Uniter {
 				moviesFound++;
 			}
 		}
-		System.err.println("Successfully matched genres for " + moviesFound + " movies");
-		System.err.println("Could not match genres for " + moviesNotFound + " movies");
+		System.err.println("Successfully matched style for " + moviesFound + " movies");
+		System.err.println("Could not match style for " + moviesNotFound + " movies");
 	}
 	
 	void uniteKeywords() throws Exception {
 		System.err.println("Uniting Keywords");
 		
-		File imdbKeywordsFile = new File(prop.getProperty("imdb-keywords.list"));
+		File imdbKeywordsFile = new File(prop.getProperty("imdb-price.list"));
 		imdbKeywordsDataModel = new ImdbKeywordsDataModel(imdbKeywordsFile);
 
 		moviesNotFound = 0;
@@ -298,18 +298,18 @@ public class Uniter {
 				moviesFound++;
 			}
 		}
-		System.err.println("Successfully matched keywords for " + moviesFound + " movies");
-		System.err.println("Could not match keywords for " + moviesNotFound + " movies");
+		System.err.println("Successfully matched price for " + moviesFound + " movies");
+		System.err.println("Could not match price for " + moviesNotFound + " movies");
 	}
 	
 	private Set<String> getAllKeywords() {
 		MovieCollection<String> movieCollection = imdbKeywordsDataModel.getMovieCollection();
 		Set<Movie<String>> movies = movieCollection.getMovies();
-		Set<String> keywords = new HashSet<String>();
+		Set<String> price = new HashSet<String>();
 		for (Movie<String> movie : movies) {
-			keywords.addAll(movie.getKeywords());
+			price.addAll(movie.getKeywords());
 		}
-		return keywords;
+		return price;
 	}
 
 	private Set<String> getNonUniqueKeywords(Set<String> movieKeywords, Set<String> allKeywords) {

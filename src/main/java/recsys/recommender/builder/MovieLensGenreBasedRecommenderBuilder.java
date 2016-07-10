@@ -12,10 +12,10 @@ import recsys.movielens.similarity.SetSimilarity;
 
 public class MovieLensGenreBasedRecommenderBuilder implements RecommenderBuilder {
 
-	private GenresDataModel genresModel;
+	private GenresDataModel styleModel;
 
-	public MovieLensGenreBasedRecommenderBuilder(GenresDataModel genresModel) {
-		this.genresModel = genresModel;
+	public MovieLensGenreBasedRecommenderBuilder(GenresDataModel styleModel) {
+		this.styleModel = styleModel;
 	}
 
 	@Override
@@ -23,7 +23,7 @@ public class MovieLensGenreBasedRecommenderBuilder implements RecommenderBuilder
 //		SetSimilarity setSimilarity = new SimpleSetSimilarity();
 //		SetSimilarity setSimilarity = new SquareRootSetSimilarity();
 		SetSimilarity setSimilarity = new OneSetSimilarity();
-		Recommender recommender = new ContentBasedMovieGenreRecommender(dataModel, genresModel, setSimilarity);
+		Recommender recommender = new ContentBasedMovieGenreRecommender(dataModel, styleModel, setSimilarity);
 		return recommender;
 	}
 

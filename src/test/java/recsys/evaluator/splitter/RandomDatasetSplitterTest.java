@@ -35,8 +35,8 @@ public class RandomDatasetSplitterTest {
 		RandomDatasetSplitter splitter = new RandomDatasetSplitter(dataModel, PARTS);
 		while (splitter.hasNext()) {
 			Pair<FastByIDMap<PreferenceArray>,FastByIDMap<PreferenceArray>> pair = splitter.next();
-			assertEquals(36, pair.getFirst().size());
-			assertEquals(36, pair.getSecond().size());
+			assertEquals(108, pair.getFirst().size());
+			assertEquals(108, pair.getSecond().size());
 			assertEmptyIntersection(pair.getFirst(), pair.getSecond());
 		}
 	}

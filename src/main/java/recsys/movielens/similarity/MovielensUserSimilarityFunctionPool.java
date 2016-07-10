@@ -1,11 +1,9 @@
-package recsys.movielens.evaluator;
+package recsys.movielens.similarity;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-
-import recsys.movielens.similarity.MovielensUserSimilarityFunction;
 
 public class MovielensUserSimilarityFunctionPool extends ArrayList<MovielensUserSimilarityFunction>{
 	
@@ -13,12 +11,12 @@ public class MovielensUserSimilarityFunctionPool extends ArrayList<MovielensUser
 
 	public void generateRandom(int populationSize) {
 		for (int i = 0; i < populationSize; i++) {
-			Double genresCoefficient = (double) (0.2 * (1 + Math.random()));
-			Double directorsCoefficient = (double) (0.2 * (1 + Math.random()));
-			Double actorsCoefficient = (double) (0.2 * (1 + Math.random()));
-			Double actressesCoefficient = (double) (0.2 * (1 + Math.random()));
-			Double keywordsCoefficient = (double) (0.2 * (1 + Math.random()));
-			this.add(new MovielensUserSimilarityFunction(genresCoefficient, directorsCoefficient, actorsCoefficient, actressesCoefficient, keywordsCoefficient));
+			Double styleCoefficient = (double) (0.2 * (1 + Math.random()));
+			Double majorGroupCoefficient = (double) (0.2 * (1 + Math.random()));
+			Double minorGroupCoefficient = (double) (0.2 * (1 + Math.random()));
+			Double oilinessCoefficient = (double) (0.2 * (1 + Math.random()));
+			Double priceCoefficient = (double) (0.2 * (1 + Math.random()));
+			this.add(new MovielensUserSimilarityFunction(styleCoefficient, majorGroupCoefficient, minorGroupCoefficient, oilinessCoefficient, priceCoefficient));
 		}
 	}
 

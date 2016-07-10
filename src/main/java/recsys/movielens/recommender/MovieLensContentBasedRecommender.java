@@ -52,18 +52,18 @@ public class MovieLensContentBasedRecommender implements Recommender {
 	@Override
 	public float estimatePreference(long userID, long itemID) throws TasteException {
 		User user = userModel.get(userID);
-		double genresRating = calculateGenresRating(user, itemID);
-		double directorsRating = calculateDirectorsRating(user, itemID);
-		double actorsRating = calculateActorsRating(user, itemID);
-		double actressesRating = calculateActressesRating(user, itemID);
+		double styleRating = calculateGenresRating(user, itemID);
+		double majorGroupRating = calculateDirectorsRating(user, itemID);
+		double minorGroupRating = calculateActorsRating(user, itemID);
+		double oilinessRating = calculateActressesRating(user, itemID);
 		
-		int nonZeroRatingCount = getNonZeroRatingCount(genresRating, directorsRating, actorsRating, actressesRating);
-		return (float) ((genresRating + directorsRating + actorsRating + actressesRating) / nonZeroRatingCount);
+		int nonZeroRatingCount = getNonZeroRatingCount(styleRating, majorGroupRating, minorGroupRating, oilinessRating);
+		return (float) ((styleRating + majorGroupRating + minorGroupRating + oilinessRating) / nonZeroRatingCount);
 		
 	}
 
-	private int getNonZeroRatingCount(double genresRating, double directorsRating, double actorsRating, double actressesRating) {
-		return isNonZero(genresRating) + isNonZero(directorsRating) + isNonZero(actorsRating) + isNonZero(actressesRating);
+	private int getNonZeroRatingCount(double styleRating, double majorGroupRating, double minorGroupRating, double oilinessRating) {
+		return isNonZero(styleRating) + isNonZero(majorGroupRating) + isNonZero(minorGroupRating) + isNonZero(oilinessRating);
 	}
 
 	private int isNonZero(double rating) {

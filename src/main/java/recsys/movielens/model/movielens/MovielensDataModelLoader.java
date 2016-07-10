@@ -76,27 +76,27 @@ public class MovielensDataModelLoader {
 			String itemTitle = itemTitleWithYearString.substring(0, itemTitleWithYearString.length() - 7);
 			String itemYearString = itemTitleWithYearString.substring(itemTitleWithYearString.length() - 5, itemTitleWithYearString.length() - 1);
 			Integer itemYear = Integer.parseInt(itemYearString);
-			String genresString = tokens.next();
+			String styleString = tokens.next();
 
 			long itemID = readItemIDFromString(itemIDString);
 
-			List<String> genresList = readGenresFromString(genresString);
-			Set<String> genresSet = new HashSet<String>(genresList);
-			addMovieToDataModel(itemTitle, itemYear, itemID, genresSet);
+			List<String> styleList = readGenresFromString(styleString);
+			Set<String> styleSet = new HashSet<String>(styleList);
+			addMovieToDataModel(itemTitle, itemYear, itemID, styleSet);
 		} catch (Exception e) {
 			throw new IllegalStateException("something wrong on this line: " + line, e);
 		}
 	}
 
-	private void addMovieToDataModel(String itemTitle, Integer itemYear, long itemID, Set<String> genresSet) {
-		movielensDataModel.getGenres().put(itemID, genresSet);
+	private void addMovieToDataModel(String itemTitle, Integer itemYear, long itemID, Set<String> styleSet) {
+		movielensDataModel.getGenres().put(itemID, styleSet);
 		movielensDataModel.getNames().put(itemID, itemTitle);
 		movielensDataModel.getYears().put(itemID, itemYear);
 		movielensDataModel.getItemIDs().add(itemID);
 	}
 
-	private List<String> readGenresFromString(String genresString) {
-		String[] split = genresString.split("\\|");
+	private List<String> readGenresFromString(String styleString) {
+		String[] split = styleString.split("\\|");
 		return Arrays.asList(split);
 	}
 

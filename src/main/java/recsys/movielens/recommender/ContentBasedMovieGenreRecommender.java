@@ -19,12 +19,12 @@ import recsys.movielens.similarity.SetSimilarity;
 
 public class ContentBasedMovieGenreRecommender extends AbstractRecommender {
 
-	private GenresDataModel genresModel;
+	private GenresDataModel styleModel;
 	private SetSimilarity setSimilarity;
 
-	public ContentBasedMovieGenreRecommender(DataModel dataModel, GenresDataModel genresModel, SetSimilarity setSimilarity) {
+	public ContentBasedMovieGenreRecommender(DataModel dataModel, GenresDataModel styleModel, SetSimilarity setSimilarity) {
 		super(dataModel);
-		this.genresModel = genresModel;
+		this.styleModel = styleModel;
 		this.setSimilarity = setSimilarity;
 	}
 
@@ -35,7 +35,7 @@ public class ContentBasedMovieGenreRecommender extends AbstractRecommender {
 
 	@Override
 	public float estimatePreference(long userID, long itemID) throws TasteException {
-		Set<String> itemGenres = genresModel.getGenres(itemID);
+		Set<String> itemGenres = styleModel.getGenres(itemID);
 		DataModel model = getDataModel();
 		FastIDSet itemIDsFromUser = model.getItemIDsFromUser(userID);
 		List<Long> itemsWithAtLeastOneSameGenre = new ArrayList<Long>();
@@ -66,10 +66,10 @@ public class ContentBasedMovieGenreRecommender extends AbstractRecommender {
 	private List<Float> getItemsWithAtLeastOneSameGenre(FastIDSet itemIDsFromUser, Set<String> itemGenres, List<Long> itemsWithSameGenre) throws TasteException {
 		List<Float> itemsSimilarity = new ArrayList<Float>();
 		for (Long itemIDFromUser : itemIDsFromUser) {
-			Set<String> genres = genresModel.getGenres(itemIDFromUser);
-			if (genresModel.intersects(itemGenres, genres)) {
+			Set<String> style = styleModel.getGenres(itemIDFromUser);
+			if (styleModel.intersects(itemGenres, style)) {
 				itemsWithSameGenre.add(itemIDFromUser);
-				itemsSimilarity.add(setSimilarity.getSimilarity(itemGenres, genres));
+				itemsSimilarity.add(setSimilarity.getSimilarity(itemGenres, style));
 			}
 		}
 		return itemsSimilarity;

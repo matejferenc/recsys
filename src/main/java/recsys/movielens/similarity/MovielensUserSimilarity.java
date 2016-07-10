@@ -22,6 +22,8 @@ public class MovielensUserSimilarity implements UserSimilarity {
 	private final UserModel userModel;
 	
 	private final MovielensUserSimilarityFunction movielensUserSimilarityFunction;
+	
+	private int computed = 0;
 
 	public MovielensUserSimilarity(UserModel userModel, MovielensUserSimilarityFunction movielensUserSimilarityFunction) {
 		this.userModel = userModel;
@@ -34,21 +36,23 @@ public class MovielensUserSimilarity implements UserSimilarity {
 
 	@Override
 	public double userSimilarity(long userID1, long userID2) throws TasteException {
+		computed++;
 		double similarity = computeSimilarity(userID1, userID2);
+		System.err.println("computed movielensUserSimilarities: " + computed);
 		return similarity;
 	}
 
 	private double computeSimilarity(long userID1, long userID2) {
 		User user1 = userModel.get(userID1);
 		User user2 = userModel.get(userID2);
-		double genresSimilarity = calculateGenresSimilarity(user1, user2);
-		double directorsSimilarity = calculateDirectorsSimilarity(user1, user2);
-		double actorsSimilarity = calculateActorsSimilarity(user1, user2);
-		double actressesSimilarity = calculateActressesSimilarity(user1, user2);
-//		double keywordsSimilarity = calculateKeywordsSimilarity(user1, user2);
-		double keywordsSimilarity = 0;
+		double styleSimilarity = calculateGenresSimilarity(user1, user2);
+		double majorGroupSimilarity = calculateDirectorsSimilarity(user1, user2);
+		double minorGroupSimilarity = calculateActorsSimilarity(user1, user2);
+		double oilinessSimilarity = calculateActressesSimilarity(user1, user2);
+//		double priceSimilarity = calculateKeywordsSimilarity(user1, user2);
+		double priceSimilarity = 0;
 		
-		double userSimilarity = movielensUserSimilarityFunction.calculateSimilarity(genresSimilarity, directorsSimilarity, actorsSimilarity, actressesSimilarity, keywordsSimilarity);
+		double userSimilarity = movielensUserSimilarityFunction.calculateSimilarity(styleSimilarity, majorGroupSimilarity, minorGroupSimilarity, oilinessSimilarity, priceSimilarity);
 		// correction for Taste framework (interface says the return value should be between -1 and +1,
 		// yet the computed similarity is between 0 and +1)
 		double transformedUserSimilarity = userSimilarity * 2 - 1;

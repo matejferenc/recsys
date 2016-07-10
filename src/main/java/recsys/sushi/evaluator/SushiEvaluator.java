@@ -34,7 +34,7 @@ import recsys.sushi.recommender.builder.SushiAndUserClassificationRecommenderBui
 import recsys.sushi.recommender.builder.SushiGlobalAndLocalClassificationRecommenderBuilder;
 import recsys.sushi.recommender.builder.SushiGlobalClassificationRecommenderBuilder;
 import recsys.sushi.recommender.builder.SushiLocalClassificationRecommenderBuilder;
-import recsys.sushi.similarity.builder.SushiItemSimilarityBuilder;
+import recsys.sushi.similarity.SushiUserSimilarityFunction;
 import recsys.sushi.similarity.builder.SushiUserSimilarityBuilder;
 import recsys.sushi.similarity.builder.SushiUserWeightedSimilarityBuilder;
 import recsys.sushi.similarity.builder.SushiUserWeightsSimilarityBuilder;
@@ -79,21 +79,21 @@ public class SushiEvaluator extends AbstractEvaluator {
 		List<RecommenderBuilder> builders = new ArrayList<>();
 		SushiItemDataModel sushiDataModel = new SushiItemDataModelDataset().build();
 		EnumSet<IncludeAlgorithms> includeAlgorithms = IncludeAlgorithms.fromList(argsList);
-		EnumSet<IncludeProperties> includeProperties = IncludeProperties.fromList(argsList);
 		IncludeUserSimilarityBuilder includeUserSimilarityBuilder = IncludeUserSimilarityBuilder.fromList(argsList);
 		EnumSet<IncludeClassificators> includeClassificators = IncludeClassificators.fromList(argsList);
 
-		assertCorrectIncludes(includeAlgorithms, includeProperties, includeClassificators);
+		assertCorrectIncludes(includeAlgorithms, includeClassificators);
 
 		if (includeAlgorithms.contains(IncludeAlgorithms.USER_BASED)) {
 
 			UserSimilarityBuilder sushiUserSimilarityBuilder = null;
+			SushiUserSimilarityFunction function = new SushiUserSimilarityFunction(0.2, 0.2, 0.2, 0.2, 0.2);
 			if (includeUserSimilarityBuilder == IncludeUserSimilarityBuilder.SUSHI_USER_SIMILARITY_BUILDER) {
-				sushiUserSimilarityBuilder = new SushiUserSimilarityBuilder(sushiDataModel, includeProperties);
+				sushiUserSimilarityBuilder = new SushiUserSimilarityBuilder(sushiDataModel, function);
 			} else if (includeUserSimilarityBuilder == IncludeUserSimilarityBuilder.SUSHI_USER_WEIGHTS_SIMILARITY_BUILDER) {
-				sushiUserSimilarityBuilder = new SushiUserWeightsSimilarityBuilder(sushiDataModel, includeProperties);
+				sushiUserSimilarityBuilder = new SushiUserWeightsSimilarityBuilder(sushiDataModel, function);
 			} else if (includeUserSimilarityBuilder == IncludeUserSimilarityBuilder.SUSHI_USER_WEIGHTED_SIMILARITY_BUILDER) {
-				sushiUserSimilarityBuilder = new SushiUserWeightedSimilarityBuilder(sushiDataModel, includeProperties);
+				sushiUserSimilarityBuilder = new SushiUserWeightedSimilarityBuilder(sushiDataModel, function);
 			} else {
 				throw new MissingArgumentException("When using " + IncludeAlgorithms.USER_BASED + " algorithm, you must choose one of the user similarities " + IncludeUserSimilarityBuilder.getAllNames());
 			}
@@ -110,6 +110,10 @@ public class SushiEvaluator extends AbstractEvaluator {
 			builders.add(new UserBasedRecommenderBuilder(sushiUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(50)));
 			builders.add(new UserBasedRecommenderBuilder(sushiUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(75)));
 			builders.add(new UserBasedRecommenderBuilder(sushiUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(100)));
+			builders.add(new UserBasedRecommenderBuilder(sushiUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(125)));
+			builders.add(new UserBasedRecommenderBuilder(sushiUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(150)));
+			builders.add(new UserBasedRecommenderBuilder(sushiUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(175)));
+			builders.add(new UserBasedRecommenderBuilder(sushiUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(200)));
 		}
 
 		
@@ -127,6 +131,9 @@ public class SushiEvaluator extends AbstractEvaluator {
 			builders.add(new UserBasedRecommenderBuilder(euclideanDistanceUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(50)));
 			builders.add(new UserBasedRecommenderBuilder(euclideanDistanceUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(75)));
 			builders.add(new UserBasedRecommenderBuilder(euclideanDistanceUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(100)));
+			builders.add(new UserBasedRecommenderBuilder(euclideanDistanceUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(125)));
+			builders.add(new UserBasedRecommenderBuilder(euclideanDistanceUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(150)));
+			builders.add(new UserBasedRecommenderBuilder(euclideanDistanceUserSimilarityBuilder, new NearestNUserNeighborhoodBuilder(175)));
 		}
 
 		if (includeAlgorithms.contains(IncludeAlgorithms.USER_BASED_PEARSON_CORRELATION)) {
@@ -166,8 +173,8 @@ public class SushiEvaluator extends AbstractEvaluator {
 			builders.add(new ItemAndUserAverageRecommenderBuilder());
 		}
 		if (includeAlgorithms.contains(IncludeAlgorithms.SUSHI_ITEM_SIMILARITY)) {
-			SushiItemSimilarityBuilder sushiItemSimilarityBuilder = new SushiItemSimilarityBuilder(sushiDataModel, includeProperties);
-			builders.add(new ItemBasedRecommenderBuilder(sushiItemSimilarityBuilder));
+//			SushiItemSimilarityBuilder sushiItemSimilarityBuilder = new SushiItemSimilarityBuilder(sushiDataModel, includeProperties);
+//			builders.add(new ItemBasedRecommenderBuilder(sushiItemSimilarityBuilder));
 		}
 		if (includeAlgorithms.contains(IncludeAlgorithms.GLOBAL_AND_LOCAL_CLASSIFICATION)) {
 			if (includeClassificators.contains(IncludeClassificators.J48)) {
@@ -281,16 +288,7 @@ public class SushiEvaluator extends AbstractEvaluator {
 	 * @param includeClassificators
 	 * @throws MissingArgumentException
 	 */
-	private void assertCorrectIncludes(EnumSet<IncludeAlgorithms> includeAlgorithms, EnumSet<IncludeProperties> includeProperties, EnumSet<IncludeClassificators> includeClassificators) throws MissingArgumentException {
-		if (includeAlgorithms.contains(IncludeAlgorithms.USER_BASED) || includeAlgorithms.contains(IncludeAlgorithms.SUSHI_ITEM_SIMILARITY)) {
-			if (includeProperties.size() == 0) {
-				throw new MissingArgumentException(
-						"When using " + IncludeAlgorithms.USER_BASED.getShortName() + " or " + IncludeAlgorithms.SUSHI_ITEM_SIMILARITY.getShortName()
-						+ " algorithm, you must choose at least one of properties " + 
-						"[" + IncludeProperties.getAllNames() + "]");
-			}
-		}
-		
+	private void assertCorrectIncludes(EnumSet<IncludeAlgorithms> includeAlgorithms, EnumSet<IncludeClassificators> includeClassificators) throws MissingArgumentException {
 		if (includeAlgorithms.contains(IncludeAlgorithms.GLOBAL_AND_LOCAL_CLASSIFICATION)
 				|| includeAlgorithms.contains(IncludeAlgorithms.GLOBAL_CLASSIFICATION)
 				|| includeAlgorithms.contains(IncludeAlgorithms.LOCAL_CLASSIFICATION)

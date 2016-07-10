@@ -10,7 +10,7 @@ public class MovielensDataModel {
 
 	private List<Long> itemIDs;
 
-	private FastByIDMap<Set<String>> genres;
+	private FastByIDMap<Set<String>> style;
 
 	private FastByIDMap<String> names;
 
@@ -18,14 +18,14 @@ public class MovielensDataModel {
 
 
 	public MovielensDataModel() {
-		genres = new FastByIDMap<Set<String>>();
+		style = new FastByIDMap<Set<String>>();
 		names = new FastByIDMap<String>();
 		years = new FastByIDMap<Integer>();
 		setItemIDs(new ArrayList<Long>());
 	}
 
 	public Set<String> getGenres(long itemID) {
-		return genres.get(itemID);
+		return style.get(itemID);
 	}
 
 	boolean intersects(Set<String> set1, Set<String> set2) {
@@ -57,11 +57,11 @@ public class MovielensDataModel {
 	}
 
 	public FastByIDMap<Set<String>> getGenres() {
-		return genres;
+		return style;
 	}
 
-	public void setGenres(FastByIDMap<Set<String>> genres) {
-		this.genres = genres;
+	public void setGenres(FastByIDMap<Set<String>> style) {
+		this.style = style;
 	}
 
 }

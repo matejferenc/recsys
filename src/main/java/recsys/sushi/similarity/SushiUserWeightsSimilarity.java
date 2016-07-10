@@ -22,12 +22,12 @@ public class SushiUserWeightsSimilarity implements UserSimilarity {
 
 	private static final double maxVariance = 4;
 
-	private EnumSet<IncludeProperties> includeProperties;
+	private SushiUserSimilarityFunction sushiUserSimilarityFunction;
 
 
-	public SushiUserWeightsSimilarity(SushiUserModel userModel, EnumSet<IncludeProperties> includeProperties) {
+	public SushiUserWeightsSimilarity(SushiUserModel userModel, SushiUserSimilarityFunction sushiUserSimilarityFunction) {
 		this.userModel = userModel;
-		this.includeProperties = includeProperties;
+		this.sushiUserSimilarityFunction = sushiUserSimilarityFunction;
 	}
 
 	@Override
@@ -43,21 +43,21 @@ public class SushiUserWeightsSimilarity implements UserSimilarity {
 		SushiUser user1 = userModel.get(userID1);
 		SushiUser user2 = userModel.get(userID2);
 		
-		double userSimilarity = (includeProperties.contains(IncludeProperties.STYLE) ? calculateStyleSimilarity(user1, user2) : 0) +
-				(includeProperties.contains(IncludeProperties.MAJOR) ? calculateMajorGroupSimilarity(user1, user2) : 0) +
-				(includeProperties.contains(IncludeProperties.MINOR) ? calculateMinorGroupSimilarity(user1, user2) : 0) +
-				(includeProperties.contains(IncludeProperties.OILINESS) ? calculateOilinessSimilarity(user1, user2) : 0) +
-				(includeProperties.contains(IncludeProperties.PRICE) ? calculatePriceSimilarity(user1, user2) : 0) +
-				(includeProperties.contains(IncludeProperties.GENDER) ? calculateGenderSimilarity(user1, user2) : 0) +
-				(includeProperties.contains(IncludeProperties.AGE) ? calculateAgeSimilarity(user1, user2) : 0) +
-				(includeProperties.contains(IncludeProperties.REGION15) ? calculateRegion15Similarity(user1, user2) : 0) +
-				(includeProperties.contains(IncludeProperties.REGION_CURRENT) ? calculateRegionCurrentSimilarity(user1, user2) : 0) +
-				(includeProperties.contains(IncludeProperties.PREFECTURE15) ? calculatePrefecture15Similarity(user1, user2) : 0) +
-				(includeProperties.contains(IncludeProperties.PREFECTURE_CURRENT) ? calculatePrefectureCurrentSimilarity(user1, user2) : 0) +
-				(includeProperties.contains(IncludeProperties.EAST_WEST15) ? calculateEastWest15Similarity(user1, user2) : 0) +
-				(includeProperties.contains(IncludeProperties.EAST_WEST_CURRENT) ? calculateEastWestCurrentSimilarity(user1, user2) : 0);
+		double userSimilarity = (sushiUserSimilarityFunction.contains(IncludeProperties.STYLE) ? calculateStyleSimilarity(user1, user2) : 0) +
+				(sushiUserSimilarityFunction.contains(IncludeProperties.MAJOR) ? calculateMajorGroupSimilarity(user1, user2) : 0) +
+				(sushiUserSimilarityFunction.contains(IncludeProperties.MINOR) ? calculateMinorGroupSimilarity(user1, user2) : 0) +
+				(sushiUserSimilarityFunction.contains(IncludeProperties.OILINESS) ? calculateOilinessSimilarity(user1, user2) : 0) +
+				(sushiUserSimilarityFunction.contains(IncludeProperties.PRICE) ? calculatePriceSimilarity(user1, user2) : 0) +
+				(sushiUserSimilarityFunction.contains(IncludeProperties.GENDER) ? calculateGenderSimilarity(user1, user2) : 0) +
+				(sushiUserSimilarityFunction.contains(IncludeProperties.AGE) ? calculateAgeSimilarity(user1, user2) : 0) +
+				(sushiUserSimilarityFunction.contains(IncludeProperties.REGION15) ? calculateRegion15Similarity(user1, user2) : 0) +
+				(sushiUserSimilarityFunction.contains(IncludeProperties.REGION_CURRENT) ? calculateRegionCurrentSimilarity(user1, user2) : 0) +
+				(sushiUserSimilarityFunction.contains(IncludeProperties.PREFECTURE15) ? calculatePrefecture15Similarity(user1, user2) : 0) +
+				(sushiUserSimilarityFunction.contains(IncludeProperties.PREFECTURE_CURRENT) ? calculatePrefectureCurrentSimilarity(user1, user2) : 0) +
+				(sushiUserSimilarityFunction.contains(IncludeProperties.EAST_WEST15) ? calculateEastWest15Similarity(user1, user2) : 0) +
+				(sushiUserSimilarityFunction.contains(IncludeProperties.EAST_WEST_CURRENT) ? calculateEastWestCurrentSimilarity(user1, user2) : 0);
 
-		userSimilarity /= includeProperties.size();
+		userSimilarity /= sushiUserSimilarityFunction.size();
 		
 		// correction for Taste framework (interface says the return value should be between -1 and +1,
 		// yet the computed similarity is between 0 and +1)

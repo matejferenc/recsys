@@ -64,7 +64,7 @@ public class NotebooksDataModelLoader {
 	 * processing of one line
 	 * 
 	 * @param line
-	 * @param genres
+	 * @param style
 	 * @param names
 	 */
 	protected void processLine(String line) {
