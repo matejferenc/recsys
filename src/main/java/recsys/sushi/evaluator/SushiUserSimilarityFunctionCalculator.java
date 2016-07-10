@@ -50,8 +50,11 @@ public class SushiUserSimilarityFunctionCalculator extends AbstractEvaluator {
 		pool.generateRandom(10);
 		while (true) {
 			for (SushiUserSimilarityFunction function : pool) {
-				List<RecommenderBuilder> builders = createRecommenderBuilders(dataModel, function);
-				double averageScore = evaluateRecommenders(dataModel, builders, argsList);
+				Double averageScore = pool.getFromHistory(function);
+				if (averageScore == null) {
+					List<RecommenderBuilder> builders = createRecommenderBuilders(dataModel, function);
+					averageScore = evaluateRecommenders(dataModel, builders, argsList);
+				}
 				System.out.println("AVERAGE SCORE OF EVOLUTION ALGORITHM: " + averageScore);
 				System.out.println(function.toString());
 				pool.registerScore(averageScore);

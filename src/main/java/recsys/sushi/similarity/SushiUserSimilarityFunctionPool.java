@@ -3,11 +3,15 @@ package recsys.sushi.similarity;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class SushiUserSimilarityFunctionPool extends ArrayList<SushiUserSimilarityFunction>{
 	
 	private List<Double> scores = new ArrayList<Double>();
+	
+	private Map<SushiUserSimilarityFunction, Double> history = new HashMap<SushiUserSimilarityFunction, Double>();
 
 	public void generateRandom(int populationSize) {
 		for (int i = 0; i < populationSize; i++) {
@@ -54,11 +58,18 @@ public class SushiUserSimilarityFunctionPool extends ArrayList<SushiUserSimilari
 	}
 
 	public void sort() {
+		for (int i = 0; i < this.size(); i++) {
+			history.put(this.get(i), scores.get(i));
+		}
 		Collections.sort(this, new Comparator<SushiUserSimilarityFunction>() {
 		    public int compare(SushiUserSimilarityFunction left, SushiUserSimilarityFunction right) {
 		    	return Double.compare(scores.get(indexOf(left)), scores.get(indexOf(right)));
 		    }
 		});
+	}
+	
+	public Double getFromHistory(SushiUserSimilarityFunction function) {
+		return history.get(function);
 	}
 	
 }
