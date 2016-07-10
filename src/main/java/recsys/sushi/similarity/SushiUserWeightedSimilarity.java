@@ -2,7 +2,6 @@ package recsys.sushi.similarity;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -13,7 +12,6 @@ import org.apache.mahout.cf.taste.similarity.PreferenceInferrer;
 import org.apache.mahout.cf.taste.similarity.UserSimilarity;
 
 import recsys.model.SetPreference;
-import recsys.sushi.evaluator.IncludeProperties;
 import recsys.sushi.model.SushiItemDataModel;
 import recsys.sushi.model.SushiUser;
 import recsys.sushi.model.SushiUserModel;
@@ -23,13 +21,13 @@ public class SushiUserWeightedSimilarity implements UserSimilarity {
 	private static final int MAX_DIFFERENCE = 4;
 	private final SushiUserModel userModel;
 
-	private EnumSet<IncludeProperties> includeProperties;
+	private SushiUserSimilarityFunction function;
 
 	private static final double maxVariance = 4;
 	
-	public SushiUserWeightedSimilarity(SushiUserModel userModel, EnumSet<IncludeProperties> includeProperties) {
+	public SushiUserWeightedSimilarity(SushiUserModel userModel, SushiUserSimilarityFunction function) {
 		this.userModel = userModel;
-		this.includeProperties = includeProperties;
+		this.function = function;
 	}
 
 	@Override
@@ -45,22 +43,13 @@ public class SushiUserWeightedSimilarity implements UserSimilarity {
 		SushiUser user1 = userModel.get((int) userID1);
 		SushiUser user2 = userModel.get((int) userID2);
 		
-		double userSimilarity = (includeProperties.contains(IncludeProperties.STYLE) ? calculateStyleSimilarity(user1, user2) * calculateStyleWeight(user1, user2) : 0) +
-				(includeProperties.contains(IncludeProperties.MAJOR) ? calculateMajorGroupSimilarity(user1, user2) * calculateMajorGroupWeight(user1, user2) : 0) +
-				(includeProperties.contains(IncludeProperties.MINOR) ? calculateMinorGroupSimilarity(user1, user2) * calculateMinorGroupWeight(user1, user2) : 0) +
-				(includeProperties.contains(IncludeProperties.OILINESS) ? calculateOilinessSimilarity(user1, user2) * calculateOilinessWeight(user1, user2) : 0) +
-				(includeProperties.contains(IncludeProperties.PRICE) ? calculatePriceSimilarity(user1, user2) * calculatePriceWeight(user1, user2) : 0) +
-				(includeProperties.contains(IncludeProperties.GENDER) ? calculateGenderSimilarity(user1, user2) : 0) +
-				(includeProperties.contains(IncludeProperties.AGE) ? calculateAgeSimilarity(user1, user2) : 0) +
-				(includeProperties.contains(IncludeProperties.REGION15) ? calculateRegion15Similarity(user1, user2) : 0) +
-				(includeProperties.contains(IncludeProperties.REGION_CURRENT) ? calculateRegionCurrentSimilarity(user1, user2) : 0) +
-				(includeProperties.contains(IncludeProperties.PREFECTURE15) ? calculatePrefecture15Similarity(user1, user2) : 0) +
-				(includeProperties.contains(IncludeProperties.PREFECTURE_CURRENT) ? calculatePrefectureCurrentSimilarity(user1, user2) : 0) +
-				(includeProperties.contains(IncludeProperties.EAST_WEST15) ? calculateEastWest15Similarity(user1, user2) : 0) +
-				(includeProperties.contains(IncludeProperties.EAST_WEST_CURRENT) ? calculateEastWestCurrentSimilarity(user1, user2) : 0);
+		double styleSimilarity = calculateStyleSimilarity(user1, user2) * calculateStyleWeight(user1, user2);
+		double majorGroupSimilarity = calculateMajorGroupSimilarity(user1, user2) * calculateMajorGroupWeight(user1, user2);
+		double minorGroupSimilarity = calculateMinorGroupSimilarity(user1, user2) * calculateMinorGroupWeight(user1, user2);
+		double oilinessSimilarity = calculateOilinessSimilarity(user1, user2) * calculateOilinessWeight(user1, user2);
+		double priceSimilarity = calculatePriceSimilarity(user1, user2) * calculatePriceWeight(user1, user2);
 		
-
-		userSimilarity /= includeProperties.size();
+		double userSimilarity = function.calculateSimilarity(styleSimilarity, majorGroupSimilarity, minorGroupSimilarity, oilinessSimilarity, priceSimilarity);
 
 		// correction for Taste framework (interface says the return value should be between -1 and +1,
 		// yet the computed similarity is between 0 and +1)
